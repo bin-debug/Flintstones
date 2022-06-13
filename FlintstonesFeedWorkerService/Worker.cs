@@ -1,6 +1,4 @@
 using Binance.Net.Clients;
-using Dapper;
-using Npgsql;
 using StackExchange.Redis;
 using System.Data;
 using System.Text;

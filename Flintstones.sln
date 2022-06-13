@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesFeedWorkerService", "FlintstonesFeedWorkerService\FlintstonesFeedWorkerService.csproj", "{AF6B4887-A073-490E-9182-9FD9AC7CAB25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesFeedApi", "FlintstonesFeedApi\FlintstonesFeedApi.csproj", "{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{AF6B4887-A073-490E-9182-9FD9AC7CAB25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF6B4887-A073-490E-9182-9FD9AC7CAB25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF6B4887-A073-490E-9182-9FD9AC7CAB25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
