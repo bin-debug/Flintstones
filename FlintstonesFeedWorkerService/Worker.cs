@@ -29,8 +29,11 @@ namespace FlintstonesFeedWorkerService
             {
                 try
                 {
+                    string date = DateTime.Today.Date.ToString("ddMMyyyy");
+                    string key = $"{symbol}-{date}";
+
                     var val = new RedisValue($"{data.Data.LastPrice}-{data.Timestamp}");
-                    await db.ListLeftPushAsync(symbol, val);
+                    await db.ListLeftPushAsync(key, val);
                     Console.WriteLine(val);
                     await Task.Delay(1000, stoppingToken);
                 }
