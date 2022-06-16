@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesFeedWorkerService", "FlintstonesFeedWorkerService\FlintstonesFeedWorkerService.csproj", "{AF6B4887-A073-490E-9182-9FD9AC7CAB25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesFeedWorkerService", "FlintstonesFeedWorkerService\FlintstonesFeedWorkerService.csproj", "{AF6B4887-A073-490E-9182-9FD9AC7CAB25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesFeedApi", "FlintstonesFeedApi\FlintstonesFeedApi.csproj", "{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesFeedApi", "FlintstonesFeedApi\FlintstonesFeedApi.csproj", "{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesSiloApi", "FlintstonesSiloApi\FlintstonesSiloApi.csproj", "{F0BC6214-2C56-4934-8C86-DE4F83E49A39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesSiloAbstractions", "FlintstonesSiloAbstractions\FlintstonesSiloAbstractions.csproj", "{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesModels", "FlintstonesModels\FlintstonesModels.csproj", "{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0BC6214-2C56-4934-8C86-DE4F83E49A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0BC6214-2C56-4934-8C86-DE4F83E49A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0BC6214-2C56-4934-8C86-DE4F83E49A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0BC6214-2C56-4934-8C86-DE4F83E49A39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

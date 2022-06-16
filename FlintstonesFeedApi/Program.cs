@@ -16,11 +16,11 @@ app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/feed/{symbol}", async (IConnectionMultiplexer redis, string symbol) =>
 {
+    symbol = symbol.ToUpper();
     string date = DateTime.Today.Date.ToString("ddMMyyyy");
     string key = $"{symbol}-{date}";
 
     var db = redis.GetDatabase();
-    symbol = symbol.ToUpper();
     var price = await db.ListGetByIndexAsync(key, 0);
     return Results.Ok(price.ToString());
 });
