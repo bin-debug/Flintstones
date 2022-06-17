@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace FlintstonesModels
 {
     public class BetDTO
     {
+        [JsonProperty(PropertyName = "id")]
         public Guid BetID { get; set; }
         public int ClientID { get; set; }
         public string Token { get; set; }
