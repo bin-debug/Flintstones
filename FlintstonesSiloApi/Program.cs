@@ -1,9 +1,10 @@
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
+builder.Services.AddHttpClient();
 builder.Services.AddSingleton<ICosmosDbService<BetDTO>>(ExtensionHelper.InitializeCosmosClientInstanceAsync(configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
 builder.Services.AddSingleton<ServiceBusSender>(ExtensionHelper.InitializeServiceBusInstanceAsync(configuration.GetSection("AzureServiceBus")).GetAwaiter().GetResult());
 
-var redisConnectionString = $"redis:6379";
+var redisConnectionString = configuration.GetValue<string>("Redis");
 
 builder.Host.UseOrleans((ctx,siloBuilder) =>
 {

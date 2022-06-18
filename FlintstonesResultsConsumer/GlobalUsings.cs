@@ -1,7 +1,4 @@
-﻿global using FlintstonesModels;
-global using FlintstonesSiloAbstractions.Interfaces;
-global using Orleans;
-global using System;
+﻿global using System;
 global using System.Collections.Generic;
 global using System.Linq;
 global using System.Text;
@@ -11,4 +8,5 @@ global using Microsoft.Azure.Cosmos.Fluent;
 global using Azure.Messaging.ServiceBus;
 global using System.Text.Json;
 global using System.Net.Http;
-global using Microsoft.Extensions.Configuration;
+global using StackExchange.Redis;
+global using FlintstonesModels;
