@@ -1,4 +1,6 @@
-﻿Console.WriteLine("Hello, Servicebus!");
+﻿using FlintstonesResultsConsumer;
+
+Console.WriteLine("Hello, Servicebus!");
 
 ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost:30580");
 IDatabase db = redis.GetDatabase();
@@ -11,6 +13,13 @@ string connectionString = "Endpoint=sb://dev-test-rm.servicebus.windows.net/;Sha
 string queueName = "bets";
 ServiceBusClient client;
 ServiceBusProcessor processor;
+
+string databaseName = "flintstones";
+string containerName = "barney";
+string account = "https://dev-test-rm.documents.azure.com:443/";
+string cosmokey = "HE9dQvkko2ci8eLMg5W4MxX7g1OcPMaf0SJZfrxtwihqZGHz9WL7uDVpRefdl2IPrRNg1Jd3aU38dlGiqzP8lQ==";
+CosmosClient cosmosClient = new Microsoft.Azure.Cosmos.CosmosClient(account, cosmokey);
+CosmosDbService cosmosDbService = new CosmosDbService(cosmosClient, databaseName, containerName);
 
 client = new ServiceBusClient(connectionString);
 
@@ -52,6 +61,7 @@ async Task MessageHandler(ProcessMessageEventArgs args)
     var resultedBet = await LetsResult(bet);
 
     //upsert resuledBet to cosmosdb
+    await cosmosDbService.UpdateAsync(bet.BetID.ToString(), bet);
 
     // complete the message. messages is deleted from the queue. 
     await args.CompleteMessageAsync(args.Message);
@@ -105,7 +115,7 @@ static BetDTO MarkBet(BetDTO bet, decimal price, bool win)
 
 async Task<decimal> GetResultPrice(string resultTime)
 {
-    //resultTime = DateTime.Now.AddHours(-2).AddMinutes(-1).ToString("MM/dd/yyyy HH:mm:ss");
+    resultTime = DateTime.Now.AddHours(-2).AddMinutes(-1).ToString("MM/dd/yyyy HH:mm:ss");
 
     var values = await db.ListRangeAsync(key, stop: 1200);
 

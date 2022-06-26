@@ -34,10 +34,10 @@
 
                 //// SEND TO OPERATOR (need to add polly also)
 
-                //if (result != null)
-                //{
-                //    this.RegisterTimer(PublishMessage, bet, TimeSpan.FromMinutes(bet.Duration), TimeSpan.FromMilliseconds(-1));
-                //}
+                if (result != null)
+                {
+                    this.RegisterTimer(PublishMessage, bet, TimeSpan.FromMinutes(bet.Duration), TimeSpan.FromMilliseconds(-1));
+                }
 
                 return result;
             }
