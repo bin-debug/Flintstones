@@ -26,11 +26,11 @@
             return results;
         }
 
-        public async Task<BetDTO> GetAsync(string id)
+        public async Task<BetDTO> GetAsync(string id, string partitionKey)
         {
             try
             {
-                ItemResponse<BetDTO> response = await this._container.ReadItemAsync<BetDTO>(id, new PartitionKey(id));
+                ItemResponse<BetDTO> response = await this._container.ReadItemAsync<BetDTO>(id, new PartitionKey(partitionKey));
                 return response.Resource;
             }
             catch (CosmosException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -45,9 +45,9 @@
         }
         public async Task<BetDTO> AddAsync(BetDTO item)
         {
-            var key = item.BetID.ToString();
-            //item.ID = key;
-            var result =  await this._container.CreateItemAsync<BetDTO>(item, new PartitionKey(key));
+            var key = item.ClientID.ToString();
+            var result =  await this._container.CreateItemAsync<BetDTO>(item, new PartitionKey(item.ClientID.ToString()));
+            var charge = result.RequestCharge;
             if (result.StatusCode == System.Net.HttpStatusCode.Created)
                 return item;
             else
@@ -56,7 +56,7 @@
 
         public async Task UpdateAsync(string id, BetDTO item)
         {
-            await this._container.UpsertItemAsync<BetDTO>(item, new PartitionKey(id));
+            await this._container.UpsertItemAsync<BetDTO>(item, new PartitionKey(item.ClientID.ToString()));
         }
     }
 }

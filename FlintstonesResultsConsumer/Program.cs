@@ -49,7 +49,9 @@ async Task MessageHandler(ProcessMessageEventArgs args)
     Console.WriteLine($"Received: {body}");
 
     var bet = JsonSerializer.Deserialize<BetDTO>(body);
-    await LetsResult(bet);
+    var resultedBet = await LetsResult(bet);
+
+    //upsert resuledBet to cosmosdb
 
     // complete the message. messages is deleted from the queue. 
     await args.CompleteMessageAsync(args.Message);
@@ -64,7 +66,7 @@ static Task ErrorHandler(ProcessErrorEventArgs args)
 
 Console.ReadKey();
 
-async Task LetsResult(BetDTO bet)
+async Task<BetDTO> LetsResult(BetDTO bet)
 {
     var resultDate = bet.CreatedDate.AddHours(-2).AddMinutes(bet.Duration).ToString("MM/dd/yyyy HH:mm:ss");
     var price = await GetResultPrice(resultDate);
@@ -72,18 +74,33 @@ async Task LetsResult(BetDTO bet)
     if (bet.Selection == 1) // this means the punter wanted the price to go up
     {
         if (price >= bet.CurrentMarketPrice)
-            Console.WriteLine($"Punter won!!! - resultprice {price} - resultdate {resultDate}");
+            return MarkBet(bet, price, true);
         else
-            Console.WriteLine($"Punter lost!!! - resultprice {price} - resultdate {resultDate}");
-
+            return MarkBet(bet, price, false);
     }
     else
     {
         if (price <= bet.CurrentMarketPrice)
-            Console.WriteLine($"Punter won!!! - resultprice {price} - resultdate {resultDate}");
+            return MarkBet(bet, price, true);
         else
-            Console.WriteLine($"Punter lost!!! - resultprice {price} - resultdate {resultDate}");
+            return MarkBet(bet, price, false);
     }
+}
+
+static BetDTO MarkBet(BetDTO bet, decimal price, bool win)
+{
+    bet.Result.Cashout = false;
+    bet.Result.CashoutAmount = 0;
+    bet.Result.CashoutCreatedDate = null;
+    bet.Result.ResultMarketPrice = price;
+    bet.Result.CreatedDate = DateTime.Now;
+
+    if(win == true)
+        bet.Result.WinAmount = bet.TotalPayout;
+    else
+        bet.Result.WinAmount = 0;
+
+    return bet;
 }
 
 async Task<decimal> GetResultPrice(string resultTime)

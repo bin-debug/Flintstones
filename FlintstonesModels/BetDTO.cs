@@ -9,9 +9,17 @@ namespace FlintstonesModels
 {
     public class BetDTO
     {
+        public BetDTO()
+        {
+            Result = new ResultDTO();
+        }
+
         [JsonProperty(PropertyName = "id")]
         public Guid BetID { get; set; }
-        public int ClientID { get; set; }
+
+        [JsonProperty(PropertyName = "clientid")]
+        public string ClientID { get; set; }
+
         public string Token { get; set; }
         public decimal StakeAmount { get; set; }
         public string Market { get; set; }
@@ -19,9 +27,9 @@ namespace FlintstonesModels
         public decimal SelectionOdd { get; set; }
         public int Duration { get; set; }
         public decimal CurrentMarketPrice { get; set; }
-        public string Tag { get; set; }
-        public decimal Payout { get; set; }
-        public decimal AutoCashoutValue { get; set; }
+        public string? Tag { get; set; }
+        public decimal TotalPayout { get { return StakeAmount * SelectionOdd; } }
+        public ResultDTO Result { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }
