@@ -11,7 +11,7 @@ namespace FlintstonesModels
     {
         [JsonProperty(PropertyName = "id")]
         public Guid ID { get; set; }
-        [JsonProperty(PropertyName = "clientid")]
+        [JsonProperty(PropertyName = "partitionKey")]
         public string Date { get; set; }
         public decimal LastPrice { get; set; }
         public string TimeStamp { get; set; }

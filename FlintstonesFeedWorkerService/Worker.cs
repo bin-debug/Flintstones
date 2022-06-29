@@ -31,7 +31,6 @@ namespace FlintstonesFeedWorkerService
                     var model = new FeedModel();
                     model.Date = date;
                     model.ID = Guid.NewGuid();
-                    //2022-06-29T16:51:33.645692Z
                     model.LastPrice = data.Data.LastPrice;
                     model.TimeStamp = data.Timestamp.AddHours(2).ToString("yyyy-MM-ddTHH:mm:ss");
 
@@ -46,6 +45,14 @@ namespace FlintstonesFeedWorkerService
         }
     }
 }
+
+//--SELECT * FROM c
+//-- where c.TimeStamp = '2022-06-29T21:30:37'
+//-- and c.partitionKey = '29062022'
+
+//-- SELECT TOP 1 * FROM c
+//-- where c.partitionKey = '29062022'
+//-- order by c.TimeStamp desc
 
 //SELECT c.LastPrice FROM c
 //where c.TimeStamp = '2022-06-29T19:17:01'
