@@ -13,5 +13,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
     <PackageReference Include="Binance.Net" Version="8.1.2" />
     <PackageReference Include="StackExchange.Redis" Version="2.5.61" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.28.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FlintstonesModels\FlintstonesModels.csproj" />
   </ItemGroup>
 </Project>
