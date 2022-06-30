@@ -6,7 +6,6 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["FlintstonesFeedWorkerService/FlintstonesFeedWorkerService.csproj", "FlintstonesFeedWorkerService/"]
-COPY ["FlintstonesModels/FlintstonesModels.csproj", "FlintstonesModels/"]
 RUN dotnet restore "FlintstonesFeedWorkerService/FlintstonesFeedWorkerService.csproj"
 COPY . .
 WORKDIR "/src/FlintstonesFeedWorkerService"

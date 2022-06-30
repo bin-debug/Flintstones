@@ -6,8 +6,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         IConfiguration configuration = hostContext.Configuration;
 
         services.AddHostedService<Worker>();
-        services.AddSingleton(ExtensionUtil.InitializeCosmosClientInstanceAsync(configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-
+        services.AddSingleton<TableStorageService>();
     })
     .ConfigureAppConfiguration((hostContext, configBuilder) =>
     {
