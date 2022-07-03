@@ -6,14 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlintstonesFeedWorkerService
+namespace FlintstonesFeedFunctionApi
 {
     public class FeedModel : ITableEntity
     {
         public string PartitionKey { get; set; }
         public string RowKey { get; set; }
         public double LastPrice { get; set; }
-        public DateTimeOffset? Timestamp { get ; set ; }
+        public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
     }
 }
