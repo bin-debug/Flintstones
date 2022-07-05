@@ -17,9 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesResultsConsumer"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesFeedFunctionApi", "FlintstonesFeedFunctionApi\FlintstonesFeedFunctionApi.csproj", "{442E1E08-9858-4928-9C22-75C31F102A36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesBetStrikeFunction", "FlintstonesBetStrikeFunction\FlintstonesBetStrikeFunction.csproj", "{B7ACCEED-345E-46CA-B4F3-876F7AD0C2DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesBetStrikeFunction", "FlintstonesBetStrikeFunction\FlintstonesBetStrikeFunction.csproj", "{B7ACCEED-345E-46CA-B4F3-876F7AD0C2DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesEntities", "FlintstonesEntities\FlintstonesEntities.csproj", "{2CB5E739-01A0-4AFD-82CA-E66BECC96B13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesEntities", "FlintstonesEntities\FlintstonesEntities.csproj", "{2CB5E739-01A0-4AFD-82CA-E66BECC96B13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesBetResultFunction", "FlintstonesBetResultFunction\FlintstonesBetResultFunction.csproj", "{6B5D43C5-CC96-4D05-B932-E369E153CD0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesResultBetFunction", "FlintstonesResultBetFunction\FlintstonesResultBetFunction.csproj", "{29D486B7-2655-449A-A861-31BA9B41D868}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{2CB5E739-01A0-4AFD-82CA-E66BECC96B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CB5E739-01A0-4AFD-82CA-E66BECC96B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CB5E739-01A0-4AFD-82CA-E66BECC96B13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B5D43C5-CC96-4D05-B932-E369E153CD0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B5D43C5-CC96-4D05-B932-E369E153CD0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B5D43C5-CC96-4D05-B932-E369E153CD0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B5D43C5-CC96-4D05-B932-E369E153CD0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29D486B7-2655-449A-A861-31BA9B41D868}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29D486B7-2655-449A-A861-31BA9B41D868}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29D486B7-2655-449A-A861-31BA9B41D868}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29D486B7-2655-449A-A861-31BA9B41D868}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

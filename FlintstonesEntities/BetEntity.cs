@@ -10,17 +10,13 @@ namespace FlintstonesEntities
 {
     public class BetEntity : ITableEntity
     {
-        //public BetEntity()
-        //{
-        //    Result = new ResultDTO();
-        //}
-
         public string PartitionKey { get; set; }
         public string RowKey { get; set; }
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
 
         public string Token { get; set; }
+        public int StatusID { get; set; } // 1: Active, 2: Win, 3: Lose, 4: Refund
         public decimal StakeAmount { get; set; }
         public string Market { get; set; }
         public int Selection { get; set; }
@@ -29,7 +25,6 @@ namespace FlintstonesEntities
         public double CurrentMarketPrice { get; set; }
         public string? Tag { get; set; }
         public decimal TotalPayout { get { return StakeAmount * SelectionOdd; } }
-        //public ResultDTO Result { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 }

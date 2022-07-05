@@ -12,6 +12,8 @@ using FlintstonesEntities;
 using Azure.Data.Tables;
 using Azure;
 using System.Linq;
+using Azure.Messaging.ServiceBus;
+using System.Text;
 
 namespace FlintstonesBetStrikeFunction
 {
@@ -31,15 +33,19 @@ namespace FlintstonesBetStrikeFunction
 
             // send to client api 
 
-            await Submit(serviceClient, request);
+            var insertedBet = await Submit(serviceClient, request);
 
-            // send to queue on a schedule
+            if (insertedBet != null)
+            {
+                // send to queue on a schedule
+                await PublishBet(insertedBet);
+            }
 
             log.LogInformation("Bet successfully submitted.");
             return new OkObjectResult(request);
         }
 
-        public static async Task<bool> Submit(TableServiceClient serviceClient, BetRequest request)
+        public static async Task<BetEntity> Submit(TableServiceClient serviceClient, BetRequest request)
         {
             var latestPrice = GetPrice(serviceClient, request.Market);
 
@@ -47,6 +53,7 @@ namespace FlintstonesBetStrikeFunction
             bet.PartitionKey = request.ClientID.ToString();
             bet.RowKey = Guid.NewGuid().ToString();
             bet.Token = "token";
+            bet.StatusID = 1;
             bet.CurrentMarketPrice = latestPrice;
             bet.Duration = request.Duration;
             bet.CreatedDate = DateTime.UtcNow.AddHours(2);
@@ -54,14 +61,29 @@ namespace FlintstonesBetStrikeFunction
             bet.Selection = request.Selection;
             bet.SelectionOdd = request.SelectionOdd;
             bet.StakeAmount = request.StakeAmount;
-            bet.Tag = "";
+            bet.Tag = "tag";
 
             var tableClient = serviceClient.GetTableClient("BETS");
             var result = await tableClient.UpsertEntityAsync(bet);
             if (result.Status == 204)
-                return true;
+                return bet;
             else
-                return false;
+                return null;
+        }
+
+        public async static Task PublishBet(BetEntity bet)
+        {
+            string connectionString = "Endpoint=sb://dev-test-rm.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=HO3U4nLJoeLfX8+kwHahMKVG38qRosW7auRoFJpA/a8=";
+            string queueName = "bets";
+            var client = new ServiceBusClient(connectionString);
+            var sender = client.CreateSender(queueName);
+
+            var dateTime = DateTime.UtcNow.AddSeconds(bet.Duration);
+
+            var serializedMessage = JsonConvert.SerializeObject(bet);
+            var serviceBusMessage = new ServiceBusMessage(Encoding.UTF8.GetBytes(serializedMessage));
+
+            await sender.ScheduleMessageAsync(serviceBusMessage,dateTime);
         }
 
         public static double GetPrice(TableServiceClient serviceClient, string market)
