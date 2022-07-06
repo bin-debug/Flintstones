@@ -74,7 +74,7 @@ namespace FlintstonesBetStrikeFunction
         public async static Task PublishBet(BetEntity bet)
         {
             string connectionString = "Endpoint=sb://dev-test-rm.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=HO3U4nLJoeLfX8+kwHahMKVG38qRosW7auRoFJpA/a8=";
-            string queueName = "bets";
+            string queueName = "rm-bets";
             var client = new ServiceBusClient(connectionString);
             var sender = client.CreateSender(queueName);
 
