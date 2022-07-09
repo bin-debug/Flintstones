@@ -31,7 +31,7 @@ namespace FlintstonesFeedWorkerService
                     model.PartitionKey = date;
                     model.RowKey = data.Timestamp.AddHours(2).ToString("yyyy-MM-ddTHH:mm:ss");
                     model.Timestamp = data.Timestamp;
-                    model.LastPrice = data.Data.LastPrice;
+                    model.LastPrice =  data.Data.LastPrice;
 
                     await _tableStorageService.UpsertEntityAsync(model);
                     _logger.LogInformation($"Price added {model.LastPrice}");
