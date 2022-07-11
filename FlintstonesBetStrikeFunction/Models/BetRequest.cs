@@ -10,10 +10,10 @@ namespace FlintstonesBetStrikeFunction.Models
     {
         public string ClientID { get; set; }
         public string Token { get; set; }
-        public decimal StakeAmount { get; set; }
+        public double StakeAmount { get; set; }
         public string Market { get; set; }
         public int Selection { get; set; }
-        public decimal SelectionOdd { get; set; }
+        public double SelectionOdd { get; set; }
         public int Duration { get; set; }
     }
 }

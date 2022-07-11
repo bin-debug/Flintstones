@@ -42,6 +42,8 @@ namespace FlintstonesBetStrikeFunction
             }
 
             log.LogInformation("Bet successfully submitted.");
+            insertedBet.Token = String.Empty;
+            insertedBet.Tag = String.Empty;
             return new OkObjectResult(request);
         }
 

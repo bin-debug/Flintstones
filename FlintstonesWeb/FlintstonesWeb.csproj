@@ -14,4 +14,8 @@
     <Folder Include="wwwroot\css\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FlintstonesEntities\FlintstonesEntities.csproj" />
+  </ItemGroup>
+
 </Project>

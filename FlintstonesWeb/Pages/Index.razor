@@ -3,6 +3,8 @@
 @inject IDialogService DialogService
 @using System.Text.Json
 @using System.Net.Http.Headers
+@using FlintstonesEntities
+@using Newtonsoft.Json
 @inject IHttpClientFactory ClientFactory
 @inject ISnackbar Snackbar
 
@@ -97,55 +99,31 @@
     <div class="container flex flex-col px-4 mt-2 mx-auto md:space-y-0 md:flex-row">
         <div class="flex flex-col space-y-12 md:w-full">
 
-      <table class="table-auto w-full text-left whitespace-no-wrap">
-        <thead>
-          <tr>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800 rounded-tl rounded-bl">TICKET</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800">DESCRIPTION</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800">PAYOUT</th>
-            <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800">DATE</th>
-            <th class="w-10 title-font tracking-wider font-medium text-white text-sm bg-gray-800 rounded-tr rounded-br"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="px-4 py-3">@Guid.NewGuid().ToString()</td>
-            <td class="px-4 py-3">R2 on PRICE TO GO UP | 0,23 odds</td>
-            <td class="px-4 py-3">R2,10</td>
-            <td class="px-4 py-3">@DateTime.Now</td>
-            <td class="w-10 text-center">
-           <MudButton Class="rounded-0" Variant="Variant.Text" Color="Color.Success">CASHOUT</MudButton>
-            </td>
-          </tr>
-          <tr>
-            <td class="px-4 py-3">@Guid.NewGuid().ToString()</td>
-            <td class="px-4 py-3">R2 on PRICE TO GO UP | 0,23 odds</td>
-            <td class="px-4 py-3">R2,10</td>
-            <td class="px-4 py-3">@DateTime.Now</td>
-            <td class="w-10 text-center">
-           <MudButton Class="rounded-0" Variant="Variant.Text" Color="Color.Success">CASHOUT</MudButton>
-            </td>
-          </tr>
-          <tr>
-          <td class="px-4 py-3">@Guid.NewGuid().ToString()</td>
-            <td class="px-4 py-3">R2 on PRICE TO GO UP | 0,23 odds</td>
-            <td class="px-4 py-3">R2,10</td>
-            <td class="px-4 py-3">@DateTime.Now</td>
-            <td class="w-10 text-center">
-           <MudButton Class="rounded-0" Variant="Variant.Text" Color="Color.Success">CASHOUT</MudButton>
-            </td>
-          </tr>
-          <tr>
-           <td class="px-4 py-3">@Guid.NewGuid().ToString()</td>
-            <td class="px-4 py-3">R2 on PRICE TO GO UP | 0,23 odds</td>
-            <td class="px-4 py-3">R2,10</td>
-            <td class="px-4 py-3">@DateTime.Now</td>
-            <td class="w-10 text-center">
-           <MudButton Class="rounded-0" Variant="Variant.Text" Color="Color.Success">CASHOUT</MudButton>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            <table class="table-auto w-full text-left whitespace-no-wrap">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800 rounded-tl rounded-bl">TICKET</th>
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800">DESCRIPTION</th>
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800">PAYOUT</th>
+                        <th class="px-4 py-3 title-font tracking-wider font-medium text-white text-sm bg-gray-800">DATE</th>
+                        <th class="w-10 title-font tracking-wider font-medium text-white text-sm bg-gray-800 rounded-tr rounded-br"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in transactions)
+                    {
+                        <tr>
+                            <td class="px-4 py-3">@item.ID</td>
+                            <td class="px-4 py-3">@item.Description</td>
+                            <td class="px-4 py-3">@item.Payout</td>
+                            <td class="px-4 py-3">@item.DateTime</td>
+                            <td class="w-10 text-center">
+                                @item.StatusID
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
         </div>
     </div>
@@ -153,7 +131,7 @@
 
 
 <footer class="container flex flex-col-reverse justify-between px-6 py-10 mx-auto space-y-8 md:flex-row md:space-y-0">
-    Footer Navigation Menu
+    atomic-labs.co
 </footer>
 
 @code {
@@ -166,6 +144,7 @@
     private bool _processing = false;
     public List<DurationOdds> TimeOdds;
     public int activeTransactions = 0;
+    public List<Transactions> transactions;
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
@@ -180,14 +159,34 @@
     protected override Task OnInitializedAsync()
     {
         TimeOdds = new List<DurationOdds>();
+        transactions = new List<Transactions>();
 
         for (int i = 1; i < 200; i++)
         {
             TimeOdds.Add(new DurationOdds { ID = Guid.NewGuid(), Duration = i, UpOdds = i, DownOdds = i + 1 });
         }
-
-        CalculatePayout();
         return base.OnInitializedAsync();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        CalculatePayout();
+
+        PopulateTransactions();
+
+        var timer = new System.Threading.Timer((_) =>
+        {
+            InvokeAsync(async () =>
+            {
+                if (activeTransactions > 0)
+                {
+                    await PopulateTransactions();
+                    StateHasChanged();
+                }
+            });
+        }, null, 0, 15000);
+
+        base.OnAfterRender(firstRender);
     }
 
     public void CalculatePayout()
@@ -216,7 +215,7 @@
             duration = duration
         };
 
-        var json = JsonSerializer.Serialize(model);
+        var json = JsonConvert.SerializeObject(model);
         var client = ClientFactory.CreateClient();
 
         var content = new StringContent(json);
@@ -233,11 +232,46 @@
         Snackbar.Add("Bet successfully placed", Severity.Success);
     }
 
+    async Task PopulateTransactions()
+    {
+        var clientid = 123;
+        var pagesize = 8;
+
+        var client = ClientFactory.CreateClient();
+        var response = await client.GetStringAsync($"https://rm-ct.azurewebsites.net/api/GetClientTransactions?clientid={clientid}&pagesize={pagesize}");
+        var rawData = JsonConvert.DeserializeObject<List<BetEntity>>(response);
+
+        foreach (var item in rawData)
+        {
+            string symbol = item.Selection == 1 ? "UP" : "DOWN";
+
+            transactions.Add(new Transactions
+                {
+                    ID = item.PartitionKey,
+                    Payout = item.TotalPayout,
+                    StatusID = item.StatusID,
+                    DateTime = item.CreatedDate,
+                    Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {symbol} | odds {item.SelectionOdd}"
+                });
+        }
+
+        activeTransactions = rawData.Count(r => r.StatusID == 1);
+    }
+
     public class DurationOdds
     {
         public Guid ID { get; set; }
         public int Duration { get; set; }
         public decimal UpOdds { get; set; }
         public decimal DownOdds { get; set; }
+    }
+
+    public class Transactions
+    {
+        public string ID { get; set; }
+        public string Description { get; set; }
+        public double Payout { get; set; }
+        public int StatusID { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace FlintstonesEntities
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
 
-        public decimal WinAmount { get; set; }
+        public double WinAmount { get; set; }
         public decimal CashoutAmount { get; set; }
         public bool Cashout { get; set; }
         public double ResultMarketPrice { get; set; }
