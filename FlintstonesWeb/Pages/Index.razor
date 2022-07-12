@@ -5,8 +5,11 @@
 @using System.Net.Http.Headers
 @using FlintstonesEntities
 @using Newtonsoft.Json
+@using FlintstonesWeb.Service
 @inject IHttpClientFactory ClientFactory
 @inject ISnackbar Snackbar
+
+@inject TransactionService TransactionService
 
 <div class="bg-indigo-600">
     <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
@@ -53,7 +56,7 @@
             }
             else
             {
-                <span class="animate-pulse ml-2 mt-1 bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">0 ACTIVE TRANSACTIONS, PLACE BETS</span>
+                <span class="ml-2 mt-1 bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">0 ACTIVE TRANSACTIONS, PLACE BETS</span>
             }
 
             <div class="md:grid grid-cols-1 gap-2 mx-2 sm:flex flex-col">
@@ -115,10 +118,45 @@
                         <tr>
                             <td class="px-4 py-3">@item.ID</td>
                             <td class="px-4 py-3">@item.Description</td>
-                            <td class="px-4 py-3">@item.Payout</td>
+                            @if (item.StatusID == 1)
+                            {
+                                <td class="px-4 py-3">
+                                    <span class="animate-pulse text-xs font-semibold inline-block py-1 px-1 uppercase text-blue-600 bg-blue-200 uppercase last:mr-0 mr-1">
+                                        ACTIVE
+                                    </span>
+                                </td>
+                            }
+                            else if (item.StatusID == 2)
+                            {
+                                <td class="px-4 py-3">
+                                    <span class="text-xs font-semibold inline-block py-1 px-1 uppercase text-green-600 bg-green-200 uppercase last:mr-0 mr-1">
+                                        WINNINGS - R @item.Payout
+                                    </span>
+                                </td>
+                            }
+                            else if (item.StatusID == 3)
+                            {
+                               
+                                <td class="px-4 py-3">
+                                     <span class="text-xs font-semibold inline-block py-1 px-1 uppercase text-red-600 bg-red-200 uppercase last:mr-0 mr-1">
+                                  LOST
+                                </span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="px-4 py-3">
+                                    <span class="text-xs font-semibold inline-block py-1 px-2 uppercase text-sky-600 bg-sky-200 uppercase last:mr-0 mr-1">
+                                      REFUND - R @item.Payout
+                                    </span>
+                                </td>
+                            }
+
+
+                            @*<td class="px-4 py-3">@item.StatusID ==  item.Payout</td>*@
                             <td class="px-4 py-3">@item.DateTime</td>
                             <td class="w-10 text-center">
-                                @item.StatusID
+                                @*@item.StatusID*@
                             </td>
                         </tr>
                     }
@@ -165,28 +203,39 @@
         {
             TimeOdds.Add(new DurationOdds { ID = Guid.NewGuid(), Duration = i, UpOdds = i, DownOdds = i + 1 });
         }
+
+        //PopulateTransactions();
+        TransactionService.clientid = 123;
+        TransactionService.pagesize = 8;
+        TransactionService.OnTransactionsChanged += HandleTransactionsChange;
+
+
         return base.OnInitializedAsync();
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    private void HandleTransactionsChange(List<BetEntity> bets)
     {
-        CalculatePayout();
+        transactions = new List<Transactions>();
 
-        PopulateTransactions();
-
-        var timer = new System.Threading.Timer((_) =>
+        foreach (var item in bets)
         {
-            InvokeAsync(async () =>
-            {
-                if (activeTransactions > 0)
-                {
-                    await PopulateTransactions();
-                    StateHasChanged();
-                }
-            });
-        }, null, 0, 15000);
+            string symbol = item.Selection == 1 ? "UP" : "DOWN";
 
-        base.OnAfterRender(firstRender);
+            transactions.Add(new Transactions
+                {
+                    ID = item.RowKey,
+                    Payout = item.TotalPayout,
+                    StatusID = item.StatusID,
+                    DateTime = item.CreatedDate,
+                    Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {symbol} in {item.Duration} secs | odds {item.SelectionOdd}"
+                });
+        }
+
+        activeTransactions = bets.Count(r => r.StatusID == 1);
+        InvokeAsync(StateHasChanged);
+
+        if (activeTransactions == 0)
+            TransactionService.OnTransactionsChanged -= HandleTransactionsChange;
     }
 
     public void CalculatePayout()
@@ -196,6 +245,7 @@
         odds = price_direction == true ? selectedDuration.UpOdds : selectedDuration.DownOdds;
 
         payout = stake * odds;
+        InvokeAsync(StateHasChanged);
     }
 
     async Task ProcessSomething()
@@ -227,35 +277,11 @@
 
         _processing = false;
 
+        TransactionService.OnTransactionsChanged += HandleTransactionsChange;
+
         Snackbar.Clear();
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
         Snackbar.Add("Bet successfully placed", Severity.Success);
-    }
-
-    async Task PopulateTransactions()
-    {
-        var clientid = 123;
-        var pagesize = 8;
-
-        var client = ClientFactory.CreateClient();
-        var response = await client.GetStringAsync($"https://rm-ct.azurewebsites.net/api/GetClientTransactions?clientid={clientid}&pagesize={pagesize}");
-        var rawData = JsonConvert.DeserializeObject<List<BetEntity>>(response);
-
-        foreach (var item in rawData)
-        {
-            string symbol = item.Selection == 1 ? "UP" : "DOWN";
-
-            transactions.Add(new Transactions
-                {
-                    ID = item.PartitionKey,
-                    Payout = item.TotalPayout,
-                    StatusID = item.StatusID,
-                    DateTime = item.CreatedDate,
-                    Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {symbol} | odds {item.SelectionOdd}"
-                });
-        }
-
-        activeTransactions = rawData.Count(r => r.StatusID == 1);
     }
 
     public class DurationOdds

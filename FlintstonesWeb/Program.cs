@@ -1,4 +1,5 @@
 using FlintstonesWeb.Data;
+using FlintstonesWeb.Service;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddHttpClient();
+builder.Services.AddSingleton<TransactionService>();
+
 builder.Services.AddSingleton<WeatherForecastService>();
+
 
 var app = builder.Build();
 
