@@ -11,11 +11,11 @@
 
 @inject TransactionService TransactionService
 
-<div class="bg-indigo-600">
-    <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+<div class="bg-blue-600">
+    <div class="max-w-7xl mx-auto py-2 px-3 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between flex-wrap">
             <div class="w-0 flex-1 flex items-center">
-                <span class="flex p-2 rounded-lg bg-indigo-800">
+                <span class="flex p-2 rounded-lg bg-blue-800">
                     <!-- Heroicon name: outline/speakerphone -->
                     <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
@@ -101,7 +101,7 @@
 
 
 @*<section class="hidden md:inline">*@
-<section class="sm:w-full sm:text-base sm:mx-auto md:inline">
+<section class="sm:w-full sm:text-sm sm:mx-auto md:inline">
     <div class="container flex flex-col px-4 mt-2 mx-auto md:space-y-0 md:flex-row">
         <div class="flex flex-col space-y-12 md:w-full">
 
@@ -141,7 +141,7 @@
                             {
                                 <td class="sm:text-sm px-4 py-1">
                                     <span class="text-xs font-semibold inline-block py-1 px-1 uppercase text-white bg-green-400 uppercase last:mr-0 mr-1">
-                                        WINNINGS - R @item.Payout
+                                        WINNINGS = @($"R{item.Payout}")
                                     </span>
                                 </td>
                             }
