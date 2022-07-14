@@ -99,82 +99,59 @@
 </section>
 
 
-
-@*<section class="hidden md:inline">*@
-<section class="sm:w-full sm:text-sm sm:mx-auto md:inline">
+<section>
     <div class="container flex flex-col px-4 mt-2 mx-auto md:space-y-0 md:flex-row">
-        <div class="flex flex-col space-y-12 md:w-full">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-6">
+            @foreach (var item in transactions)
+            {
+                <div class="p-2 max-w-sm bg-dark border border-gray-800 shadow-md dark:bg-gray-800 dark:border-gray-700">
+                    <div class="flex items-center space-x-2">
 
-            <table class="table-auto w-full text-left whitespace-no-wrap">
-                <thead>
-                    <tr>
-                        <th class="hidden md:table-cell sm:text-sm px-4 py-2 title-font tracking-wider md:font-medium text-white text-sm bg-gray-800 rounded-tl rounded-bl">TICKET</th>
-                        <th class="sm:text-sm px-4 py-2 title-font tracking-wider md:font-medium text-white text-sm bg-gray-800">DESCRIPTION</th>
-                        <th class="sm:text-sm px-4 py-2 title-font tracking-wider font-medium text-white text-sm bg-gray-800">PAYOUT</th>
-                        <th class="sm:text-sm px-4 py-2 title-font tracking-wider font-medium text-white text-sm bg-gray-800">DATE</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in transactions)
-                    {
-                        <tr>
-                            <td class="hidden md:table-cell sm:text-sm px-4 py-1">@item.ID</td>
-                            <td class="sm:text-sm px-4 py-1">@item.Description</td>
-                            @if (item.StatusID == 1)
-                            {
-                                <td class="sm:text-sm px-4 py-2">
+                        @if (item.StatusID == 1)
+                        {
+                            <div class="w-2 h-10 bg-blue-400"></div>
+                        }
+                        else if (item.StatusID == 2)
+                        {
+                            <div class="w-2 h-10 bg-green-400"></div>
+                        }
+                        else if (item.StatusID == 3)
+                        {
+                            <div class="w-2 h-10 bg-red-400"></div>
+                        }
+                        else
+                        {
+                            <div class="w-2 h-10 bg-purple-400"></div>
+                        }
 
-                                    @if (item.Duration >= 60)
-                                    {
-                <MudButton Class="flex w-full sm:order-2 sm:mt-0 sm:w-auto items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50 rounded-0" Variant="Variant.Filled" Color="Color.Success">CASHOUT</MudButton>
-                                        
-                                    }
-                                    else
-                                    {
-                                        <span class="animate-pulse text-xs font-semibold inline-block py-1 px-1 uppercase text-white bg-blue-400 uppercase last:mr-0 mr-1">
-                                            ACTIVE
-                                        </span>
-                                    }
-                                </td>
-                            }
-                            else if (item.StatusID == 2)
-                            {
-                                <td class="sm:text-sm px-4 py-1">
-                                    <span class="text-xs font-semibold inline-block py-1 px-1 uppercase text-white bg-green-400 uppercase last:mr-0 mr-1">
-                                        WINNINGS = @($"R{item.Payout}")
-                                    </span>
-                                </td>
-                            }
-                            else if (item.StatusID == 3)
-                            {
-                               
-                                <td class="sm:text-sm px-4 py-1">
-                                     <span class="text-xs font-semibold inline-block py-1 px-1 uppercase text-white bg-red-400 uppercase last:mr-0 mr-1">
-                                  LOST
-                                </span>
-                                </td>
-                            }
-                            else
-                            {
-                                <td class="sm:text-sm px-4 py-1">
-                                    <span class="text-xs font-semibold inline-block py-1 px-2 uppercase text-white bg-sky-400 uppercase last:mr-0 mr-1">
-                                      REFUND - R @item.Payout
-                                    </span>
-                                </td>
-                            }
-
-                            <td class="sm:text-sm px-4 py-1">@item.DateTime</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
+                        <div class="space-y-1 font-medium dark:text-white">
+                            <div>@item.DateTime</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">@item.Description</div>
+                            <div>
+                                @if (item.StatusID == 1)
+                                {
+                                    <div class="text-blue-400">ACTIVE</div>
+                                }
+                                else if (item.StatusID == 2)
+                                {
+                                    <div>PAYOUT = @($"R{item.Payout}")</div>
+                                }
+                                else
+                                {
+                                    <div>PAYOUT = R0</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </section>
 
 
-<footer class="container flex flex-col-reverse justify-between px-6 py-10 mx-auto space-y-8 md:flex-row md:space-y-0">
+
+<footer class="container flex flex-col-reverse justify-between px-6 py-2 mx-auto space-y-4 md:flex-row md:space-y-0">
     atomic-labs.co
 </footer>
 
