@@ -20,9 +20,36 @@ namespace FlintstonesBackOffice.Shared
     public partial class MainLayout
     {
         bool _drawerOpen = true;
+
+        MudTheme _currentTheme = null;
+
+        MudTheme _darkTheme = new MudTheme
+        {
+            PaletteDark = new Palette
+            {
+                Background = "#0F172A",
+                AppbarBackground = "#0F172A",
+                DrawerText = "#f4f7f9",
+                TextPrimary = "#f4f7f9",
+                AppbarText = "#f4f7f9",
+                DrawerBackground = "#0F172A",
+                Dark = "#0F172A",
+                Surface = "#0F172A",
+                TextDisabled = "#7C7C89"
+            }
+        };
+
+        protected override Task OnInitializedAsync()
+        {
+            _currentTheme = _darkTheme;
+            return base.OnInitializedAsync();
+        }
+
         void DrawerToggle()
         {
             _drawerOpen = !_drawerOpen;
         }
+
+
     }
 }
