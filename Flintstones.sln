@@ -7,14 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesFeedWorkerServic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesFeedApi", "FlintstonesFeedApi\FlintstonesFeedApi.csproj", "{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesSiloApi", "FlintstonesSiloApi\FlintstonesSiloApi.csproj", "{F0BC6214-2C56-4934-8C86-DE4F83E49A39}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesSiloAbstractions", "FlintstonesSiloAbstractions\FlintstonesSiloAbstractions.csproj", "{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesModels", "FlintstonesModels\FlintstonesModels.csproj", "{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesResultsConsumer", "FlintstonesResultsConsumer\FlintstonesResultsConsumer.csproj", "{8CA026BE-6746-4365-BE86-A32D68DF218F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesFeedFunctionApi", "FlintstonesFeedFunctionApi\FlintstonesFeedFunctionApi.csproj", "{442E1E08-9858-4928-9C22-75C31F102A36}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesBetStrikeFunction", "FlintstonesBetStrikeFunction\FlintstonesBetStrikeFunction.csproj", "{B7ACCEED-345E-46CA-B4F3-876F7AD0C2DD}"
@@ -25,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesBetResultFunctio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesWeb", "FlintstonesWeb\FlintstonesWeb.csproj", "{E301E2EC-A77C-4BB5-A4CF-E31AE70C8D8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesCTFunction", "FlintstonesCTFunction\FlintstonesCTFunction.csproj", "{7ADE4DEC-8626-4396-AC9D-7264876EE9C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesCTFunction", "FlintstonesCTFunction\FlintstonesCTFunction.csproj", "{7ADE4DEC-8626-4396-AC9D-7264876EE9C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesBackOffice", "FlintstonesBackOffice\FlintstonesBackOffice.csproj", "{F39E6EAB-BBF7-4414-B5CF-1452EB159519}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,22 +35,6 @@ Global
 		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F0BC6214-2C56-4934-8C86-DE4F83E49A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0BC6214-2C56-4934-8C86-DE4F83E49A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0BC6214-2C56-4934-8C86-DE4F83E49A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0BC6214-2C56-4934-8C86-DE4F83E49A39}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F51DC01-A3AB-440F-9FDF-CFA0F10CED7F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9160B5A-F0E8-4A14-95E9-0F0D1AE50561}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8CA026BE-6746-4365-BE86-A32D68DF218F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8CA026BE-6746-4365-BE86-A32D68DF218F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8CA026BE-6746-4365-BE86-A32D68DF218F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8CA026BE-6746-4365-BE86-A32D68DF218F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{442E1E08-9858-4928-9C22-75C31F102A36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{442E1E08-9858-4928-9C22-75C31F102A36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{442E1E08-9858-4928-9C22-75C31F102A36}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +59,10 @@ Global
 		{7ADE4DEC-8626-4396-AC9D-7264876EE9C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ADE4DEC-8626-4396-AC9D-7264876EE9C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ADE4DEC-8626-4396-AC9D-7264876EE9C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F39E6EAB-BBF7-4414-B5CF-1452EB159519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F39E6EAB-BBF7-4414-B5CF-1452EB159519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F39E6EAB-BBF7-4414-B5CF-1452EB159519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F39E6EAB-BBF7-4414-B5CF-1452EB159519}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
