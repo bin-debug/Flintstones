@@ -33,9 +33,10 @@ namespace FlintstonesBackOffice.Shared
                 TextPrimary = "#f4f7f9",
                 AppbarText = "#f4f7f9",
                 DrawerBackground = "#0F172A",
-                Dark = "#0F172A",
-                Surface = "#0F172A",
-                TextDisabled = "#7C7C89"
+                //Dark = "#0F172A",
+                Surface = "#111827",
+                TextDisabled = "#7C7C89",
+                
             }
         };
 

@@ -1,0 +1,77 @@
+﻿@page "/markets"
+@using MudBlazor
+
+<PageTitle>Counter</PageTitle>
+
+<MudPaper>
+    <MudToolBar>
+         <MudRadioGroup @bind-SelectedOption="@SelectedOption">
+             <MudTooltip Text="Bitcoin / Tether">
+                 <MudRadio Option="@("BTCUSDT")" Color="Color.Primary">BTCUSDT</MudRadio>
+            </MudTooltip>
+             <MudTooltip Text="Ethereum / Bitcoin">
+                 <MudRadio Option="@("ETHBTC")" Color="Color.Primary">ETHBTC</MudRadio>
+            </MudTooltip>
+            <MudTooltip Text="XRP / Bitcoin">
+                 <MudRadio Option="@("XRPBTC")" Color="Color.Primary">XRPBTC</MudRadio>
+            </MudTooltip>
+            <MudTooltip Text="SAND / Bitcoin">
+                 <MudRadio Option="@("SANDBTC")" Color="Color.Primary">SANDBTC</MudRadio>
+            </MudTooltip>
+            <MudTooltip Text="Dogecoin / Bitcoin">
+                 <MudRadio Option="@("DOGEBTC")" Color="Color.Primary">DOGEBTC</MudRadio>
+            </MudTooltip>
+        </MudRadioGroup>
+        <MudSpacer />
+         <MudRadioGroup @bind-SelectedOption="@SelectedOption">
+             <MudTooltip Text="Price to go up">
+                 <MudRadio Option="@("UP")" Color="Color.Success">UP</MudRadio>
+            </MudTooltip>
+             <MudTooltip Text="Price to go down">
+                 <MudRadio Option="@("DOWN")" Color="Color.Error">DOWN</MudRadio>
+            </MudTooltip>
+        </MudRadioGroup>
+        <MudIconButton Icon="@Icons.Material.Outlined.Notifications" Color="Color.Inherit" />
+        <MudIconButton Icon="@Icons.Material.Outlined.PushPin" Color="Color.Inherit" />
+        <MudIconButton Icon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Inherit" />
+        <MudIconButton Icon="@Icons.Material.Outlined.MoreVert" Color="Color.Inherit" />
+    </MudToolBar>
+</MudPaper>
+
+<MudGrid Spacing="1" Justify="Justify.Center">
+    <MudItem>
+        <MudField Label="" Variant="Variant.Text" DisableUnderLine=true Disabled=true>
+            The following market predicition of @SelectedOption is based on the most popular technical indicators, such as Moving Averages, Oscillators and Pivots: 
+        </MudField>
+    </MudItem>
+
+    <MudItem>
+        
+<MudButton Variant="Variant.Text" Style="margin-top:20px;" Color="Color.Success" @onclick="IncrementCount">PRICE SHOULD BE GOING UP</MudButton>
+
+        @*<MudField Label="" Variant="Variant.Text" AdornmentColor="Color.Info" DisableUnderLine=true>
+             PRICE IS GOING UP
+        </MudField>*@
+    </MudItem>
+</MudGrid>
+
+
+
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+@*<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>*@
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="IncrementCount">Click Me</MudButton>
+
+@code {
+    private int currentCount = 0;
+    public string SelectedOption { get; set; }
+    //The summary of XRP / Bitcoin is based on the most popular technical indicators, such as Moving Averages, Oscillators and Pivots.
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
