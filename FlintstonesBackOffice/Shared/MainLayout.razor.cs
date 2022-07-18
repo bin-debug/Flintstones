@@ -36,7 +36,8 @@ namespace FlintstonesBackOffice.Shared
                 //Dark = "#0F172A",
                 Surface = "#111827",
                 TextDisabled = "#7C7C89",
-                
+                TableLines = "#0F172A"
+
             }
         };
 
