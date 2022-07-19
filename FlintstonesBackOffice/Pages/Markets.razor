@@ -5,25 +5,16 @@
 
 <MudPaper>
     <MudToolBar>
-        <MudRadioGroup @bind-SelectedOption="@SelectedMarket">
-            <MudTooltip Text="Bitcoin / Tether">
-                <MudRadio Option="@("BTCUSDT")" Color="Color.Primary">BTCUSDT</MudRadio>
-            </MudTooltip>
-            <MudTooltip Text="Ethereum / Bitcoin">
-                <MudRadio Option="@("ETHBTC")" Color="Color.Primary">ETHBTC</MudRadio>
-            </MudTooltip>
-            <MudTooltip Text="XRP / Bitcoin">
-                <MudRadio Option="@("XRPBTC")" Color="Color.Primary">XRPBTC</MudRadio>
-            </MudTooltip>
-            <MudTooltip Text="SAND / Bitcoin">
-                <MudRadio Option="@("SANDBTC")" Color="Color.Primary">SANDBTC</MudRadio>
-            </MudTooltip>
-            <MudTooltip Text="Dogecoin / Bitcoin">
-                <MudRadio Option="@("DOGEBTC")" Color="Color.Primary">DOGEBTC</MudRadio>
-            </MudTooltip>
-        </MudRadioGroup>
+        <MudSelect T="string" Value="@SelectedMarket" SelectedValuesChanged="(value) => OnSelectedValuesChanged(value.FirstOrDefault())" Placeholder="Select Market"
+            AdornmentColor="Color.Primary" DisableUnderLine="true" AnchorOrigin="Origin.BottomCenter">
+            <MudSelectItem Value="@("BTCUSDT - (Bitcoin/Tether)")" />
+            <MudSelectItem Value="@("ETHBTC - (Ethereum/Bitcoin)")" />
+            <MudSelectItem Value="@("XRPBTC - (XRP/Bitcoin)")" />
+            <MudSelectItem Value="@("SANDBTC - (SAND/Bitcoin)")" />
+            <MudSelectItem Value="@("DOGEBTC - (Dogecoin/Bitcoin)")" />
+        </MudSelect>
         <MudSpacer />
-        <MudRadioGroup @bind-SelectedOption="@SelectedDirection">
+        <MudRadioGroup T="string" SelectedOption="@SelectedDirection" SelectedOptionChanged="(value) => OnSelectedDirectionValuesChanged(value)">
             <MudTooltip Text="Price to go up">
                 <MudRadio Option="@("UP")" Color="Color.Success">UP</MudRadio>
             </MudTooltip>
@@ -107,7 +98,17 @@
     public List<MarketOdd> _marketOdds = new List<MarketOdd>();
     string[] headings = {"","Duration", "Base odds", "Direction", "", "" };
 
-     private bool visible;
+    void OnSelectedValuesChanged(string val)
+    {
+        SelectedMarket = val;
+    }
+
+    void OnSelectedDirectionValuesChanged(string val)
+    {
+        SelectedDirection = val;
+    }
+
+    private bool visible;
     private void OpenDialog() => visible = true;
     void Submit() => visible = false;
     bool open;
@@ -116,7 +117,7 @@
 
     protected override Task OnInitializedAsync()
     {
-        SelectedMarket = "BTCUSDT";
+        SelectedMarket = "BTCUSDT - (Bitcoin/Tether)";
         SelectedDirection = "UP";
         PopulateMarketOdds();
         return base.OnInitializedAsync();
