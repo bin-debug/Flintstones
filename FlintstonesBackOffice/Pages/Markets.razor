@@ -1,5 +1,8 @@
 ﻿@page "/markets"
 @using MudBlazor
+@using FlintstonesBackOffice.Services
+
+@inject TableStorageService TableStorageService
 
 <PageTitle>Markets</PageTitle>
 
@@ -22,13 +25,14 @@
                 <MudRadio Option="@("DOWN")" Color="Color.Error">DOWN</MudRadio>
             </MudTooltip>
         </MudRadioGroup>
-        <MudIconButton Icon="@Icons.Material.Outlined.Notifications" Color="Color.Inherit" />
-        <MudIconButton Icon="@Icons.Material.Outlined.PushPin" Color="Color.Inherit" />
-        <MudIconButton Icon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Inherit" />
-        <MudIconButton Icon="@Icons.Material.Outlined.MoreVert" Color="Color.Inherit" />
+        @*<MudIconButton Icon="@Icons.Material.Outlined.Refresh" Color="Color.Inherit" />*@
     </MudToolBar>
 </MudPaper>
-<MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
+
+@if (_processing)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
+}
 
 <MudGrid Spacing="1" Justify="Justify.Center">
     <MudItem>
@@ -54,11 +58,21 @@
         @foreach (var row in _marketOdds)
         {
             <tr>
-                    <td>@row.ID</td>
+                    <td></td>
                     <td>@row.Duration</td>
-                    <td>@row.Direction</td>
-                    <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="OpenDialog">Edit Odds</MudButton></td>
-                    <td><MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="OpenDrawer">Smart Odds</MudButton></td>
+                    <td>@row.BaseOdds</td>
+
+                @if (row.Direction == 1)
+                {
+                    <td>UP</td>
+                }
+                else
+                {
+                    <td>DOWN</td>
+                }
+
+                    <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="() => OpenOddsDialog(row)">Edit Odds</MudButton></td>
+                    @*<td><MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="OpenDrawer">Smart Odds</MudButton></td>*@
             </tr>
         }
     </tbody>
@@ -71,12 +85,13 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <p style="color:slategray">Decimal Point is a "." dot</p>
-        <MudNumericField Label="Odd" Variant="Variant.Text" Min="0.0" />
+        <p style="color:slategray">Decimal Point is a "."dot</p>
+        <p style="color:slategray">Numbers with ","comma will be treated as a whole number</p>
+        <MudNumericField @bind-Value="@UpdatedOdd" Label="Odd" Variant="Variant.Text" Min="0.0" />
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit" Class="px-10">Close</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="Submit" Class="px-10">Save</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="SaveOdds" Class="px-10">Save</MudButton>
     </DialogActions>
 </MudDialog>
 
@@ -91,60 +106,4 @@
     </MudNavMenu>
 </MudDrawer>
 
-@code {
 
-    public string SelectedMarket { get; set; }
-    public string SelectedDirection { get; set; }
-    public List<MarketOdd> _marketOdds = new List<MarketOdd>();
-    string[] headings = {"","Duration", "Base odds", "Direction", "", "" };
-
-    void OnSelectedValuesChanged(string val)
-    {
-        SelectedMarket = val;
-    }
-
-    void OnSelectedDirectionValuesChanged(string val)
-    {
-        SelectedDirection = val;
-    }
-
-    private bool visible;
-    private void OpenDialog() => visible = true;
-    void Submit() => visible = false;
-    bool open;
-
-    private DialogOptions dialogOptions = new() {  };
-
-    protected override Task OnInitializedAsync()
-    {
-        SelectedMarket = "BTCUSDT - (Bitcoin/Tether)";
-        SelectedDirection = "UP";
-        PopulateMarketOdds();
-        return base.OnInitializedAsync();
-    }
-
-    void PopulateMarketOdds()
-    {
-        _marketOdds.Add(new MarketOdd { ID = "1",  Duration = 30, Direction = SelectedDirection == "UP" ? 1 : 0 });
-        _marketOdds.Add(new MarketOdd { ID = "2",  Duration = 45, Direction = SelectedDirection == "UP" ? 1 : 0 });
-        _marketOdds.Add(new MarketOdd { ID = "3",  Duration = 60, Direction = SelectedDirection == "UP" ? 1 : 0 });
-        _marketOdds.Add(new MarketOdd { ID = "4",  Duration = 90, Direction = SelectedDirection == "UP" ? 1 : 0 });
-        _marketOdds.Add(new MarketOdd { ID = "5",  Duration = 120, Direction = SelectedDirection == "UP" ? 1 : 0 });
-    }
-
-    void OpenDrawer()
-    {
-        open = true;
-    }
-
-
-    string[] rows = {
-        @"1 Krishna kpartner0@usatoday.com Male 28.25.250.202",
-        @"2 Webb wstitle1@ning.com Male 237.168.134.114",
-        @"3 Nathanil nneal2@cyberchimps.com Male 92.6.0.175",
-        @"4 Adara alockwood3@patch.com Female 182.174.217.152",
-        @"5 Cecilius cchaplin4@shinystat.com Male 195.124.144.18",
-        @"6 Cicely cemerine9@soup.io Female 138.94.191.43",
-    };
-   
-}

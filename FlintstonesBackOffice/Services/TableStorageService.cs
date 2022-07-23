@@ -2,7 +2,7 @@
 
 namespace FlintstonesBackOffice.Services
 {
-    public class TableStorageService<T> where T : ITableEntity
+    public class TableStorageService
     {
         public string TableName { get; set; }
 
@@ -12,7 +12,7 @@ namespace FlintstonesBackOffice.Services
             _configuration = configuration;
         }
 
-        private async Task<TableClient> GetTableClient()
+        public async Task<TableClient> GetTableClient()
         {
             var serviceClient = new TableServiceClient(_configuration["StorageConnectionString"]);
             var tableClient = serviceClient.GetTableClient(TableName);
@@ -20,19 +20,13 @@ namespace FlintstonesBackOffice.Services
             return tableClient;
         }
 
-        public async Task<T> UpsertEntityAsync(T entity)
-        {
-            var tableClient = await GetTableClient();
-            await tableClient.UpsertEntityAsync(entity);
-            return entity;
-        }
+        //public async Task<T> UpsertEntityAsync(T entity)
+        //{
+        //    var tableClient = await GetTableClient();
+        //    await tableClient.UpsertEntityAsync(entity);
+        //    return entity;
+        //}
 
-        public async Task<TableEntity> QueryEntityAsync(string query, int? maxPerPage = null, IEnumerable<string> select = null)
-        {
-            var tableClient = await GetTableClient();
-            var results = tableClient.QueryAsync<TableEntity>(query, maxPerPage, select);
-
-            return results;
-        }
+     
     }
 }
