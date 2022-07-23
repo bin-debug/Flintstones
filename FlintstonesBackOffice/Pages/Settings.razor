@@ -1,0 +1,49 @@
+﻿@page "/settings"
+@using MudBlazor
+@using FlintstonesBackOffice.Services
+
+@inject TableStorageService TableStorageService
+
+<PageTitle>Settings</PageTitle>
+
+@if (_processing)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
+}
+
+<MudSimpleTable Elevation="2" Style="overflow-x: auto; border:none">
+    <thead>
+        <tr>
+            @foreach (var h in headings)
+            {
+                <th>@h</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var row in _settings)
+        {
+            <tr>
+                    <td></td>
+                    <td>@row.RowKey</td>
+                    <td>@row.Value</td>
+                    <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="() => OpenSettingsDialog(row)">Edit Setting</MudButton></td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
+
+<MudDialog @bind-IsVisible="visible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3"/> Edit Setting
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField @bind-Value="UpdatedSettingValue" MaxLength="50" Label="Setting Value" Variant="Variant.Text"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CloseDialog" Class="px-10">Close</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="SaveSetting" Class="px-10">Save</MudButton>
+    </DialogActions>
+</MudDialog>

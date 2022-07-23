@@ -87,7 +87,7 @@
     <DialogContent>
         <p style="color:slategray">Decimal Point is a "."dot</p>
         <p style="color:slategray">Numbers with ","comma will be treated as a whole number</p>
-        <MudNumericField @bind-Value="@UpdatedOdd" Label="Odd" Variant="Variant.Text" Min="0.0" />
+        <MudNumericField @bind-Value="@UpdatedOdd" Label="Odd" Variant="Variant.Text" Min="0.0" Max="10" />
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit" Class="px-10">Close</MudButton>
