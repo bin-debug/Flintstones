@@ -1,0 +1,63 @@
+﻿@page "/clientreport"
+@using MudBlazor
+@using FlintstonesBackOffice.Services
+
+@inject TableStorageService TableStorageService
+
+<PageTitle>Client Report</PageTitle>
+
+<MudPaper Elevation="25">
+    <MudToolBar>
+        <MudSelect T="string" Label="Type" Value="@SelectedSearchType" SelectedValuesChanged="(value) => OnSelectedValuesChanged(value.FirstOrDefault())" Placeholder="Select Type" AnchorOrigin="Origin.BottomCenter" AdornmentColor="Color.Primary">
+            <MudSelectItem Value="@("ClientID")" />
+            <MudSelectItem Value="@("Status")" />
+            <MudSelectItem Value="@("From Date")" />
+        </MudSelect>
+
+        @if (SelectedSearchType == "ClientID")
+        {
+            <MudTextField Class="ml-4" @bind-Value="SearchTextValue" Placeholder="ClientID" AdornmentColor="Color.Primary" Variant="Variant.Text"></MudTextField>
+        }
+
+        @if (SelectedSearchType == "Status")
+        {
+            <MudSelect Class="ml-4" @bind-Text="SelectedStatus" T="string" Label="Type" Placeholder="Select Status" AnchorOrigin="Origin.BottomCenter" AdornmentColor="Color.Primary">
+                <MudSelectItem Value="@("Active")" />
+                <MudSelectItem Value="@("Win")" />
+                <MudSelectItem Value="@("Lose")" />
+                <MudSelectItem Value="@("Refund")" />
+            </MudSelect>
+        }
+
+        @if (SelectedSearchType == "From Date")
+        {
+            <MudDatePicker Class="ml-4" Label="From Date" @bind-Date="FromDate" AdornmentColor="Color.Primary" />
+        }
+
+        <MudSpacer />
+
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" OnClick="AddFilter" Color="Color.Info">Add Filter</MudButton>
+        <MudButton Class="ml-4" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" OnClick="Search" Color="Color.Primary">Search</MudButton>
+    </MudToolBar>
+</MudPaper>
+
+@if (SearchData.Count > 0)
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+
+                @foreach (var item in SearchData)
+                {
+                    <MudChip Color="Color.Primary" Value="@item.Key" OnClose="Closed">@item.Key - @item.Value</MudChip>
+                }
+
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+}
+
+@if (_processing)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+}
