@@ -1,0 +1,12 @@
+﻿@page "/transactions"
+@using MudBlazor
+@using FlintstonesBackOffice.Services
+
+@inject TableStorageService TableStorageService
+
+<PageTitle>Settings</PageTitle>
+
+@if (_processing)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
+}
