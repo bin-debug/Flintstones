@@ -34,7 +34,7 @@ namespace FlintstonesFeedWorkerService
                     model.LastPrice =  data.Data.LastPrice;
 
                     await _tableStorageService.UpsertEntityAsync(model);
-                    _logger.LogInformation($"Price added {model.LastPrice}");
+                    _logger.LogInformation($"{symbol}-Price added {model.LastPrice}");
                     await Task.Delay(1000, stoppingToken);
                 }
                 catch (Exception ex)
