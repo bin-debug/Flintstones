@@ -25,7 +25,7 @@ namespace FlintstonesCTFunction
             string clientid = req.Query["clientid"];
             string pageSize = req.Query["pagesize"];
 
-            var serviceClient = new TableServiceClient("DefaultEndpointsProtocol=https;AccountName=rmzasa;AccountKey=plxf+fIqm/TYanA0vvgPDUBZYS5j3HGoZtcXPP5RByI7t+wfzbtd5v6rNvOgCHfswBt0wGJAtOSP+AStDTNuOw==;EndpointSuffix=core.windows.net");
+            var serviceClient = new TableServiceClient("DefaultEndpointsProtocol=https;AccountName=rmzasa;AccountKey=rOeD6L2O33PrIZOHZMRMA7vmSapOKC9xBQcr20mHrTWe7aewe6N9sXs/tx4uHX4nd+LpfsMBY2jm+ASt7s8zAA==;EndpointSuffix=core.windows.net");
             var tableClient = serviceClient.GetTableClient("BETS");
 
             var queryResultsFilter = tableClient.Query<BetEntity>(filter: $"PartitionKey eq '{clientid}'");

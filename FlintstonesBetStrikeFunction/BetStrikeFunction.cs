@@ -21,12 +21,12 @@ namespace FlintstonesBetStrikeFunction
     {
         [FunctionName("BetStrike")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            var serviceClient = new TableServiceClient("DefaultEndpointsProtocol=https;AccountName=rmzasa;AccountKey=plxf+fIqm/TYanA0vvgPDUBZYS5j3HGoZtcXPP5RByI7t+wfzbtd5v6rNvOgCHfswBt0wGJAtOSP+AStDTNuOw==;EndpointSuffix=core.windows.net");
+            var serviceClient = new TableServiceClient("DefaultEndpointsProtocol=https;AccountName=rmzasa;AccountKey=rOeD6L2O33PrIZOHZMRMA7vmSapOKC9xBQcr20mHrTWe7aewe6N9sXs/tx4uHX4nd+LpfsMBY2jm+ASt7s8zAA==;EndpointSuffix=core.windows.net");
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var request = JsonConvert.DeserializeObject<BetRequest>(requestBody);
@@ -75,7 +75,7 @@ namespace FlintstonesBetStrikeFunction
 
         public async static Task PublishBet(BetEntity bet)
         {
-            string connectionString = "Endpoint=sb://dev-test-rm.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=HO3U4nLJoeLfX8+kwHahMKVG38qRosW7auRoFJpA/a8=";
+            string connectionString = "Endpoint=sb://dev-test-rm.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fVb2VD5fJ/RFENSCD44aPYp0Eb9LhFV7/+iFDEK6Hxc=";
             string queueName = "rm-bets";
             var client = new ServiceBusClient(connectionString);
             var sender = client.CreateSender(queueName);

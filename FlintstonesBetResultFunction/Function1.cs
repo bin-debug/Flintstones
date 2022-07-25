@@ -16,7 +16,7 @@ namespace FlintstonesBetResultFunction
         [FunctionName("ResultFunction")]
         public async Task Run([ServiceBusTrigger("rm-bets", Connection = "ServiceBus")]string myQueueItem, ILogger log)
         {
-            var serviceClient = new TableServiceClient("DefaultEndpointsProtocol=https;AccountName=rmzasa;AccountKey=plxf+fIqm/TYanA0vvgPDUBZYS5j3HGoZtcXPP5RByI7t+wfzbtd5v6rNvOgCHfswBt0wGJAtOSP+AStDTNuOw==;EndpointSuffix=core.windows.net");
+            var serviceClient = new TableServiceClient("DefaultEndpointsProtocol=https;AccountName=rmzasa;AccountKey=rOeD6L2O33PrIZOHZMRMA7vmSapOKC9xBQcr20mHrTWe7aewe6N9sXs/tx4uHX4nd+LpfsMBY2jm+ASt7s8zAA==;EndpointSuffix=core.windows.net");
             var betTableClient = serviceClient.GetTableClient("BETS");
             var resultTableClient = serviceClient.GetTableClient("RESULTS");
 
