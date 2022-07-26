@@ -5,10 +5,6 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesFeedWorkerService", "FlintstonesFeedWorkerService\FlintstonesFeedWorkerService.csproj", "{AF6B4887-A073-490E-9182-9FD9AC7CAB25}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesFeedApi", "FlintstonesFeedApi\FlintstonesFeedApi.csproj", "{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesFeedFunctionApi", "FlintstonesFeedFunctionApi\FlintstonesFeedFunctionApi.csproj", "{442E1E08-9858-4928-9C22-75C31F102A36}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesBetStrikeFunction", "FlintstonesBetStrikeFunction\FlintstonesBetStrikeFunction.csproj", "{B7ACCEED-345E-46CA-B4F3-876F7AD0C2DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesEntities", "FlintstonesEntities\FlintstonesEntities.csproj", "{2CB5E739-01A0-4AFD-82CA-E66BECC96B13}"
@@ -19,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesWeb", "Flintston
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesCTFunction", "FlintstonesCTFunction\FlintstonesCTFunction.csproj", "{7ADE4DEC-8626-4396-AC9D-7264876EE9C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesBackOffice", "FlintstonesBackOffice\FlintstonesBackOffice.csproj", "{F39E6EAB-BBF7-4414-B5CF-1452EB159519}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesBackOffice", "FlintstonesBackOffice\FlintstonesBackOffice.csproj", "{F39E6EAB-BBF7-4414-B5CF-1452EB159519}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +27,6 @@ Global
 		{AF6B4887-A073-490E-9182-9FD9AC7CAB25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF6B4887-A073-490E-9182-9FD9AC7CAB25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF6B4887-A073-490E-9182-9FD9AC7CAB25}.Release|Any CPU.Build.0 = Release|Any CPU
-		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{25196CB0-7934-4B42-8D9B-3B75C1FDCC5A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{442E1E08-9858-4928-9C22-75C31F102A36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{442E1E08-9858-4928-9C22-75C31F102A36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{442E1E08-9858-4928-9C22-75C31F102A36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{442E1E08-9858-4928-9C22-75C31F102A36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B7ACCEED-345E-46CA-B4F3-876F7AD0C2DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B7ACCEED-345E-46CA-B4F3-876F7AD0C2DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7ACCEED-345E-46CA-B4F3-876F7AD0C2DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
