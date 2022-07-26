@@ -84,10 +84,10 @@
         @foreach (var row in _bets)
         {
             <tr>
-                    <td>@row.RowKey</td>
+                    <td>@row.CreatedDate</td>
                     <td>@row.Market</td>
 
-                    if(@row.Selection == 1)
+                    @if(@row.Selection == 1)
                     {
                         <td>Price to go UP</td>
                     }
@@ -98,17 +98,17 @@
 
                     <td>@row.Duration (secs)</td>
 
-                    if(@row.StatusID == 2)
+                    @if(@row.StatusID == 2)
                     {
-                        <td>Win</td>
+                        <td style="color:#16a34a; font-weight:500">Win</td>
                     }
                     else if(@row.StatusID == 3)
                     {
-                        <td>Lose</td>
+                        <td style="color:#dc2626; font-weight:500">Lose</td>
                     }
                     else if(@row.StatusID == 4)
                     {
-                        <td>Refund</td>
+                        <td style="color:cornflowerblue">Refund</td>
                     }
                     else
                     {

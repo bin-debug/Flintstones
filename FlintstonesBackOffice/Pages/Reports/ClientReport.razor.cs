@@ -13,7 +13,7 @@ namespace FlintstonesBackOffice.Pages.Reports
         DateTime? FromDate = DateTime.Today;
         Dictionary<string, string> SearchData = new Dictionary<string, string>();
         public List<BetEntity> _bets = new List<BetEntity>();
-        string[] headings = { "", "Market", "Selection", "Duration", "Status", "Stake", "Payout","" };
+        string[] headings = { "Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout","" };
 
         protected override Task OnInitializedAsync()
         {
@@ -127,7 +127,7 @@ namespace FlintstonesBackOffice.Pages.Reports
 
                 var f = filter.ToString();
 
-                var results = tableClient.Query<BetEntity>(filter.ToString()).ToList();
+                var results = tableClient.Query<BetEntity>(filter.ToString()).OrderByDescending(r => r.CreatedDate).ToList();
                 _bets = results;
                 _processing = false;
             }
