@@ -1,12 +1,16 @@
+using BlazorMonaco;
+using BlazorMonaco.Bridge;
 using FlintstonesEntities;
 using MudBlazor;
 using System.Text;
+using System.Text.Json;
 
 namespace FlintstonesBackOffice.Pages.Reports
 {
     public partial class ClientReport
     {
         bool _processing = false;
+        private bool _bladeProcessing = false;
         public string SelectedSearchType { get; set; }
         public string SelectedStatus { get; set; }
         string SearchTextValue;
@@ -14,6 +18,23 @@ namespace FlintstonesBackOffice.Pages.Reports
         Dictionary<string, string> SearchData = new Dictionary<string, string>();
         public List<BetEntity> _bets = new List<BetEntity>();
         string[] headings = { "Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout","" };
+        bool open;
+        Anchor anchor;
+        string bladeText = "";
+        private MonacoEditor _editor { get; set; }
+        private MonacoEditor _editorTwo { get; set; }
+
+        public StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+        {
+            return new StandaloneEditorConstructionOptions
+            {
+                AutomaticLayout = true,
+                Theme = "vs-dark",
+                Language = "json",
+                Value = "",
+                ReadOnly = true
+            };
+        }
 
         protected override Task OnInitializedAsync()
         {
@@ -121,10 +142,10 @@ namespace FlintstonesBackOffice.Pages.Reports
                     if (!string.IsNullOrEmpty(SearchData["From Date"]))
                     {
                         DateTime fromDate = Convert.ToDateTime(SearchData["From Date"]);
-                        filter.AppendLine($" and CreatedDate ge '{fromDate}'");
+                        filter.AppendLine($" and CreatedDate ge datetime'{fromDate.ToString("yyyy-MM-dd")}'");
                     }
                 }
-
+                //PartitionKey eq '123' and CreatedDate ge datetime'2022-07-26T00:00:00.000Z'
                 var f = filter.ToString();
 
                 var results = tableClient.Query<BetEntity>(filter.ToString()).OrderByDescending(r => r.CreatedDate).ToList();
@@ -135,6 +156,36 @@ namespace FlintstonesBackOffice.Pages.Reports
             {
                 throw;
             }
+        }
+
+        async Task OpenDrawerAsync(BetEntity bet)
+        {
+            _bladeProcessing = true;
+            bladeText = bet.RowKey;
+            open = true;
+            this.anchor = Anchor.End;
+
+            TableStorageService.TableName = "RESULTS";
+            var tableClient = await TableStorageService.GetTableClient();
+            var result = tableClient.Query<ResultEntity>($"PartitionKey eq '{bet.PartitionKey}' and RowKey eq '{bet.RowKey}'").FirstOrDefault();
+
+            var betData = JsonSerializer.Serialize(bet);
+            var resultData = JsonSerializer.Serialize(result);
+
+            await _editor.SetValue(BeautifyJson(betData));
+            await _editorTwo.SetValue(BeautifyJson(resultData));
+
+            _bladeProcessing = false;
+        }
+
+        public static string BeautifyJson(string json)
+        {
+            using JsonDocument document = JsonDocument.Parse(json);
+            using var stream = new MemoryStream();
+            using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions() { Indented = true });
+            document.WriteTo(writer);
+            writer.Flush();
+            return Encoding.UTF8.GetString(stream.ToArray());
         }
 
         int GetStatusIDFromName(string name)

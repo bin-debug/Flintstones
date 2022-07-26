@@ -71,7 +71,7 @@
 
 @*@if(_bets != null && _bets.Count > 0)
 {*@
-    <MudSimpleTable Elevation="2" Style="overflow-x: auto; border:none">
+<MudSimpleTable Elevation="2" Style="overflow-x: auto; border:none">
     <thead>
         <tr>
             @foreach (var h in headings)
@@ -84,42 +84,60 @@
         @foreach (var row in _bets)
         {
             <tr>
-                    <td>@row.CreatedDate</td>
-                    <td>@row.Market</td>
+                <td>@row.CreatedDate</td>
+                <td>@row.Market</td>
 
-                    @if(@row.Selection == 1)
-                    {
-                        <td>Price to go UP</td>
-                    }
-                    else
-                    {
-                        <td>Price to go DOWN</td>
-                    }
+                @if (@row.Selection == 1)
+                {
+                    <td>Price to go UP</td>
+                }
+                else
+                {
+                    <td>Price to go DOWN</td>
+                }
 
-                    <td>@row.Duration (secs)</td>
+                <td>@row.Duration (secs)</td>
 
-                    @if(@row.StatusID == 2)
-                    {
-                        <td style="color:#16a34a; font-weight:500">Win</td>
-                    }
-                    else if(@row.StatusID == 3)
-                    {
-                        <td style="color:#dc2626; font-weight:500">Lose</td>
-                    }
-                    else if(@row.StatusID == 4)
-                    {
-                        <td style="color:cornflowerblue">Refund</td>
-                    }
-                    else
-                    {
-                        <td>Active</td>
-                    }
+                @if (@row.StatusID == 2)
+                {
+                    <td style="color:#16a34a; font-weight:500">Win</td>
+                }
+                else if (@row.StatusID == 3)
+                {
+                    <td style="color:#dc2626; font-weight:500">Lose</td>
+                }
+                else if (@row.StatusID == 4)
+                {
+                    <td style="color:cornflowerblue">Refund</td>
+                }
+                else
+                {
+                    <td>Active</td>
+                }
 
-                    <td>@row.StakeAmount</td>
-                    <td>@row.TotalPayout</td>
-                    <td><MudButton Variant="Variant.Text" Color="Color.Info">View</MudButton></td>
+                <td>@row.StakeAmount</td>
+                <td>@row.TotalPayout</td>
+                <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="@(() => OpenDrawerAsync(row))">View</MudButton></td>
             </tr>
         }
     </tbody>
 </MudSimpleTable>
-@*}*@
+
+<MudDrawer @bind-Open="@open" Anchor="@anchor" Width="40%" Elevation="2" Variant="@DrawerVariant.Temporary">
+
+    @if (_bladeProcessing)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+    }
+
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">@bladeText</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Outlined.Download" Color="Color.Info" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Send" Color="Color.Success" />
+    </MudDrawerHeader>
+
+    <MonacoEditor @ref="_editor" Id="MonacoEditorOne" ConstructionOptions="EditorConstructionOptions" CssClass="mono" />
+    <MonacoEditor @ref="_editorTwo" Id="MonacoEditorTwo" ConstructionOptions="EditorConstructionOptions" CssClass="mono" />
+
+</MudDrawer>
