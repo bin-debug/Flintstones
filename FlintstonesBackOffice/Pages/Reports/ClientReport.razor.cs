@@ -158,6 +158,23 @@ namespace FlintstonesBackOffice.Pages.Reports
             }
         }
 
+        async Task GetPrices(string market,DateTime start, DateTime end)
+        {
+            try
+            {
+                TableStorageService.TableName = market.ToUpper();
+                var tableClient = await TableStorageService.GetTableClient();
+                string partitionKey = start.ToString("ddMMyyyy");
+                //PartitionKey eq '25072022' and RowKey gt '2022-07-25T18:08:54' and RowKey lt '2022-07-25T18:09:00'
+                string filter = $"PartitionKey eq '{partitionKey}' and RowKey ge '{start.ToString("yyyy-MM-ddTHH:mm:ss")}' and RowKey le '{end.ToString("yyyy-MM-ddTHH:mm:ss")}'";
+                var results = tableClient.Query<FeedEntity>(filter).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         async Task OpenDrawerAsync(BetEntity bet)
         {
             _bladeProcessing = true;
@@ -174,6 +191,9 @@ namespace FlintstonesBackOffice.Pages.Reports
 
             await _editor.SetValue(BeautifyJson(betData));
             await _editorTwo.SetValue(BeautifyJson(resultData));
+
+            var endDate = bet.CreatedDate.AddSeconds(bet.Duration);
+            await GetPrices(bet.Market,bet.CreatedDate, endDate);
 
             _bladeProcessing = false;
         }
