@@ -8,13 +8,13 @@
 
 @if (_processing)
 {
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
 }
 
 <MudPaper Elevation="25">
     <MudToolBar>
-            <MudDatePicker Label="From Date" @bind-Date="FromDate" AdornmentColor="Color.Primary" />
-            <MudDatePicker Class="ml-4" Label="To Date" @bind-Date="ToDate" AdornmentColor="Color.Primary" />
+        <MudDatePicker Label="From Date" @bind-Date="FromDate" MinDate="MinDate" MaxDate="MaxDate" AdornmentColor="Color.Primary" />
+        <MudDatePicker Class="ml-4" Label="To Date" @bind-Date="ToDate" MinDate="MinDate" MaxDate="MaxDate" AdornmentColor="Color.Primary" />
         <MudSpacer />
 
         <MudButton Class="ml-4" Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Search" OnClick="Search" Color="Color.Primary">Search</MudButton>
@@ -72,3 +72,22 @@
         }
     </tbody>
 </MudSimpleTable>
+
+<MudDrawer @bind-Open="@open" Anchor="@anchor" Width="40%" Elevation="2" Variant="@DrawerVariant.Temporary">
+
+    @if (_bladeProcessing)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+    }
+
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">@bladeText</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Outlined.Download" Color="Color.Info" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Send" Color="Color.Success" />
+    </MudDrawerHeader>
+
+    <MonacoEditor @ref="_editor" Id="MonacoEditorOne" ConstructionOptions="EditorConstructionOptions" CssClass="mono" />
+    <MonacoEditor @ref="_editorTwo" Id="MonacoEditorTwo" ConstructionOptions="EditorConstructionOptions" CssClass="mono" />
+
+</MudDrawer>

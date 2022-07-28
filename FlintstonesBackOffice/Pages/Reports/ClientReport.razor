@@ -38,7 +38,7 @@
 
         @if (SelectedSearchType == "From Date")
         {
-            <MudDatePicker Class="ml-4" Label="From Date" @bind-Date="FromDate" AdornmentColor="Color.Primary" />
+            <MudDatePicker Class="ml-4" Label="From Date" MinDate="MinDate" MaxDate="MaxDate" @bind-Date="FromDate" AdornmentColor="Color.Primary" />
         }
 
         <MudSpacer />

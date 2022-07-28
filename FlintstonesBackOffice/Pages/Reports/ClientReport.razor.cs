@@ -14,6 +14,8 @@ namespace FlintstonesBackOffice.Pages.Reports
         public string SelectedSearchType { get; set; }
         public string SelectedStatus { get; set; }
         string SearchTextValue;
+        DateTime MinDate = DateTime.Today.AddMonths(-1);
+        DateTime MaxDate = DateTime.Today;
         DateTime? FromDate = DateTime.Today;
         Dictionary<string, string> SearchData = new Dictionary<string, string>();
         public List<BetEntity> _bets = new List<BetEntity>();
@@ -32,7 +34,8 @@ namespace FlintstonesBackOffice.Pages.Reports
                 Theme = "vs-dark",
                 Language = "json",
                 Value = "",
-                ReadOnly = true
+                ReadOnly = true,
+                Minimap = new MinimapOptions { Enabled = false }
             };
         }
 
