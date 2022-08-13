@@ -1,8 +1,10 @@
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Data.Tables;
+using Azure.Messaging.ServiceBus;
 using FlintstonesEntities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
@@ -79,6 +81,27 @@ namespace FlintstonesBetResultFunction
 
             //log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
             log.LogInformation("bet resulted");
+        }
+
+        public async static Task PublishMisc(ResultEntity resultEntity)
+        {
+            string connectionString = "Endpoint=sb://dev-test-rm.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fVb2VD5fJ/RFENSCD44aPYp0Eb9LhFV7/+iFDEK6Hxc=";
+            string queueName = "rm-misc";
+            var client = new ServiceBusClient(connectionString);
+            var sender = client.CreateSender(queueName);
+
+            var summary = new BOSummaryEntity()
+            {
+                PartitionKey = DateTime.Now.ToString("ddMMyyyy"),
+                RowKey = DateTime.Now.ToString("ddMMyyyy"),
+                Activity = "result",
+                TotalPayout = resultEntity.WinAmount,
+            };
+
+            var serializedMessage = JsonConvert.SerializeObject(summary);
+            var serviceBusMessage = new ServiceBusMessage(Encoding.UTF8.GetBytes(serializedMessage));
+
+            await sender.SendMessageAsync(serviceBusMessage);
         }
 
         public static double GetPrice(TableServiceClient serviceClient, string market)

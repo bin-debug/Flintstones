@@ -14,6 +14,7 @@ using Microsoft.JSInterop;
 using FlintstonesBackOffice;
 using FlintstonesBackOffice.Shared;
 using MudBlazor;
+using FlintstonesBackOffice.Services;
 
 namespace FlintstonesBackOffice.Shared
 {
@@ -36,7 +37,9 @@ namespace FlintstonesBackOffice.Shared
                 //Dark = "#0F172A",
                 Surface = "#111827",
                 TextDisabled = "#7C7C89",
-                TableLines = "#0F172A"
+                TableLines = "#0F172A",
+                DarkContrastText = "#f4f7f9",
+                TextSecondary = "#f4f7f9"
 
             }
         };
@@ -47,6 +50,10 @@ namespace FlintstonesBackOffice.Shared
             return base.OnInitializedAsync();
         }
 
+        public void LogOut()
+        {
+            _ = ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLoggedOutAsync();
+        }
         void DrawerToggle()
         {
             _drawerOpen = !_drawerOpen;

@@ -1,0 +1,50 @@
+﻿@using FlintstonesBackOffice.Services
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@attribute [AllowAnonymous]
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    <MudStack>
+        <MudText Typo="Typo.h4" Class="mx-auto">
+            <MudIcon Size="Size.Large" Icon="@Icons.Material.Filled.RocketLaunch" Color="Color.Primary" Title="Favorite" />
+            Atomic-Labs</MudText>
+
+        <MudTextField Class="pa-3" @bind-Value="Email" Label="Username" Variant="Variant.Text"></MudTextField>
+        <MudTextField Class="pa-3" @bind-Value="Password" Label="Password" Variant="Variant.Text" InputType="InputType.Password"/>
+        <MudButton Class="pa-3" Variant="Variant.Filled" Color="Color.Primary" OnClick="ValidateUser">Login</MudButton>
+
+        @if (_processing)
+        {
+            <MudProgressCircular Class="mx-auto" Color="Color.Success" Indeterminate="true" />
+        }
+
+        @if (_showError)
+        {
+            <MudAlert Class="pa-3" Severity="Severity.Error">Incorrect username or password</MudAlert>
+        }
+    </MudStack>
+</MudContainer>
+
+@code {
+
+    private bool _processing = false;
+    private bool _showError = false;
+
+    public string Email { get; set;}
+    public string Password { get; set;}
+
+
+     private async Task<bool> ValidateUser()
+    {
+        //assume that user is valid
+        //call an API
+
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(Email);
+        NavigationManager.NavigateTo("/");
+
+        await sessionStorage.SetItemAsync("email", Email);
+
+        return await Task.FromResult(true);
+    }
+}

@@ -4,7 +4,7 @@
 
 @inject TableStorageService TableStorageService
 
-<PageTitle>Settings</PageTitle>
+<PageTitle>Transaction Report</PageTitle>
 
 @if (_processing)
 {
@@ -83,8 +83,8 @@
     <MudDrawerHeader>
         <MudText Typo="Typo.h6">@bladeText</MudText>
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Outlined.Download" Color="Color.Info" />
-        <MudIconButton Icon="@Icons.Material.Outlined.Send" Color="Color.Success" />
+        @*<MudIconButton Icon="@Icons.Material.Outlined.Download" Color="Color.Info" />
+        <MudIconButton Icon="@Icons.Material.Outlined.Send" Color="Color.Success" />*@
     </MudDrawerHeader>
 
     <MonacoEditor @ref="_editor" Id="MonacoEditorOne" ConstructionOptions="EditorConstructionOptions" CssClass="mono" />

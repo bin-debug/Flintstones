@@ -15,16 +15,14 @@ using FlintstonesBackOffice;
 using FlintstonesBackOffice.Shared;
 using MudBlazor;
 using FlintstonesBackOffice.Models;
-using FlintstonesBackOffice.Data;
+using BlazorMonaco;
+using BlazorMonaco.Bridge;
+using FlintstonesEntities;
 
 namespace FlintstonesBackOffice.Pages
 {
-    public partial class FetchData
+    public partial class Login
     {
-        private WeatherForecast[]? forecasts;
-        protected override async Task OnInitializedAsync()
-        {
-            forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
-        }
+       
     }
 }
