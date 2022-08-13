@@ -11,8 +11,8 @@
             <MudIcon Size="Size.Large" Icon="@Icons.Material.Filled.RocketLaunch" Color="Color.Primary" Title="Favorite" />
             Atomic-Labs</MudText>
 
-        <MudTextField Class="pa-3" @bind-Value="Email" Label="Username" Variant="Variant.Text"></MudTextField>
-        <MudTextField Class="pa-3" @bind-Value="Password" Label="Password" Variant="Variant.Text" InputType="InputType.Password"/>
+        <MudTextField Class="pa-3" @bind-Value="Email" Required="true" Label="Username" Variant="Variant.Text"></MudTextField>
+        <MudTextField Class="pa-3" @bind-Value="Password" Required="true" Label="Password" Variant="Variant.Text" InputType="InputType.Password"/>
         <MudButton Class="pa-3" Variant="Variant.Filled" Color="Color.Primary" OnClick="ValidateUser">Login</MudButton>
 
         @if (_processing)

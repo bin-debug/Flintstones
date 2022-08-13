@@ -1,6 +1,8 @@
 ﻿@page "/users"
 @using MudBlazor
 @using FlintstonesBackOffice.Services
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
 
 @inject TableStorageService TableStorageService
 
@@ -47,9 +49,18 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField @bind-Value="NewFullName" MaxLength="50" Label="Full Name" Variant="Variant.Text"></MudTextField>
-        <MudTextField @bind-Value="NewEmail" MaxLength="50" Label="Email" Variant="Variant.Text"></MudTextField>
-        <MudTextField @bind-Value="NewPassword" MaxLength="50" Label="Password" Variant="Variant.Text"></MudTextField>
+        <MudTextField @bind-Value="NewFullName" Required="true" MaxLength="50" Label="Full Name" Variant="Variant.Text"></MudTextField>
+
+        <MudTextField @bind-Value="NewEmail" Label="Email" Required="true" RequiredError="Email is required!"
+                                  Validation="@(new EmailAddressAttribute() {ErrorMessage = "The email address is invalid"})"/>
+
+        <MudTextField @bind-Value="NewPassword" Required="true" InputType="InputType.Password" MaxLength="50" Label="Password" Variant="Variant.Text"></MudTextField>
+
+        @if (_showDialogErr)
+        {
+             <MudAlert Class="pa-3" Severity="Severity.Error">@dialogErrMsg</MudAlert>
+        }
+
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CloseDialog" Class="px-10">Close</MudButton>

@@ -45,6 +45,11 @@ namespace FlintstonesBackOffice.Shared
             }
         };
 
+        protected override void OnAfterRender(bool firstRender)
+        {
+            base.OnAfterRender(firstRender);
+        }
+
         protected override async Task OnInitializedAsync()
         {
             _currentTheme = _darkTheme;

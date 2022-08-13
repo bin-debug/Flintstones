@@ -1,13 +1,17 @@
 using FlintstonesBackOffice.Utils;
 using FlintstonesEntities;
+using System.Net.Mail;
 
 namespace FlintstonesBackOffice.Pages
 {
     public partial class Users
     {
         bool _processing = false;
+        bool _showDialogErr = false;
         string[] headings = { "Name", "Email" };
         public List<BOUserEntity> _users = new List<BOUserEntity>();
+        public string dialogErrMsg;
+
 
         public string NewFullName { get; set; }
         public string NewEmail { get; set; }
@@ -27,18 +31,12 @@ namespace FlintstonesBackOffice.Pages
         async Task PopulateUsers()
         {
             _processing = true;
+            TableStorageService.TableName = "BACKOFFICE";
             var tableClient = await TableStorageService.GetTableClient();
             string query = $"PartitionKey eq 'USERS'";
             var results = tableClient.Query<BOUserEntity>(query).ToList();
             _users = results;
             _processing = false;
-        }
-
-        Task OpenUserDialog(SettingEntity settingEntity)
-        {
-
-            visible = true;
-            return Task.CompletedTask;
         }
 
         async Task SaveUser()
@@ -52,8 +50,17 @@ namespace FlintstonesBackOffice.Pages
                 return;
             }
 
-            NewPassword = HashUtil.ComputeSha256Hash(NewPassword);
+            if (IsEmailValid(NewEmail) == false)
+            {
+                _processing = false;
+                _showDialogErr = true;
+                dialogErrMsg = "Email address is invalid";
+                return;
+            }
 
+            var hashy = HashUtil.ComputeSha256Hash(NewPassword);
+
+            TableStorageService.TableName = "BACKOFFICE";
             var tableClient = await TableStorageService.GetTableClient();
             var user = new BOUserEntity()
             {
@@ -61,7 +68,7 @@ namespace FlintstonesBackOffice.Pages
                 Email = NewEmail,
                 FullName = NewFullName,
                 LastLogin = DateTime.UtcNow,
-                Password = NewPassword,
+                Password = hashy,
                 PartitionKey = "USERS",
                 RowKey = NewEmail
             };
@@ -70,9 +77,28 @@ namespace FlintstonesBackOffice.Pages
             if (response.Status == 204)
             {
                 await PopulateUsers();
+                NewFullName = String.Empty;
+                NewEmail = String.Empty;
+                NewPassword = String.Empty;
                 _processing = false;
+                _showDialogErr = false;
+                dialogErrMsg = string.Empty;
                 visible = false;
             }
+        }
+
+        private static bool IsEmailValid(string email)
+        {
+            var valid = true;
+            try
+            {
+                var emailAddress = new MailAddress(email);
+            }
+            catch
+            {
+                valid = false;
+            }
+            return valid;
         }
     }
 }

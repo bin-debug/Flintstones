@@ -20,6 +20,7 @@ namespace FlintstonesBackOffice.Services
 
             var hash = HashUtil.ComputeSha256Hash(password);
 
+            _tableStorageService.TableName = "BACKOFFICE";
             var tableClient = await _tableStorageService.GetTableClient();
             string query = $"PartitionKey eq 'USERS' and RowKey eq '{username}' and Password eq '{hash}'";
             var result = tableClient.Query<BOUserEntity>(query).FirstOrDefault();
