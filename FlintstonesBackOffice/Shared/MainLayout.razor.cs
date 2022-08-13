@@ -21,6 +21,7 @@ namespace FlintstonesBackOffice.Shared
     public partial class MainLayout
     {
         bool _drawerOpen = true;
+        string FirstLetter;
 
         MudTheme _currentTheme = null;
 
@@ -44,10 +45,10 @@ namespace FlintstonesBackOffice.Shared
             }
         };
 
-        protected override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             _currentTheme = _darkTheme;
-            return base.OnInitializedAsync();
+            FirstLetter = await sessionStorage.GetItemAsync<string>("fl");
         }
 
         public void LogOut()
@@ -58,7 +59,5 @@ namespace FlintstonesBackOffice.Shared
         {
             _drawerOpen = !_drawerOpen;
         }
-
-
     }
 }

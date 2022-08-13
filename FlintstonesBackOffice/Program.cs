@@ -20,6 +20,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddSingleton<TableStorageService>();
 builder.Services.AddSingleton<SummaryService>();
+builder.Services.AddSingleton<LoginService>();
 builder.Services.AddBlazoredSessionStorage();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 

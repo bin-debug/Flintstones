@@ -1,0 +1,58 @@
+﻿@page "/users"
+@using MudBlazor
+@using FlintstonesBackOffice.Services
+
+@inject TableStorageService TableStorageService
+
+<PageTitle>Users</PageTitle>
+
+@if (_processing)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
+}
+
+<MudButton 
+           Variant="Variant.Text"
+           StartIcon="@Icons.Material.Filled.Add"
+           Color="Color.Success"
+           OnClick="(() => visible = true)"
+           Style="text-transform:none">
+    Add new user
+</MudButton>
+
+<MudSimpleTable Elevation="2" Style="overflow-x: auto; border:none">
+    <thead>
+        <tr>
+            @foreach (var h in headings)
+            {
+                <th>@h</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+       @foreach (var row in _users)
+        {
+            <tr>
+                    <td>@row.FullName</td>
+                    <td>@row.Email</td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
+
+<MudDialog @bind-IsVisible="visible">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3"/> Add User
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField @bind-Value="NewFullName" MaxLength="50" Label="Full Name" Variant="Variant.Text"></MudTextField>
+        <MudTextField @bind-Value="NewEmail" MaxLength="50" Label="Email" Variant="Variant.Text"></MudTextField>
+        <MudTextField @bind-Value="NewPassword" MaxLength="50" Label="Password" Variant="Variant.Text"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CloseDialog" Class="px-10">Close</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="SaveUser" Class="px-10">Save</MudButton>
+    </DialogActions>
+</MudDialog>

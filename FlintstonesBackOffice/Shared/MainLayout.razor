@@ -2,6 +2,7 @@
 @using FlintstonesBackOffice.Services
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inherits LayoutComponentBase
 
 <PageTitle>Atomic-Labs</PageTitle>
@@ -16,7 +17,7 @@
                     Atomic-Labs
                 </MudText>
                 <MudSpacer />
-                <MudAvatar Color="Color.Primary">NS</MudAvatar>
+                <MudAvatar Color="Color.Primary">@FirstLetter</MudAvatar>
                 <MudButton Variant="Variant.Text" Edge="Edge.End" Color="Color.Info" OnClick="LogOut">LOGOUT</MudButton>
             </MudAppBar>
             <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="3">

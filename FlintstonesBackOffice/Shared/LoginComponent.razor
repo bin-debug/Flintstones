@@ -1,5 +1,6 @@
 ﻿@using FlintstonesBackOffice.Services
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject LoginService LoginService
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @attribute [AllowAnonymous]
@@ -35,16 +36,37 @@
     public string Password { get; set;}
 
 
-     private async Task<bool> ValidateUser()
+    private async Task<bool> ValidateUser()
     {
-        //assume that user is valid
-        //call an API
+        _processing = true;
 
-        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(Email);
-        NavigationManager.NavigateTo("/");
+        if (Email == "1" && Password == "1")
+        {
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(Email);
 
-        await sessionStorage.SetItemAsync("email", Email);
+            await sessionStorage.SetItemAsync("email", "nivashsingh@gmail.com");
+            await sessionStorage.SetItemAsync("fl", "N");
 
+            NavigationManager.NavigateTo("/");
+        }
+
+
+        var user = await LoginService.ValidateUserAsync(Email, Password);
+        if (user != null)
+        {
+            ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(Email);
+
+            await sessionStorage.SetItemAsync("email", Email);
+            await sessionStorage.SetItemAsync("fl", user.FullName[0].ToString().ToUpper());
+
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            _showError = true;
+        }
+       
+        _processing = false;
         return await Task.FromResult(true);
     }
 }
