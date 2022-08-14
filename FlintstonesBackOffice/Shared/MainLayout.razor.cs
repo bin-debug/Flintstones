@@ -53,7 +53,12 @@ namespace FlintstonesBackOffice.Shared
         protected override async Task OnInitializedAsync()
         {
             _currentTheme = _darkTheme;
-            FirstLetter = await sessionStorage.GetItemAsync<string>("fl");
+            AppState.OnChange += AppState_OnChange;
+        }
+
+        private void AppState_OnChange()
+        {
+            FirstLetter = AppState.Username;
         }
 
         public void LogOut()

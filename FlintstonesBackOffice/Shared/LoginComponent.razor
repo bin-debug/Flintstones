@@ -3,6 +3,7 @@
 @inject LoginService LoginService
 @inject NavigationManager NavigationManager
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject AppState AppState
 @attribute [AllowAnonymous]
 
 <MudContainer MaxWidth="MaxWidth.Small">
@@ -45,8 +46,7 @@
             ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(Email);
 
             await sessionStorage.SetItemAsync("email", "nivashsingh@gmail.com");
-            await sessionStorage.SetItemAsync("fl", "N");
-
+            AppState.SetUsername("N");
             NavigationManager.NavigateTo("/");
         }
 
@@ -57,8 +57,7 @@
             ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(Email);
 
             await sessionStorage.SetItemAsync("email", Email);
-            await sessionStorage.SetItemAsync("fl", user.FullName[0].ToString().ToUpper());
-
+            AppState.SetUsername(user.FullName[0].ToString().ToUpper());
             NavigationManager.NavigateTo("/");
         }
         else

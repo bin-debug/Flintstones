@@ -9,7 +9,7 @@
 
 @if (_processing)
 {
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
 }
 
 <MudGrid>
@@ -32,7 +32,7 @@
     </MudItem>
     <MudItem xs="3">
         <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
-             <MudText Typo="Typo.h6">
+            <MudText Typo="Typo.h6">
                 <MudIcon Icon="@Icons.Material.Filled.Bolt" Color="Color.Info" />
                 Paid Out: @TotalPayout
             </MudText>
@@ -40,7 +40,7 @@
     </MudItem>
     <MudItem xs="3">
         <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
-             <MudText Typo="Typo.h6">
+            <MudText Typo="Typo.h6">
                 <MudIcon Icon="@Icons.Material.Filled.HeartBroken" Color="Color.Error" />
                 Heartbeats: 0
             </MudText>
@@ -57,47 +57,55 @@
                     }
                 </tr>
             </thead>
-             <tbody>
-        @foreach (var row in _bets)
-        {
-            <tr>
-                <td>@row.CreatedDate</td>
-                <td>@row.Market</td>
+            <tbody>
+                @foreach (var row in _bets)
+                {
+                    <tr>
+                        <td>@row.CreatedDate</td>
+                        <td>@row.Market</td>
 
-                @if (@row.Selection == 1)
-                {
-                    <td>Price to go UP</td>
-                }
-                else
-                {
-                    <td>Price to go DOWN</td>
-                }
+                        @if (@row.Selection == 1)
+                        {
+                            <td>Price to go UP</td>
+                        }
+                        else
+                        {
+                            <td>Price to go DOWN</td>
+                        }
 
-                <td>@row.Duration (secs)</td>
+                        <td>@row.Duration (secs)</td>
 
-                @if (@row.StatusID == 2)
-                {
-                    <td style="color:#16a34a; font-weight:500">Win</td>
-                }
-                else if (@row.StatusID == 3)
-                {
-                    <td style="color:#dc2626; font-weight:500">Lose</td>
-                }
-                else if (@row.StatusID == 4)
-                {
-                    <td style="color:cornflowerblue">Refund</td>
-                }
-                else
-                {
-                    <td>Active</td>
-                }
+                        @if (@row.StatusID == 2)
+                        {
+                            <td style="color:#16a34a; font-weight:500">Win</td>
+                        }
+                        else if (@row.StatusID == 3)
+                        {
+                            <td style="color:#dc2626; font-weight:500">Lose</td>
+                        }
+                        else if (@row.StatusID == 4)
+                        {
+                            <td style="color:cornflowerblue">Refund</td>
+                        }
+                        else
+                        {
+                            <td>Active</td>
+                        }
 
-                <td>@row.StakeAmount</td>
-                <td>@row.TotalPayout</td>
-                <td></td>
-            </tr>
-        }
-    </tbody>
+                        <td>@row.StakeAmount</td>
+
+                        @if (@row.StatusID == 2)
+                        {
+                            <td>@row.TotalPayout</td>
+
+                        }
+                        else
+                        {
+                            <td>0</td>
+                        }
+                    </tr>
+                }
+            </tbody>
         </MudSimpleTable>
     </MudItem>
 </MudGrid>

@@ -6,7 +6,7 @@ namespace FlintstonesBackOffice.Services
     public class SummaryService : IDisposable
     {
         private readonly System.Timers.Timer timer;
-        const int INTERVAL_MS = 3000;
+        const int INTERVAL_MS = 4000;
         public event Action<BOSummaryEntity> OnSummaryChanged;
         public event Action<List<BetEntity>> OnBetSummaryChanged;
         private TableStorageService _tableStorageService;
@@ -22,10 +22,10 @@ namespace FlintstonesBackOffice.Services
 
         private async void TimerTick(object sender, ElapsedEventArgs e)
         {
-            var tableClient = await _tableStorageService.GetTableClient();
-            string query = $"PartitionKey eq '{DateTime.Now.ToString("ddMMyyyy")}' and RowKey eq '{DateTime.Now.ToString("ddMMyyyy")}'";
-            var result = tableClient.Query<BOSummaryEntity>(query).FirstOrDefault();
-            OnSummaryChanged?.Invoke(result);
+            //var tableClient = await _tableStorageService.GetTableClient();
+            //string query = $"PartitionKey eq '{DateTime.Now.ToString("ddMMyyyy")}' and RowKey eq '{DateTime.Now.ToString("ddMMyyyy")}'";
+            //var result = tableClient.Query<BOSummaryEntity>(query).FirstOrDefault();
+            //OnSummaryChanged?.Invoke(result);
 
             string from = DateTime.Now.ToString("yyyy-MM-ddT00:00:00");
             string to = DateTime.Now.ToString("yyyy-MM-ddT23:59:59");
@@ -33,8 +33,19 @@ namespace FlintstonesBackOffice.Services
             _tableStorageService.TableName = "BETS";
             var betsTableClient = await _tableStorageService.GetTableClient();
             var results = betsTableClient.Query<BetEntity>(filter.ToString()).OrderByDescending(r => r.CreatedDate).Take(20).ToList();
-            OnBetSummaryChanged?.Invoke(results);
+            var summary = PopulateSummary(results);
 
+            OnSummaryChanged?.Invoke(summary);
+            OnBetSummaryChanged?.Invoke(results);
+        }
+
+        private BOSummaryEntity PopulateSummary(List<BetEntity> bets)
+        {
+            var summary = new BOSummaryEntity();
+            summary.NumberOfBets = bets.Count();
+            summary.TotalStake = bets.Sum(r => r.StakeAmount);
+            summary.TotalPayout = bets.Where(r => r.StatusID == 2).Sum(r => r.TotalPayout);
+            return summary;
         }
 
         public void Dispose()

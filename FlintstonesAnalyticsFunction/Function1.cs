@@ -27,6 +27,9 @@ namespace FlintstonesAnalyticsFunction
             updatedSummaryInfo.PartitionKey = summary.PartitionKey;
             updatedSummaryInfo.RowKey = summary.RowKey;
 
+            if (currentRecord == null)
+                currentRecord = new BOSummaryEntity();
+
             if (summary.Activity == "strike")
             {
                 updatedSummaryInfo.NumberOfBets = currentRecord.NumberOfBets + 1;

@@ -29,7 +29,7 @@ namespace FlintstonesBackOffice.Pages
         private double TotalPayout = 0;
 
 
-        string[] headings = { "Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout", "" };
+        string[] headings = { "Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout",};
         public List<BetEntity> _bets = new List<BetEntity>();
 
         protected override Task OnInitializedAsync()
@@ -42,16 +42,20 @@ namespace FlintstonesBackOffice.Pages
 
         private void SummaryService_OnBetSummaryChanged(List<BetEntity> obj)
         {
+
             if (obj == null)
                 return;
 
             _processing = true;
             _bets = obj;
             _processing = false;
+
+            InvokeAsync(() => StateHasChanged());
         }
 
         private void SummaryService_OnSummaryChanged(FlintstonesEntities.BOSummaryEntity obj)
         {
+
             if (obj == null)
                 return;
 
@@ -60,6 +64,7 @@ namespace FlintstonesBackOffice.Pages
             TotalStake = obj.TotalStake;
             TotalPayout = obj.TotalPayout;
             _processing = false;
+
         }
     }
 }
