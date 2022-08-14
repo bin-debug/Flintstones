@@ -10,14 +10,15 @@ namespace FlintstonesEntities
 {
     public class MarketEntity : ITableEntity
     {
-        public string PartitionKey { get; set; } //symbol
-        public string RowKey { get; set; } //duration - direction
+        public string PartitionKey { get; set; } //MARKETS
+        public string RowKey { get; set; } //symbol-duration-direction
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
         public string ID { get; set; }
         public double BaseOdds { get; set; }
         public int Duration { get; set; }
         public int Direction { get; set; }
+        public bool Active { get; set; }
 
     }
 }

@@ -93,7 +93,7 @@ namespace FlintstonesBackOffice.Pages
     }
 }
 
-//await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKET-BTCUSDT", RowKey = "30-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.37, Direction = 2, Duration = 30 });
+//await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKETS", RowKey = "BTCUSDT-30-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.37, Direction = 2, Duration = 30 });
 //await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKET-BTCUSDT", RowKey = "45-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.33, Direction = 2, Duration = 45 });
 //await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKET-BTCUSDT", RowKey = "60-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.12, Direction = 2, Duration = 60 });
 //await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKET-BTCUSDT", RowKey = "90-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.82, Direction = 2, Duration = 90 });

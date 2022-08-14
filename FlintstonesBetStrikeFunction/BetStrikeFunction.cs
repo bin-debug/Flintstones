@@ -39,7 +39,6 @@ namespace FlintstonesBetStrikeFunction
             {
                 // send to queue on a schedule
                 await PublishBet(insertedBet);
-                await PublishMisc(insertedBet);
             }
 
             log.LogInformation("Bet successfully submitted.");
@@ -87,27 +86,6 @@ namespace FlintstonesBetStrikeFunction
             var serviceBusMessage = new ServiceBusMessage(Encoding.UTF8.GetBytes(serializedMessage));
 
             await sender.ScheduleMessageAsync(serviceBusMessage,dateTime);
-        }
-
-        public async static Task PublishMisc(BetEntity bet)
-        {
-            string connectionString = "Endpoint=sb://dev-test-rm.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fVb2VD5fJ/RFENSCD44aPYp0Eb9LhFV7/+iFDEK6Hxc=";
-            string queueName = "rm-misc";
-            var client = new ServiceBusClient(connectionString);
-            var sender = client.CreateSender(queueName);
-
-            var summary = new BOSummaryEntity()
-            {
-                PartitionKey = DateTime.Now.ToString("ddMMyyyy"),
-                RowKey = DateTime.Now.ToString("ddMMyyyy"),
-                Activity = "strike",
-                TotalStake = bet.StakeAmount,
-            };
-
-            var serializedMessage = JsonConvert.SerializeObject(summary);
-            var serviceBusMessage = new ServiceBusMessage(Encoding.UTF8.GetBytes(serializedMessage));
-
-            await sender.SendMessageAsync(serviceBusMessage);
         }
 
         public static double GetPrice(TableServiceClient serviceClient, string market)

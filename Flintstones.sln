@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesCTFunction", "Fl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesBackOffice", "FlintstonesBackOffice\FlintstonesBackOffice.csproj", "{F39E6EAB-BBF7-4414-B5CF-1452EB159519}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesAnalyticsFunction", "FlintstonesAnalyticsFunction\FlintstonesAnalyticsFunction.csproj", "{5A7511B9-2F5A-4FB9-B5EA-72EF5FCCCD26}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{F39E6EAB-BBF7-4414-B5CF-1452EB159519}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F39E6EAB-BBF7-4414-B5CF-1452EB159519}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F39E6EAB-BBF7-4414-B5CF-1452EB159519}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5A7511B9-2F5A-4FB9-B5EA-72EF5FCCCD26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5A7511B9-2F5A-4FB9-B5EA-72EF5FCCCD26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5A7511B9-2F5A-4FB9-B5EA-72EF5FCCCD26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5A7511B9-2F5A-4FB9-B5EA-72EF5FCCCD26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
