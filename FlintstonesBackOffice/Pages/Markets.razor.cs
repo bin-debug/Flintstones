@@ -11,10 +11,11 @@ namespace FlintstonesBackOffice.Pages
         public string SelectedDirection { get; set; }
         public string StrippedSelectedMarket { get; set; }
         public double UpdatedOdd { get; set; }
+        public bool UpdateActive { get; set; }
         public MarketEntity SelectedMarketToUpdate { get; set; }
 
         public List<MarketEntity> _marketOdds = new List<MarketEntity>();
-        string[] headings = {"", "Duration (secs)", "Odds", "Direction", "", ""};
+        string[] headings = {"", "Duration (secs)", "Odds", "Direction", "Active", ""};
 
         protected override async Task OnInitializedAsync()
         {
@@ -27,8 +28,9 @@ namespace FlintstonesBackOffice.Pages
         async Task PopulateMarketOdds(string symbol, int direction)
         {
             _processing = true;
+            TableStorageService.TableName = "BACKOFFICE";
             var tableClient = await TableStorageService.GetTableClient();
-            string query = $"PartitionKey eq 'MARKET-{symbol}' and Direction eq {direction}";
+            string query = $"PartitionKey eq 'MARKETS' and MarketName eq '{symbol}' and Direction eq {direction}";
             var results = tableClient.Query<MarketEntity>(query).OrderBy(r => r.Duration).ToList();
             _marketOdds = results;
             _processing = false;
@@ -40,14 +42,17 @@ namespace FlintstonesBackOffice.Pages
             SelectedMarketToUpdate = marketEntity;
             visible = true;
             UpdatedOdd = marketEntity.BaseOdds;
+            UpdateActive = marketEntity.Active;
             return Task.CompletedTask;
         }
 
         async Task SaveOdds()
         {
             _processing = true;
+            TableStorageService.TableName = "BACKOFFICE";
             var tableClient = await TableStorageService.GetTableClient();
             SelectedMarketToUpdate.BaseOdds = UpdatedOdd;
+            SelectedMarketToUpdate.Active = UpdateActive;
             var response = await tableClient.UpsertEntityAsync(SelectedMarketToUpdate);
             if (response.Status == 204)
             {
@@ -92,9 +97,3 @@ namespace FlintstonesBackOffice.Pages
         {};
     }
 }
-
-//await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKETS", RowKey = "BTCUSDT-30-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.37, Direction = 2, Duration = 30 });
-//await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKET-BTCUSDT", RowKey = "45-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.33, Direction = 2, Duration = 45 });
-//await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKET-BTCUSDT", RowKey = "60-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.12, Direction = 2, Duration = 60 });
-//await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKET-BTCUSDT", RowKey = "90-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.82, Direction = 2, Duration = 90 });
-//await tableClient.UpsertEntityAsync<MarketEntity>(new MarketEntity() { PartitionKey = "MARKET-BTCUSDT", RowKey = "120-2", ID = Guid.NewGuid().ToString(), BaseOdds = 0.22, Direction = 1, Duration = 120 });

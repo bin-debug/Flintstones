@@ -70,7 +70,7 @@
                 {
                     <td>DOWN</td>
                 }
-
+                <td><MudCheckBox ReadOnly=true @bind-Checked="@row.Active" Color="Color.Info"></MudCheckBox></td>
                     <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="() => OpenOddsDialog(row)">Edit Odds</MudButton></td>
                     @*<td><MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="OpenDrawer">Smart Odds</MudButton></td>*@
             </tr>
@@ -85,9 +85,12 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <p style="color:slategray">Decimal Point is a "."dot</p>
-        <p style="color:slategray">Numbers with ","comma will be treated as a whole number</p>
+        <MudAlert Class="pa-3" Severity="Severity.Info">Decimal Point is a "."dot</MudAlert>
+        <MudAlert Class="pa-3" Severity="Severity.Error">Numbers with ","comma will be treated as a whole number</MudAlert>
+        @*<p style="color:slategray">Decimal Point is a "."dot</p>*@
+        @*<p style="color:slategray">Numbers with ","comma will be treated as a whole number</p>*@
         <MudNumericField @bind-Value="@UpdatedOdd" Label="Odd" Variant="Variant.Text" Min="0.0" Max="10" />
+        <MudCheckBox @bind-Checked="@UpdateActive" Color="Color.Primary">Active</MudCheckBox>
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit" Class="px-10">Close</MudButton>

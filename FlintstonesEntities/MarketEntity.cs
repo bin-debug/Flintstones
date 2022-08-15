@@ -12,6 +12,7 @@ namespace FlintstonesEntities
     {
         public string PartitionKey { get; set; } //MARKETS
         public string RowKey { get; set; } //symbol-duration-direction
+        public string MarketName { get; set; }
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
         public string ID { get; set; }
@@ -19,6 +20,5 @@ namespace FlintstonesEntities
         public int Duration { get; set; }
         public int Direction { get; set; }
         public bool Active { get; set; }
-
     }
 }
