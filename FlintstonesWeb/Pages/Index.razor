@@ -52,7 +52,7 @@
 
             @if (activeTransactions > 0)
             {
-                <span class="animate-pulse ml-2 mt-1 bg-green-400 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">@activeTransactions ACTIVE TRANSACTIONS, CASHOUT AVAILABLE</span>
+                <span class="animate-pulse ml-2 mt-1 bg-green-400 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">@activeTransactions ACTIVE TRANSACTIONS</span>
             }
             else
             {
@@ -109,7 +109,7 @@
 
                         @if (item.StatusID == 1)
                         {
-                            <div class="w-2 h-10 bg-blue-400"></div>
+                            <div class="animate-pulse w-2 h-10 bg-blue-400"></div>
                         }
                         else if (item.StatusID == 2)
                         {
@@ -125,7 +125,7 @@
                         }
 
                         <div class="space-y-1 font-medium dark:text-white">
-                            <div>@item.DateTime</div>
+                            <div>@item.DateTime - (@item.MarketName)</div>
                             <div class="text-sm text-gray-500 dark:text-gray-400">@item.Description</div>
                             <div>
                                 @if (item.StatusID == 1)
@@ -202,16 +202,17 @@
 
         foreach (var item in bets)
         {
-            string symbol = item.Selection == 1 ? "UP" : "DOWN";
+            string direction = item.Selection == 1 ? "UP" : "DOWN";
 
             transactions.Add(new Transactions
                 {
                     ID = item.RowKey,
                     Payout = item.TotalPayout,
+                    MarketName = item.Market.ToUpper(),
                     StatusID = item.StatusID,
                     DateTime = item.CreatedDate,
                     Duration = item.Duration,
-                    Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {symbol} in {item.Duration} secs | odds {item.SelectionOdd}"
+                    Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {direction} in {item.Duration} secs | odds {item.SelectionOdd}"
                 });
         }
 
@@ -283,6 +284,7 @@
         public double Payout { get; set; }
         public int StatusID { get; set; }
         public int Duration { get; set; }
+        public string MarketName { get; set; }
         public DateTime DateTime { get; set; }
     }
 }
