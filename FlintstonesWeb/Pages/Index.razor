@@ -36,11 +36,18 @@
         </div>
     </div>
 </div>
-<marquee class="w-full title-font text-lg text-white">
+@*<marquee class="w-full title-font text-lg text-white">
     Will the Bitcoin Price go
     <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">UP</span>or
     <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-red-200 dark:text-red-800">DOWN</span>...Place your bets now!
-</marquee>
+</marquee>*@
+
+@*<div class="container flex flex-col px-4 mx-auto md:space-y-0 md:flex-row">
+     <div class="bg-red-100 border-t border-b border-red-500 text-red-700 px-4 py-3 mb-2 "style="width:100%" role="alert">
+              <p class="font-bold">Round Closed</p>
+              <p class="text-sm">Next round starts in 15 seconds.</p>
+            </div>
+    </div>*@
 
 <section>
     <div class="container flex flex-col px-4 mx-auto md:space-y-0 md:flex-row">
@@ -50,14 +57,14 @@
 
         <div class="flex flex-col md:w-1/2">
 
-            @if (activeTransactions > 0)
+            @*@if (activeTransactions > 0)
             {
                 <span class="animate-pulse ml-2 mt-1 bg-green-400 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">@activeTransactions ACTIVE TRANSACTIONS</span>
             }
             else
             {
                 <span class="ml-2 mt-1 bg-green-400 text-white text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">0 ACTIVE TRANSACTIONS, PLACE BETS</span>
-            }
+            }*@
 
             <div class="md:grid grid-cols-1 gap-2 mx-2 sm:flex flex-col">
 
@@ -78,9 +85,9 @@
                            ValueLabel="true" Size="Size.Large"
                            Color="Color.Info">Duration: @duration.ToString() secs</MudSlider>
 
-                <MudField Label="Odds" Variant="Variant.Text">@odds</MudField>
+                <MudField Label="Odds" Variant="Variant.Text">@odds.ToString("N2")</MudField>
 
-                <MudField Label="Payout" Variant="Variant.Text">R @payout</MudField>
+                <MudField Label="Payout" Variant="Variant.Text">R @payout.ToString("N2")</MudField>
 
                 <MudButton Class="rounded-0 mt-2" FullWidth="true" Disabled="@_processing" Variant="Variant.Filled" Color="Color.Success" OnClick="ProcessSomething">
                     @if (_processing)
@@ -134,7 +141,7 @@
                                 }
                                 else if (item.StatusID == 2)
                                 {
-                                    <div>PAYOUT = @($"R{item.Payout}")</div>
+                                    <div>PAYOUT = @($"R{item.Payout.ToString("N2")}")</div>
                                 }
                                 else
                                 {
@@ -160,8 +167,8 @@
     public bool price_direction { get; set; } = true;
     public int stake = 1;
     public int duration = 1;
-    public decimal payout = 0;
-    public decimal odds;
+    public double payout = 0;
+    public double odds;
     private bool _processing = false;
     public List<DurationOdds> TimeOdds;
     public int activeTransactions = 0;
@@ -184,7 +191,7 @@
 
         for (int i = 1; i < 200; i++)
         {
-            TimeOdds.Add(new DurationOdds { ID = Guid.NewGuid(), Duration = i, UpOdds = i, DownOdds = i + 1 });
+            TimeOdds.Add(new DurationOdds { ID = Guid.NewGuid(), Duration = i, UpOdds = i/17.3, DownOdds = i/19.4 });
         }
 
         //PopulateTransactions();
@@ -212,7 +219,7 @@
                     StatusID = item.StatusID,
                     DateTime = item.CreatedDate,
                     Duration = item.Duration,
-                    Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {direction} in {item.Duration} secs | odds {item.SelectionOdd}"
+                    Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {direction} in {item.Duration} secs | odds {item.SelectionOdd.ToString("N2")}"
                 });
         }
 
@@ -273,8 +280,8 @@
     {
         public Guid ID { get; set; }
         public int Duration { get; set; }
-        public decimal UpOdds { get; set; }
-        public decimal DownOdds { get; set; }
+        public double UpOdds { get; set; }
+        public double DownOdds { get; set; }
     }
 
     public class Transactions
