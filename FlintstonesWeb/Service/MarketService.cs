@@ -1,40 +1,38 @@
 ﻿using FlintstonesEntities;
+using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
-using System;
 using System.Timers;
 
 namespace FlintstonesWeb.Service
 {
-    public class TransactionService : IDisposable
+    public class MarketService : IDisposable
     {
+
         private readonly System.Timers.Timer timer;
-        const int INTERVAL_MS = 3000;
+        private int INTERVAL_MS = 1000;
         private IHttpClientFactory _clientFactory;
+        private readonly IMemoryCache _memoryCache;
 
-        public event Action<List<BetEntity>> OnTransactionsChanged;
-        public int clientid;
-        public int pagesize;
-
-        public TransactionService(IHttpClientFactory clientFactory)
+        public MarketService(IHttpClientFactory clientFactory, IMemoryCache memoryCache)
         {
             timer = new System.Timers.Timer(INTERVAL_MS);
             timer.Elapsed += TimerTick;
             timer.Enabled = true;
             _clientFactory = clientFactory;
+            _memoryCache = memoryCache;
         }
 
         private void TimerTick(object sender, ElapsedEventArgs e)
         {
-            //var clientid = 123;
-            //var pagesize = 8;
-
             var client = _clientFactory.CreateClient();
-            var response = client.GetStringAsync($"https://rm-ct.azurewebsites.net/api/GetClientTransactions?clientid={clientid}&pagesize={pagesize}").Result;
+            var response = client.GetStringAsync($"https://rm-mk-api.azurewebsites.net/api/GetMarkets?code=XDPcsRnZV_mBDYkTAV-5TyGdMi24o25V_Ci1Sjd0jJhKAzFuxt7GrQ==").Result;
             if (response != null)
             {
-                var rawData = JsonConvert.DeserializeObject<List<BetEntity>>(response);
-                OnTransactionsChanged?.Invoke(rawData);
+                var rawData = JsonConvert.DeserializeObject<List<MarketEntity>>(response);
+                _memoryCache.Set("markets", rawData);
             }
+
+            INTERVAL_MS = 10000;
         }
 
         public void Dispose()

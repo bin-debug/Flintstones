@@ -4,12 +4,15 @@
 @using System.Text.Json
 @using System.Net.Http.Headers
 @using FlintstonesEntities
+@using Microsoft.Extensions.Caching.Memory
 @using Newtonsoft.Json
 @using FlintstonesWeb.Service
 @inject IHttpClientFactory ClientFactory
 @inject ISnackbar Snackbar
 
 @inject TransactionService TransactionService
+@inject MarketService MarketService
+@inject IMemoryCache MemoryCache
 
 <div class="bg-blue-600">
     <div class="max-w-7xl mx-auto py-2 px-3 sm:px-6 lg:px-8">
@@ -180,6 +183,8 @@
         {
             Js.InvokeAsync<object>("buildChart", "BINANCE:BTCUSDT");
         }
+
+        var s = MemoryCache.Get("markets");
 
         return base.OnAfterRenderAsync(firstRender);
     }
