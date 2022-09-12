@@ -25,7 +25,10 @@ namespace FlintstonesMarketApi
             var serviceClient = new TableServiceClient("DefaultEndpointsProtocol=https;AccountName=rmzasa;AccountKey=rOeD6L2O33PrIZOHZMRMA7vmSapOKC9xBQcr20mHrTWe7aewe6N9sXs/tx4uHX4nd+LpfsMBY2jm+ASt7s8zAA==;EndpointSuffix=core.windows.net");
             var tableClient = serviceClient.GetTableClient("BACKOFFICE");
 
-            var queryResultsFilter = tableClient.Query<MarketEntity>(filter: $"PartitionKey eq 'MARKETS' ");
+            string market = req.Query["market"];
+
+            //PartitionKey eq 'MARKETS' and MarketName eq 'BTCUSDT'
+            var queryResultsFilter = tableClient.Query<MarketEntity>(filter: $"PartitionKey eq 'MARKETS' and MarketName eq '{market}' ");
             var records = queryResultsFilter.OrderBy(r => r.MarketName);
 
             log.LogInformation(JsonConvert.SerializeObject(records));

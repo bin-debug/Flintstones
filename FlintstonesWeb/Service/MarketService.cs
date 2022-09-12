@@ -12,6 +12,7 @@ namespace FlintstonesWeb.Service
         private int INTERVAL_MS = 1000;
         private IHttpClientFactory _clientFactory;
         private readonly IMemoryCache _memoryCache;
+        public string MarketName { get; set; } = "BTCUSDT";
 
         public MarketService(IHttpClientFactory clientFactory, IMemoryCache memoryCache)
         {
@@ -25,7 +26,10 @@ namespace FlintstonesWeb.Service
         private void TimerTick(object sender, ElapsedEventArgs e)
         {
             var client = _clientFactory.CreateClient();
-            var response = client.GetStringAsync($"https://rm-mk-api.azurewebsites.net/api/GetMarkets?code=XDPcsRnZV_mBDYkTAV-5TyGdMi24o25V_Ci1Sjd0jJhKAzFuxt7GrQ==").Result;
+
+            //var response = client.GetStringAsync($"https://rm-mk-api.azurewebsites.net/api/GetMarkets?code=XDPcsRnZV_mBDYkTAV-5TyGdMi24o25V_Ci1Sjd0jJhKAzFuxt7GrQ==").Result;
+            var response = client.GetStringAsync($"https://rm-mk-api.azurewebsites.net/api/GetMarkets?code=XDPcsRnZV_mBDYkTAV-5TyGdMi24o25V_Ci1Sjd0jJhKAzFuxt7GrQ==&market={MarketName}").Result;
+
             if (response != null)
             {
                 var rawData = JsonConvert.DeserializeObject<List<MarketEntity>>(response);
