@@ -45,12 +45,12 @@
     <span class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-red-200 dark:text-red-800">DOWN</span>...Place your bets now!
 </marquee>*@
 
-@*<div class="container flex flex-col px-4 mx-auto md:space-y-0 md:flex-row">
-     <div class="bg-red-100 border-t border-b border-red-500 text-red-700 px-4 py-3 mb-2 "style="width:100%" role="alert">
-              <p class="font-bold">Round Closed</p>
-              <p class="text-sm">Next round starts in 15 seconds.</p>
-            </div>
-    </div>*@
+<div class="container flex flex-col px-4 mx-auto md:space-y-0 md:flex-row">
+    <div class="bg-@colour-100 border-t border-b border-@colour-500 text-@colour-700 px-4 py-3 mb-2 " style="width:100%" role="alert">
+        <p class="font-bold">@headerMsg</p>
+        <p class="text-sm">@message @time.ToString(@"mm\:ss")</p>
+    </div>
+</div>
 
 <section>
     <div class="container flex flex-col px-4 mx-auto md:space-y-0 md:flex-row">
@@ -62,11 +62,11 @@
 
             @*@if (activeTransactions > 0)
             {
-                <span class="animate-pulse ml-2 mt-1 bg-green-400 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">@activeTransactions ACTIVE TRANSACTIONS</span>
+            <span class="animate-pulse ml-2 mt-1 bg-green-400 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">@activeTransactions ACTIVE TRANSACTIONS</span>
             }
             else
             {
-                <span class="ml-2 mt-1 bg-green-400 text-white text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">0 ACTIVE TRANSACTIONS, PLACE BETS</span>
+            <span class="ml-2 mt-1 bg-green-400 text-white text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">0 ACTIVE TRANSACTIONS, PLACE BETS</span>
             }*@
 
             <div class="md:grid grid-cols-1 gap-2 mx-2 sm:flex flex-col">
@@ -92,17 +92,27 @@
 
                 <MudField Label="Payout" Variant="Variant.Text">R @payout.ToString("N2")</MudField>
 
-                <MudButton Class="rounded-0 mt-2" FullWidth="true" Disabled="@_processing" Variant="Variant.Filled" Color="Color.Success" OnClick="ProcessSomething">
-                    @if (_processing)
-                    {
-                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                        <MudText Class="ms-2">PROCESSING...</MudText>
-                    }
-                    else
-                    {
-                        <MudText>SUBMIT BET</MudText>
-                    }
-                </MudButton>
+                @if (disableControls == false)
+                {
+                    <MudButton Class="rounded-0 mt-2" FullWidth="true" Disabled="@_processing" Variant="Variant.Filled" Color="Color.Success" OnClick="ProcessSomething">
+                        @if (_processing)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                            <MudText Class="ms-2">PROCESSING...</MudText>
+                        }
+                        else
+                        {
+                            <MudText>SUBMIT BET</MudText>
+                        }
+                    </MudButton>
+                }
+                else
+                {
+                    <MudButton Class="rounded-0 mt-2" FullWidth="true" Disabled="true" Variant="Variant.Filled" Color="Color.Error">
+                            <MudText>NO BETTING ALLOWED</MudText>
+                    </MudButton>
+                }
+
             </div>
         </div>
     </div>
@@ -166,6 +176,15 @@
 </footer>
 
 @code {
+    string colour = "red";
+    TimeSpan time = TimeSpan.FromSeconds(15);
+    private static System.Timers.Timer aTimer;
+    private static System.Timers.Timer bTimer;
+    private int counter = 15;
+    string headerMsg = "Round Closed";
+    string message = "Next round starts in";
+    bool disableControls = true;
+
 
     public bool price_direction { get; set; } = true;
     public int stake = 1;
@@ -191,12 +210,20 @@
 
     protected override Task OnInitializedAsync()
     {
+        aTimer = new System.Timers.Timer(1000);
+        aTimer.Elapsed += CountDownTimer;
+        aTimer.Enabled = true;
+
+        bTimer = new System.Timers.Timer(1000);
+        bTimer.Elapsed += BCountDownTimer;
+        bTimer.Enabled = false;
+
         TimeOdds = new List<DurationOdds>();
         transactions = new List<Transactions>();
 
         for (int i = 1; i < 200; i++)
         {
-            TimeOdds.Add(new DurationOdds { ID = Guid.NewGuid(), Duration = i, UpOdds = i/17.3, DownOdds = i/19.4 });
+            TimeOdds.Add(new DurationOdds { ID = Guid.NewGuid(), Duration = i, UpOdds = i / 17.3, DownOdds = i / 19.4 });
         }
 
         //PopulateTransactions();
@@ -204,8 +231,51 @@
         TransactionService.pagesize = 8;
         TransactionService.OnTransactionsChanged += HandleTransactionsChange;
 
-
         return base.OnInitializedAsync();
+    }
+
+    public void CountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        if (counter > 0)
+        {
+            counter -= 1;
+            time = time.Subtract(TimeSpan.FromSeconds(1));
+        }
+        else
+        {
+            aTimer.Enabled = false;
+            counter = 120;
+            time = TimeSpan.FromMinutes(2);
+            bTimer.Enabled = true;
+            //btnEnabled = false;
+            colour = "green";
+            disableControls = false;
+            headerMsg = "Round Open";
+            message = "Round closes in";
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void BCountDownTimer(Object source, System.Timers.ElapsedEventArgs e)
+    {
+        if (counter > 0)
+        {
+            counter -= 1;
+            time = time.Subtract(TimeSpan.FromSeconds(1));
+        }
+        else
+        {
+            bTimer.Enabled = false;
+            counter = 15;
+            time = TimeSpan.FromSeconds(15);
+            aTimer.Enabled = true;
+            //btnEnabled = true;
+            colour = "red";
+            disableControls = true;
+            headerMsg = "Round Closed";
+            message = "Next round starts in";
+        }
+        InvokeAsync(StateHasChanged);
     }
 
     private void HandleTransactionsChange(List<BetEntity> bets)
