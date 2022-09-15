@@ -114,7 +114,7 @@
                 }
 
                 <td>@row.StakeAmount</td>
-                <td>@row.TotalPayout</td>
+                <td>@row.TotalPayout.ToString("N2")</td>
                 <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="@(() => OpenDrawerAsync(row))">View</MudButton></td>
             </tr>
         }

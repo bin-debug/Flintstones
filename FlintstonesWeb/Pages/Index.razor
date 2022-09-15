@@ -268,7 +268,11 @@
         var content = new StringContent(json);
         content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-        var response = await client.PostAsync("https://rm-strike.azurewebsites.net/api/BetStrike?code=F4hkm26H1s4t47wSdg6Dw3K5HfjnUgVXZPB4ieO-XMZaAzFuCpAOEg==", content);
+        //http://localhost:7085/api/BetStrike
+
+        //var response = await client.PostAsync("https://rm-strike.azurewebsites.net/api/BetStrike?code=F4hkm26H1s4t47wSdg6Dw3K5HfjnUgVXZPB4ieO-XMZaAzFuCpAOEg==", content);
+        var response = await client.PostAsync("http://localhost:7085/api/BetStrike", content);
+
 
         activeTransactions++;
 
