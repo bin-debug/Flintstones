@@ -19,14 +19,5 @@ namespace FlintstonesBackOffice.Services
             await tableClient.CreateIfNotExistsAsync();
             return tableClient;
         }
-
-        //public async Task<T> UpsertEntityAsync(T entity)
-        //{
-        //    var tableClient = await GetTableClient();
-        //    await tableClient.UpsertEntityAsync(entity);
-        //    return entity;
-        //}
-
-     
     }
 }

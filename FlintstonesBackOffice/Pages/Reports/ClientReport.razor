@@ -114,7 +114,16 @@
                 }
 
                 <td>@row.StakeAmount</td>
-                <td>@row.TotalPayout.ToString("N2")</td>
+
+                @if (@row.StatusID == 2)
+                {
+                    <td>@row.TotalPayout.ToString("N2")</td>
+                }
+                else
+                {
+                    <td>0</td>
+                }
+                
                 <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="@(() => OpenDrawerAsync(row))">View</MudButton></td>
             </tr>
         }
