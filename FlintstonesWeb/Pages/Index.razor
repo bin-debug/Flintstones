@@ -30,7 +30,8 @@
                 </p>
             </div>
             <div class="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
-                @*<MudButton Class="md:hidden sm:inline flex w-full sm:order-2 sm:mt-0 sm:w-auto items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50 rounded-0" Variant="Variant.Filled" Color="Color.Success">CASHOUT / TRANSACTIONS</MudButton>*@
+                <MudButton Class="rounded-0 mt-2" Variant="Variant.Text" Color="Color.Success">Balance R12,56</MudButton>
+                <MudButton Class="sm:inline flex w-full sm:order-2 sm:mt-0 sm:w-auto items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50 rounded-0" Variant="Variant.Filled" Color="Color.Default">LOBBY</MudButton>
             </div>
             <div class="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
                 <button type="button" class="-mr-1 flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
@@ -62,11 +63,11 @@
 
             @*@if (activeTransactions > 0)
             {
-                <span class="animate-pulse ml-2 mt-1 bg-green-400 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">@activeTransactions ACTIVE TRANSACTIONS</span>
+            <span class="animate-pulse ml-2 mt-1 bg-green-400 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">@activeTransactions ACTIVE TRANSACTIONS</span>
             }
             else
             {
-                <span class="ml-2 mt-1 bg-green-400 text-white text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">0 ACTIVE TRANSACTIONS, PLACE BETS</span>
+            <span class="ml-2 mt-1 bg-green-400 text-white text-sm font-medium mr-2 px-2.5 py-0.5 dark:bg-blue-200 dark:text-green-800">0 ACTIVE TRANSACTIONS, PLACE BETS</span>
             }*@
 
             <div class="md:grid grid-cols-1 gap-2 mx-2 sm:flex flex-col">
@@ -77,20 +78,34 @@
                 </MudRadioGroup>
 
                 <MudSlider @bind-Value="@stake" @onchange="() => CalculatePayout()"
-                           Min="1" Max="10"
+                           Min="1" Max="100"
                            Variant="Variant.Filled"
                            ValueLabel="true" Size="Size.Large"
                            Color="Color.Info">Stake: R @stake.ToString()</MudSlider>
 
-                <MudSlider @bind-Value="@duration" @onchange="() => CalculatePayout()"
-                           Min="30" Max="120" Step="15" TickMarks="true"
-                           Variant="Variant.Filled"
-                           ValueLabel="true" Size="Size.Large"
-                           Color="Color.Info">Duration: @duration.ToString() secs</MudSlider>
+                @* <MudSlider @bind-Value="@duration" @onchange="() => CalculatePayout()"
+                Min="30" Max="120" Step="15" TickMarks="true"
+                Variant="Variant.Filled"
+                ValueLabel="true" Size="Size.Large"
+                Color="Color.Info">Duration: @duration.ToString() secs</MudSlider>*@
+
+                <MudRadioGroup @bind-SelectedOption="@duration">
+                    <MudRadio Option="@(30)" Color="Color.Info" @onchange="() => CalculatePayout()">30secs</MudRadio>
+                    <MudRadio Option="@(45)" Color="Color.Info" @onchange="() => CalculatePayout()">45secs</MudRadio>
+                    <MudRadio Option="@(60)" Color="Color.Info" @onchange="() => CalculatePayout()">60secs</MudRadio>
+                    <MudRadio Option="@(90)" Color="Color.Info" @onchange="() => CalculatePayout()">90secs</MudRadio>
+                    <MudRadio Option="@(120)" Color="Color.Info" @onchange="() => CalculatePayout()">120secs</MudRadio>
+                </MudRadioGroup>
 
                 <MudField Label="Odds" Variant="Variant.Text">@odds.ToString("N2")</MudField>
 
                 <MudField Label="Payout" Variant="Variant.Text">R @payout.ToString("N2")</MudField>
+
+                @if (showOddsChangedMessage == true)
+                {
+                    <MudAlert Severity="@OddsChangedMessageSeverity">@OddsChangedMessage</MudAlert>
+                }
+
 
                 <MudButton Class="rounded-0 mt-2" FullWidth="true" Disabled="@_processing" Variant="Variant.Filled" Color="Color.Success" OnClick="ProcessSomething">
                     @if (_processing)
@@ -165,142 +180,3 @@
     atomic-labs.co
 </footer>
 
-@code {
-
-    public bool price_direction { get; set; } = true;
-    public int stake = 1;
-    public int duration = 1;
-    public double payout = 0;
-    public double odds;
-    private bool _processing = false;
-    public List<DurationOdds> TimeOdds;
-    public int activeTransactions = 0;
-    public List<Transactions> transactions;
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender == true)
-        {
-            Js.InvokeAsync<object>("buildChart", "BINANCE:BTCUSDT");
-        }
-
-        var s = MemoryCache.Get("markets");
-
-        return base.OnAfterRenderAsync(firstRender);
-    }
-
-    protected override Task OnInitializedAsync()
-    {
-        TimeOdds = new List<DurationOdds>();
-        transactions = new List<Transactions>();
-
-        for (int i = 1; i < 200; i++)
-        {
-            TimeOdds.Add(new DurationOdds { ID = Guid.NewGuid(), Duration = i, UpOdds = i/17.3, DownOdds = i/19.4 });
-        }
-
-        //PopulateTransactions();
-        TransactionService.clientid = 123;
-        TransactionService.pagesize = 8;
-        TransactionService.OnTransactionsChanged += HandleTransactionsChange;
-
-
-        return base.OnInitializedAsync();
-    }
-
-    private void HandleTransactionsChange(List<BetEntity> bets)
-    {
-        transactions = new List<Transactions>();
-
-        foreach (var item in bets)
-        {
-            string direction = item.Selection == 1 ? "UP" : "DOWN";
-
-            transactions.Add(new Transactions
-                {
-                    ID = item.RowKey,
-                    Payout = item.TotalPayout,
-                    MarketName = item.Market.ToUpper(),
-                    StatusID = item.StatusID,
-                    DateTime = item.CreatedDate,
-                    Duration = item.Duration,
-                    Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {direction} in {item.Duration} secs | odds {item.SelectionOdd.ToString("N2")}"
-                });
-        }
-
-        activeTransactions = bets.Count(r => r.StatusID == 1);
-        InvokeAsync(StateHasChanged);
-
-        if (activeTransactions == 0)
-            TransactionService.OnTransactionsChanged -= HandleTransactionsChange;
-    }
-
-    public void CalculatePayout()
-    {
-        var selectedDuration = TimeOdds.FirstOrDefault(r => r.Duration == duration);
-
-        odds = price_direction == true ? selectedDuration.UpOdds : selectedDuration.DownOdds;
-
-        payout = stake * odds;
-        InvokeAsync(StateHasChanged);
-    }
-
-    async Task ProcessSomething()
-    {
-        // do some sort of validation
-
-        _processing = true;
-
-        var model = new
-        {
-            clientID = 123,
-            token = "123",
-            stakeAmount = stake,
-            market = "BTCUSDT",
-            selection = price_direction == true ? 1 : 0,
-            selectionOdd = odds,
-            duration = duration
-        };
-
-        var json = JsonConvert.SerializeObject(model);
-        var client = ClientFactory.CreateClient();
-
-        var content = new StringContent(json);
-        content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-        //http://localhost:7085/api/BetStrike
-
-        //var response = await client.PostAsync("https://rm-strike.azurewebsites.net/api/BetStrike?code=F4hkm26H1s4t47wSdg6Dw3K5HfjnUgVXZPB4ieO-XMZaAzFuCpAOEg==", content);
-        var response = await client.PostAsync("http://localhost:7085/api/BetStrike", content);
-
-
-        activeTransactions++;
-
-        _processing = false;
-
-        TransactionService.OnTransactionsChanged += HandleTransactionsChange;
-
-        Snackbar.Clear();
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-        Snackbar.Add("Bet successfully placed", Severity.Success);
-    }
-
-    public class DurationOdds
-    {
-        public Guid ID { get; set; }
-        public int Duration { get; set; }
-        public double UpOdds { get; set; }
-        public double DownOdds { get; set; }
-    }
-
-    public class Transactions
-    {
-        public string ID { get; set; }
-        public string Description { get; set; }
-        public double Payout { get; set; }
-        public int StatusID { get; set; }
-        public int Duration { get; set; }
-        public string MarketName { get; set; }
-        public DateTime DateTime { get; set; }
-    }
-}
