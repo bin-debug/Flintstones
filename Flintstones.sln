@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesCTFunction", "Fl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesBackOffice", "FlintstonesBackOffice\FlintstonesBackOffice.csproj", "{F39E6EAB-BBF7-4414-B5CF-1452EB159519}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesMarketApi", "FlintstonesMarketApi\FlintstonesMarketApi.csproj", "{A40ADF5E-0135-468D-84C1-4B8C6630C9F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesMarketApi", "FlintstonesMarketApi\FlintstonesMarketApi.csproj", "{A40ADF5E-0135-468D-84C1-4B8C6630C9F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

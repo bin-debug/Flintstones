@@ -29,7 +29,7 @@ namespace FlintstonesWeb.Service
             //var pagesize = 8;
 
             var client = _clientFactory.CreateClient();
-            var response = client.GetStringAsync($"https://rm-ct.azurewebsites.net/api/GetClientTransactions?clientid={clientid}&pagesize={pagesize}").Result;
+            var response = client.GetStringAsync($"https://client-transactions.azurewebsites.net/api/GetClientTransactions?clientid={clientid}&pagesize={pagesize}").Result;
             if (response != null)
             {
                 var rawData = JsonConvert.DeserializeObject<List<BetEntity>>(response);

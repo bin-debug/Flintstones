@@ -9,13 +9,14 @@ namespace FlintstonesFeedWorkerService
         private readonly ILogger<Worker> _logger;
         private readonly TableStorageService _tableStorageService;
 
-        //string symbol = Environment.GetEnvironmentVariable("SYMBOL");
-        string symbol = "BTCUSDT";
+        string symbol = Environment.GetEnvironmentVariable("SYMBOL");
+        //string symbol = "BTCUSDT";
 
         public Worker(ILogger<Worker> logger, TableStorageService tableStorageService)
         {
             _logger = logger;
             _tableStorageService = tableStorageService;
+            tableStorageService.TableName = symbol;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

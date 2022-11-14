@@ -1,0 +1,59 @@
+﻿@page "/lobby"
+@using MudBlazor
+@using FlintstonesBackOffice.Services
+
+@inject TableStorageService TableStorageService
+
+<PageTitle>Lobby</PageTitle>
+
+@if (_processing)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+}
+
+<MudPaper Elevation="25">
+    <MudToolBar>
+        <MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="() => OpenMarketDialog()" />
+    </MudToolBar>
+</MudPaper>
+
+
+
+<MudSimpleTable Elevation="2" Style="overflow-x: auto; border:none">
+    <thead>
+        <tr>
+            @foreach (var h in headings)
+            {
+                <th>@h</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in _markets)
+        {
+            <tr>
+                <td>@row.MarketName</td>
+                <td>@row.MarketSymbol</td>
+                <td><MudCheckBox @bind-Checked="row.IsMarketActive" Disabled=true Color="Color.Primary"></MudCheckBox></td>
+                <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="() => OpenMarketDialog()">Edit Market</MudButton></td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
+
+<MudDialog @bind-IsVisible="visible" Style="width:500px;">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3" />Add Market
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField @bind-Value="MarketName" MaxLength="100" Label="Market Name" Variant="Variant.Text"></MudTextField>
+        <MudTextField @bind-Value="MarketSymbol" MaxLength="50" Label="Market Symbol" Variant="Variant.Text"></MudTextField>
+        <MudCheckBox @bind-Checked="IsMarketActive" Color="Color.Primary">Active</MudCheckBox>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CloseDialog" Class="px-10">Close</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="SaveMarket" Class="px-10">Save</MudButton>
+    </DialogActions>
+</MudDialog>

@@ -25,7 +25,6 @@
                 <MudRadio Option="@("DOWN")" Color="Color.Error">DOWN</MudRadio>
             </MudTooltip>
         </MudRadioGroup>
-        @*<MudIconButton Icon="@Icons.Material.Outlined.Refresh" Color="Color.Inherit" />*@
     </MudToolBar>
 </MudPaper>
 
@@ -34,16 +33,6 @@
     <MudProgressLinear Color="Color.Primary" Indeterminate="true"/>
 }
 
-@*<MudGrid Spacing="1" Justify="Justify.Center">
-    <MudItem>
-        <MudField Label="" Variant="Variant.Text" DisableUnderLine=true Disabled=true>
-            The following market predicition of @SelectedMarket is based on the most popular technical indicators, such as Moving Averages, Oscillators and Pivots:
-        </MudField>
-    </MudItem>
-    <MudItem>
-        <MudButton Variant="Variant.Text" Style="margin-top:20px;" Color="Color.Success">PRICE SHOULD BE GOING UP</MudButton>
-    </MudItem>
-</MudGrid>*@
 
 <MudSimpleTable Elevation="2" Style="overflow-x: auto; border:none">
     <thead>
@@ -87,8 +76,6 @@
     <DialogContent>
         <MudAlert Class="pa-3" Severity="Severity.Info">Decimal Point is a "."dot</MudAlert>
         <MudAlert Class="pa-3" Severity="Severity.Error">Numbers with ","comma will be treated as a whole number</MudAlert>
-        @*<p style="color:slategray">Decimal Point is a "."dot</p>*@
-        @*<p style="color:slategray">Numbers with ","comma will be treated as a whole number</p>*@
         <MudNumericField @bind-Value="@UpdatedOdd" Label="Odd" Variant="Variant.Text" Min="0.0" Max="10" />
         <MudCheckBox @bind-Checked="@UpdateActive" Color="Color.Primary">Active</MudCheckBox>
     </DialogContent>

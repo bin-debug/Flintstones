@@ -9,7 +9,8 @@ namespace FlintstonesFeedWorkerService
 {
     public class TableStorageService
     {
-        private const string TableName = "BTCUSDT";
+        //private const string TableName = "BTCUSDT";
+        public string TableName = "BTCUSDT";
         private readonly IConfiguration _configuration;
         public TableStorageService(IConfiguration configuration)
         {

@@ -31,7 +31,7 @@ namespace FlintstonesWeb.Service
             var client = _clientFactory.CreateClient();
 
             //var response = client.GetStringAsync($"https://rm-mk-api.azurewebsites.net/api/GetMarkets?code=XDPcsRnZV_mBDYkTAV-5TyGdMi24o25V_Ci1Sjd0jJhKAzFuxt7GrQ==").Result;
-            var response =  client.GetStringAsync($"https://rm-mk-api.azurewebsites.net/api/GetMarkets?code=XDPcsRnZV_mBDYkTAV-5TyGdMi24o25V_Ci1Sjd0jJhKAzFuxt7GrQ==&market={MarketName}").Result;
+            var response =  client.GetStringAsync($"https://markets-api.azurewebsites.net/api/GetMarkets?code=H80qnTQEd3eKraOWUM1gEPyTUqbSJgzvnn89E-YmfX44AzFucYca5A==&market={MarketName}").Result;
 
             if (response != null)
             {
@@ -44,7 +44,7 @@ namespace FlintstonesWeb.Service
             var client = _clientFactory.CreateClient();
 
             //var response = client.GetStringAsync($"https://rm-mk-api.azurewebsites.net/api/GetMarkets?code=XDPcsRnZV_mBDYkTAV-5TyGdMi24o25V_Ci1Sjd0jJhKAzFuxt7GrQ==").Result;
-            var response = client.GetStringAsync($"https://rm-mk-api.azurewebsites.net/api/GetMarkets?code=XDPcsRnZV_mBDYkTAV-5TyGdMi24o25V_Ci1Sjd0jJhKAzFuxt7GrQ==&market={MarketName}").Result;
+            var response = client.GetStringAsync($"https://markets-api.azurewebsites.net/api/GetMarkets?code=H80qnTQEd3eKraOWUM1gEPyTUqbSJgzvnn89E-YmfX44AzFucYca5A==&market={MarketName}").Result;
 
             if (response != null)
             {

@@ -133,7 +133,7 @@ namespace FlintstonesWeb.Pages
             var client = ClientFactory.CreateClient();
             var content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var response = await client.PostAsync("https://rm-strike.azurewebsites.net/api/BetStrike?code=F4hkm26H1s4t47wSdg6Dw3K5HfjnUgVXZPB4ieO-XMZaAzFuCpAOEg==", content);
+            var response = await client.PostAsync("https://bet-strike.azurewebsites.net/api/BetStrike?code=snNnLqHmDdrq8mpWRbKohzla9aBusZ8g7x1OB4fq5s-1AzFukj7L9Q==", content);
             //var response = await client.PostAsync("http://localhost:7085/api/BetStrike", content);
             activeTransactions++;
             _processing = false;

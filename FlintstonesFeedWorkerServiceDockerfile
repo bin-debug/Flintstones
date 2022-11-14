@@ -12,7 +12,7 @@ WORKDIR "/src/FlintstonesFeedWorkerService"
 RUN dotnet build "FlintstonesFeedWorkerService.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "FlintstonesFeedWorkerService.csproj" -c Release -o /app/publish
+RUN dotnet publish "FlintstonesFeedWorkerService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
