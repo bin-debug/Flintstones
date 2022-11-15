@@ -8,5 +8,5 @@
       }
     }
   },
-  "ServiceBus": "Endpoint=sb://dev-test-rm.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fVb2VD5fJ/RFENSCD44aPYp0Eb9LhFV7/+iFDEK6Hxc="
+  "ServiceBus": "Endpoint=sb://nivash.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=JBWiJC6pKtyMrBr0kdgB9K6NrxDMtoLdJ1PPVIODJsE="
 }

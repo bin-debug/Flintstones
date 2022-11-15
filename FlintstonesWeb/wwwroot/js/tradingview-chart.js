@@ -3,7 +3,8 @@
         var k = new TradingView.widget(
             {
                 "autosize": true,
-                "symbol": "BINANCE:BTCUSDT",
+                //"symbol": "BINANCE:BTCUSDT",
+                "symbol": type,
                 "interval": "1",
                 "timezone": "Africa/Johannesburg",
                 "theme": "dark",

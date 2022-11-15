@@ -43,11 +43,16 @@ namespace FlintstonesWeb.Pages
         private System.Timers.Timer timer;
         private int INTERVAL_MS = 1000;
 
+        [Parameter]
+        public string symbol { get; set; }
+
         protected override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender == true)
             {
-                Js.InvokeAsync<object>("buildChart", "BINANCE:BTCUSDT");
+                //Js.InvokeAsync<object>("buildChart", "BINANCE:BTCUSDT");
+
+                Js.InvokeAsync<object>("buildChart", $"BINANCE:{symbol}");
             }
 
             return base.OnAfterRenderAsync(firstRender);
@@ -156,6 +161,11 @@ namespace FlintstonesWeb.Pages
             InvokeAsync(StateHasChanged);
             if (activeTransactions == 0)
                 TransactionService.OnTransactionsChanged -= HandleTransactionsChange;
+        }
+
+        public void BackToLobby()
+        {
+            NavigationManager.NavigateTo("/");
         }
 
         public class Transactions
