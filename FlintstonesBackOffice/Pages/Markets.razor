@@ -10,13 +10,15 @@
     <MudToolBar>
         <MudSelect T="string" Value="@SelectedMarket" SelectedValuesChanged="(value) => OnSelectedValuesChanged(value.FirstOrDefault())" Placeholder="Select Market"
             AdornmentColor="Color.Primary" DisableUnderLine="true" AnchorOrigin="Origin.BottomCenter">
-            <MudSelectItem Value="@("BTCUSDT - (Bitcoin/Tether)")" />
-            <MudSelectItem Value="@("ETHBTC - (Ethereum/Bitcoin)")" />
-            <MudSelectItem Value="@("XRPBTC - (XRP/Bitcoin)")" />
-            <MudSelectItem Value="@("SANDBTC - (SAND/Bitcoin)")" />
-            <MudSelectItem Value="@("DOGEBTC - (Dogecoin/Bitcoin)")" />
+
+            @foreach(var item in _lobby)
+            {
+                var name = $"{item.MarketSymbol} - ({item.MarketName})";
+                <MudSelectItem Value="@(name)" />
+            }
         </MudSelect>
         <MudSpacer />
+        @*<MudIconButton Icon="@Icons.Material.Outlined.Add" Color="Color.Inherit" OnClick="() => OpenOddsDialog()" />*@
         <MudRadioGroup T="string" SelectedOption="@SelectedDirection" SelectedOptionChanged="(value) => OnSelectedDirectionValuesChanged(value)">
             <MudTooltip Text="Price to go up">
                 <MudRadio Option="@("UP")" Color="Color.Success">UP</MudRadio>
@@ -76,6 +78,16 @@
     <DialogContent>
         <MudAlert Class="pa-3" Severity="Severity.Info">Decimal Point is a "."dot</MudAlert>
         <MudAlert Class="pa-3" Severity="Severity.Error">Numbers with ","comma will be treated as a whole number</MudAlert>
+
+       @* <MudRadioGroup @bind-SelectedOption="@duration">
+            <MudRadio Option="@(30)" Color="Color.Info">30secs</MudRadio>
+            <MudRadio Option="@(45)" Color="Color.Info">45secs</MudRadio>
+            <MudRadio Option="@(60)" Color="Color.Info">60secs</MudRadio>
+            <MudRadio Option="@(90)" Color="Color.Info">90secs</MudRadio>
+            <MudRadio Option="@(120)" Color="Color.Info">120secs</MudRadio>
+        </MudRadioGroup>*@
+
+
         <MudNumericField @bind-Value="@UpdatedOdd" Label="Odd" Variant="Variant.Text" Min="0.0" Max="10" />
         <MudCheckBox @bind-Checked="@UpdateActive" Color="Color.Primary">Active</MudCheckBox>
     </DialogContent>

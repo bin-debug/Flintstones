@@ -12,10 +12,16 @@ namespace FlintstonesBackOffice.Services
             _configuration = configuration;
         }
 
-        public async Task<TableClient> GetTableClient()
+        public async Task<TableClient> GetTableClient(string table = "")
         {
+            string tableName;
+            if (!string.IsNullOrEmpty(table))
+                tableName = table;
+            else
+                tableName = TableName;
+
             var serviceClient = new TableServiceClient(_configuration["StorageConnectionString"]);
-            var tableClient = serviceClient.GetTableClient(TableName);
+            var tableClient = serviceClient.GetTableClient(tableName);
             await tableClient.CreateIfNotExistsAsync();
             return tableClient;
         }

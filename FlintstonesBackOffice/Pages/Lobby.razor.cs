@@ -84,7 +84,7 @@ namespace FlintstonesBackOffice.Pages
             };
 
             TableStorageService.TableName = "BACKOFFICE";
-            var tableClient = await TableStorageService.GetTableClient();
+            var tableClient = await TableStorageService.GetTableClient("BACKOFFICE");
             var response = await tableClient.UpsertEntityAsync(SelectedMarketToUpdate);
             if (response.Status == 204)
             {

@@ -12,9 +12,13 @@ namespace FlintstonesBackOffice.Pages
         public string StrippedSelectedMarket { get; set; }
         public double UpdatedOdd { get; set; }
         public bool UpdateActive { get; set; }
+        public int duration = 30;
+
         public MarketEntity SelectedMarketToUpdate { get; set; }
 
         public List<MarketEntity> _marketOdds = new List<MarketEntity>();
+        public List<LobbyEntity> _lobby = new List<LobbyEntity>();
+
         string[] headings = {"", "Duration (secs)", "Odds", "Direction", "Active", ""};
 
         protected override async Task OnInitializedAsync()
@@ -22,7 +26,18 @@ namespace FlintstonesBackOffice.Pages
             TableStorageService.TableName = "BACKOFFICE";
             SelectedMarket = "BTCUSDT - (Bitcoin/Tether)";
             SelectedDirection = "UP";
+            await PopulateLobby();
             await PopulateMarketOdds("BTCUSDT", 1);
+        }
+
+        async Task PopulateLobby()
+        {
+            _processing = true;
+            var tableClient = await TableStorageService.GetTableClient("BACKOFFICE");
+            string query = $"PartitionKey eq 'LOBBY' and IsMarketActive eq true";
+            var results = tableClient.Query<LobbyEntity>(query).ToList();
+            _lobby = results;
+            _processing = false;
         }
 
         async Task PopulateMarketOdds(string symbol, int direction)
@@ -49,8 +64,7 @@ namespace FlintstonesBackOffice.Pages
         async Task SaveOdds()
         {
             _processing = true;
-            TableStorageService.TableName = "BACKOFFICE";
-            var tableClient = await TableStorageService.GetTableClient();
+            var tableClient = await TableStorageService.GetTableClient("BACKOFFICE");
             SelectedMarketToUpdate.BaseOdds = UpdatedOdd;
             SelectedMarketToUpdate.Active = UpdateActive;
             var response = await tableClient.UpsertEntityAsync(SelectedMarketToUpdate);
