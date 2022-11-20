@@ -16,6 +16,8 @@ using FlintstonesWeb.Shared;
 using MudBlazor;
 using FlintstonesEntities;
 using Newtonsoft.Json;
+using Azure.Core;
+using Microsoft.Net.Http.Headers;
 
 namespace FlintstonesWeb.Pages
 {
@@ -26,8 +28,13 @@ namespace FlintstonesWeb.Pages
 
         protected override async Task<Task> OnInitializedAsync()
         {
-            await PopulateLobby();
+            //var client_token = IHttpContextAccessor.HttpContext.Request.Headers["client_token"];
+            IHttpContextAccessor.HttpContext.Request.Headers.TryGetValue("client_token", out var client_token);
+            IHttpContextAccessor.HttpContext.Request.Headers.TryGetValue("atomic_token", out var atomic_token);
 
+            
+
+            await PopulateLobby();
             return base.OnInitializedAsync();
         }
 

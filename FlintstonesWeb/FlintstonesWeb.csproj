@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FlintstonesEntities\FlintstonesEntities.csproj" />
+    <ProjectReference Include="..\FlintstonesUtils\FlintstonesUtils.csproj" />
   </ItemGroup>
 
 </Project>

@@ -37,6 +37,7 @@
             <tr>
                     <td>@row.FullName</td>
                     <td>@row.Email</td>
+                    <td><MudButton Variant="Variant.Text" Color="Color.Error" OnClick="() => DeleteUser(row)">Delete</MudButton></td>
             </tr>
         }
     </tbody>

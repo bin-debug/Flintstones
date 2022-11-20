@@ -87,6 +87,20 @@ namespace FlintstonesBackOffice.Pages
             }
         }
 
+        async Task DeleteUser(BOUserEntity user)
+        {
+            _processing = true;
+            var tableClient = await TableStorageService.GetTableClient("BACKOFFICE");
+            var response = await tableClient.DeleteEntityAsync("USERS", user.RowKey);
+            if (response.Status == 204)
+            {
+                await PopulateUsers();
+
+                _processing = false;
+                visible = false;
+            }
+        }
+
         private static bool IsEmailValid(string email)
         {
             var valid = true;

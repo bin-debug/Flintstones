@@ -28,8 +28,10 @@ namespace FlintstonesBackOffice.Pages
         bool _processing = false;
         string[] headings = {"Market", "Symbol", "Active", "" };
         private bool visible;
-        private void OpenDialog() => visible = true;
+        private bool editVisible;
         void CloseDialog() => visible = false;
+        void CloseEditDialog() => editVisible = false;
+
         public List<LobbyEntity> _markets = new List<LobbyEntity>();
         LobbyEntity SelectedMarketToUpdate;
 
@@ -95,5 +97,48 @@ namespace FlintstonesBackOffice.Pages
             }
         }
 
+        Task OpenEditDialog(LobbyEntity lobbyEntity)
+        {
+            
+            editVisible = true;
+
+            SelectedMarketToUpdate = new LobbyEntity();
+            SelectedMarketToUpdate = lobbyEntity;
+
+            MarketName = lobbyEntity.MarketName;
+            MarketSymbol = lobbyEntity.MarketSymbol;
+            IsMarketActive = lobbyEntity.IsMarketActive;
+
+            return Task.CompletedTask;
+        }
+
+        async Task SaveEditMarket()
+        {
+            _processing = true;
+            var tableClient = await TableStorageService.GetTableClient("BACKOFFICE");
+            SelectedMarketToUpdate.MarketName = MarketName;
+            SelectedMarketToUpdate.MarketSymbol = MarketSymbol;
+            SelectedMarketToUpdate.IsMarketActive = IsMarketActive;
+            var response = await tableClient.UpsertEntityAsync(SelectedMarketToUpdate);
+            if (response.Status == 204)
+            {
+                _processing = false;
+                editVisible = false;
+            }
+        }
+
+        async Task DeleteMarket(LobbyEntity lobbyEntity)
+        {
+            _processing = true;
+            var tableClient = await TableStorageService.GetTableClient("BACKOFFICE");
+            var response = await tableClient.DeleteEntityAsync("LOBBY",lobbyEntity.RowKey);
+            if (response.Status == 204)
+            {
+                await PopulateLobby();
+
+                _processing = false;
+                editVisible = false;
+            }
+        }
     }
 }
