@@ -54,7 +54,7 @@ namespace FlintstonesBetStrikeFunction
             var bet = new BetEntity();
             bet.PartitionKey = request.ClientID.ToString();
             bet.RowKey = Guid.NewGuid().ToString();
-            bet.Token = "token";
+            bet.Token = request.Token;
             bet.StatusID = 1;
             bet.CurrentMarketPrice = latestPrice;
             bet.Duration = request.Duration;

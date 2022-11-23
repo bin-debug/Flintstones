@@ -18,21 +18,30 @@ using FlintstonesEntities;
 using Newtonsoft.Json;
 using Azure.Core;
 using Microsoft.Net.Http.Headers;
+using System.IdentityModel.Tokens.Jwt;
+using Newtonsoft.Json.Linq;
+using FlintstonesUtils;
 
 namespace FlintstonesWeb.Pages
 {
     public partial class Lobby
     {
+        [Parameter]
+        public string client { get; set; }
+
+        [Parameter]
+        public string Key { get; set; }
+        [Parameter]
+        public string Token { get; set; }
+
         string[] headings = {"Name", "Symbol", ""};
         public List<LobbyEntity> LobbyEntity = new List<LobbyEntity>();
+        public bool Authorize { get; set; } = false;
+        public string cToken { get; set; }
 
         protected override async Task<Task> OnInitializedAsync()
         {
-            //var client_token = IHttpContextAccessor.HttpContext.Request.Headers["client_token"];
-            IHttpContextAccessor.HttpContext.Request.Headers.TryGetValue("client_token", out var client_token);
-            IHttpContextAccessor.HttpContext.Request.Headers.TryGetValue("atomic_token", out var atomic_token);
-
-            
+            Authorize = ValidateKey();
 
             await PopulateLobby();
             return base.OnInitializedAsync();
@@ -50,7 +59,28 @@ namespace FlintstonesWeb.Pages
 
         public void Navigate(LobbyEntity lobbyEntity)
         {
-            NavigationManager.NavigateTo($"/game/{lobbyEntity.MarketSymbol}");
+            NavigationManager.NavigateTo($"/game/{client}/{lobbyEntity.MarketSymbol}/{Key}/{Token}");
+        }
+
+        private bool ValidateKey()
+        {
+            try
+            {
+                var token = new JwtSecurityToken(jwtEncodedString: Key);
+                string value = token.Claims.First(c => c.Type == "id").Value;
+                if (value == null)
+                    return false;
+
+                if (value == "369")
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            
         }
     }
 }

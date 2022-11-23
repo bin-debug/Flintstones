@@ -46,6 +46,15 @@ namespace FlintstonesWeb.Pages
         [Parameter]
         public string symbol { get; set; }
 
+        [Parameter]
+        public string client { get; set; }
+
+        [Parameter]
+        public string key { get; set; }
+
+        [Parameter]
+        public string token { get; set; }
+
         protected override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender == true)
@@ -125,20 +134,21 @@ namespace FlintstonesWeb.Pages
 
             var model = new
             {
-                clientID = 123,
-                token = "123",
-                stakeAmount = stake,
-                market = "BTCUSDT",
-                selection = price_direction == true ? 1 : 0,
+                clientID = client, // go
+                token = token, // go
+                stakeAmount = stake, // go
+                market = symbol, // go
+                //send marketid and not the below
+                selection = price_direction == true ? 1 : 0, 
                 selectionOdd = odds,
                 duration = duration
             };
 
             var json = JsonConvert.SerializeObject(model);
-            var client = ClientFactory.CreateClient();
+            var httpClient = ClientFactory.CreateClient();
             var content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var response = await client.PostAsync("https://bet-strike.azurewebsites.net/api/BetStrike?code=snNnLqHmDdrq8mpWRbKohzla9aBusZ8g7x1OB4fq5s-1AzFukj7L9Q==", content);
+            var response = await httpClient.PostAsync("https://bet-strike.azurewebsites.net/api/BetStrike?code=snNnLqHmDdrq8mpWRbKohzla9aBusZ8g7x1OB4fq5s-1AzFukj7L9Q==", content);
             //var response = await client.PostAsync("http://localhost:7085/api/BetStrike", content);
             activeTransactions++;
             _processing = false;
@@ -165,7 +175,7 @@ namespace FlintstonesWeb.Pages
 
         public void BackToLobby()
         {
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo($"/lobby/{client}/{key}/{Token}",true);
         }
 
         public class Transactions

@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/lobby/{Client}/{Key}/{Token}"
 @using System.Text.Json
 @using System.Net.Http.Headers
 @using FlintstonesEntities
@@ -33,7 +33,7 @@
     </div>
 </div>
 
-@if (LobbyEntity != null && LobbyEntity.Count > 0)
+@if (Authorize == true && LobbyEntity != null && LobbyEntity.Count > 0)
 {
     <MudSimpleTable Style="overflow-x: auto;background-color:transparent;">
         <thead>
@@ -55,6 +55,11 @@
             }
         </tbody>
     </MudSimpleTable>
+}
+else if (Authorize == false)
+{
+    <br />
+    <h1>Not Authorized...</h1>
 }
 else
 {

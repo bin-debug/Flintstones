@@ -29,7 +29,7 @@ namespace FlintstonesAuthApi
 
         public static string Hahahaha()
         {
-            return SecurityOperation.EncryptString(DateTime.Now.ToString());
+            return SecurityOperation.EncryptString(DateTime.Now.ToString("d"));
         }
     }
 }

@@ -6,6 +6,7 @@ namespace FlintstonesUtils
 {
     public class SecurityOperation
     {
+        //E546C8DF278CD5931069B522E695D4F2
         private static readonly string keycode = "E546C8DF278CD5931069B522E695D4F2";
 
         public static string EncryptString(string text)
