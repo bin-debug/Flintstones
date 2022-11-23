@@ -175,7 +175,7 @@ namespace FlintstonesWeb.Pages
 
         public void BackToLobby()
         {
-            NavigationManager.NavigateTo($"/lobby/{client}/{key}/{Token}",true);
+            NavigationManager.NavigateTo($"/lobby/{client}/{key}/{token}",true);
         }
 
         public class Transactions
