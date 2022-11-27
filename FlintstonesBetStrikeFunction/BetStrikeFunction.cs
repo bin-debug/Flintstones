@@ -14,6 +14,9 @@ using Azure;
 using System.Linq;
 using Azure.Messaging.ServiceBus;
 using System.Text;
+using Polly;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace FlintstonesBetStrikeFunction
 {
@@ -32,19 +35,52 @@ namespace FlintstonesBetStrikeFunction
             var request = JsonConvert.DeserializeObject<BetRequest>(requestBody);
 
             // send to client api 
-
-            var insertedBet = await Submit(serviceClient, request);
-
-            if (insertedBet != null)
+            var creditURL = GetDebitURL(serviceClient);
+            var clientResult = await SendBetToClient(request, creditURL);
+            if (clientResult != null && clientResult.StatusCode == 200)
             {
-                // send to queue on a schedule
-                await PublishBet(insertedBet);
-            }
+                var insertedBet = await Submit(serviceClient, request);
 
-            log.LogInformation("Bet successfully submitted.");
-            insertedBet.Token = String.Empty;
-            insertedBet.Tag = String.Empty;
-            return new OkObjectResult(request);
+                if (insertedBet != null)
+                {
+                    // send to queue on a schedule
+                    await PublishBet(insertedBet);
+                }
+
+                log.LogInformation("Bet successfully submitted.");
+                return new OkObjectResult(clientResult);
+            }
+            else
+                return new OkObjectResult(clientResult);
+        }
+
+        public static async Task<ClientResponse> SendBetToClient(BetRequest betRequest, string debitURL)
+        {
+            var result = new ClientResponse();
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", betRequest.Token);
+            var content = new StringContent(JsonConvert.SerializeObject(betRequest), Encoding.UTF8, "application/json");
+
+            var maxRetryAttempts = 5;
+            var pauseBetweenFailures = TimeSpan.FromSeconds(8);
+
+            var retryPolicy = Policy
+                .Handle<HttpRequestException>()
+                .WaitAndRetryAsync(maxRetryAttempts, i => pauseBetweenFailures);
+
+            await retryPolicy.ExecuteAsync(async () =>
+            {
+                var response = await httpClient.PostAsync(debitURL,content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    result = JsonConvert.DeserializeObject<ClientResponse>(data);
+                }
+
+                response.EnsureSuccessStatusCode();
+            });
+
+            return result;
         }
 
         public static async Task<BetEntity> Submit(TableServiceClient serviceClient, BetRequest request)
@@ -99,5 +135,22 @@ namespace FlintstonesBetStrikeFunction
             var model = queryResultsFilter.LastOrDefault();
             return model.LastPrice;
         }
+
+        public static string GetDebitURL(TableServiceClient serviceClient)
+        {
+            var tableClient = serviceClient.GetTableClient("BACKOFFICE");
+            var queryResult = tableClient.Query<SettingEntity>("PartitionKey eq 'SETTINGS' and RowKey eq 'DebitURL'");
+            var model = queryResult.FirstOrDefault();
+            return model.Value;
+        }
+
+        public static string GetCreditURL(TableServiceClient serviceClient)
+        {
+            var tableClient = serviceClient.GetTableClient("BACKOFFICE");
+            var queryResult = tableClient.Query<SettingEntity>("PartitionKey eq 'SETTINGS' and RowKey eq 'CreditURL'");
+            var model = queryResult.FirstOrDefault();
+            return model.Value;
+        }
+
     }
 }

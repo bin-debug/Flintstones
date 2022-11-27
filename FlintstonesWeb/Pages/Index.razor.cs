@@ -94,6 +94,7 @@ namespace FlintstonesWeb.Pages
         public void CalculatePayout()
         {
             var direction = price_direction == true ? 1 : 2;
+            //var selectedDuration = MarketOdds.FirstOrDefault(r => r.Duration == duration && r.Direction == direction && r.MarketName == symbol);
             var selectedDuration = MarketOdds.FirstOrDefault(r => r.Duration == duration && r.Direction == direction);
             odds = selectedDuration.BaseOdds;
             payout = stake * odds;

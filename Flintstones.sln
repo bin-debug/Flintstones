@@ -23,7 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesAuthApi", "Flint
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesUtils", "FlintstonesUtils\FlintstonesUtils.csproj", "{D85D746A-E74A-44C3-81D8-E89156BDCC5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesAuthLiteApi", "FlintstonesAuthLiteApi\FlintstonesAuthLiteApi.csproj", "{2D2C22E4-F711-4251-91F1-1A8A5A23545D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesAuthLiteApi", "FlintstonesAuthLiteApi\FlintstonesAuthLiteApi.csproj", "{2D2C22E4-F711-4251-91F1-1A8A5A23545D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demo", "Demo", "{B69A494D-6A61-44AB-B49B-B80E5F9C2043}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoClientApi", "DemoClientApi\DemoClientApi.csproj", "{81B5D05D-D5F5-4967-A514-EE7498F7254F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,9 +79,16 @@ Global
 		{2D2C22E4-F711-4251-91F1-1A8A5A23545D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D2C22E4-F711-4251-91F1-1A8A5A23545D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D2C22E4-F711-4251-91F1-1A8A5A23545D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81B5D05D-D5F5-4967-A514-EE7498F7254F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81B5D05D-D5F5-4967-A514-EE7498F7254F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81B5D05D-D5F5-4967-A514-EE7498F7254F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81B5D05D-D5F5-4967-A514-EE7498F7254F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{81B5D05D-D5F5-4967-A514-EE7498F7254F} = {B69A494D-6A61-44AB-B49B-B80E5F9C2043}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CF4E9B92-9A2A-4340-B1FB-56F879FFF9C9}
