@@ -2,7 +2,7 @@
   "profiles": {
     "FlintstonesCTFunction": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7011",
+      "commandLineArgs": "--port 7086",
       "launchBrowser": false
     }
   }

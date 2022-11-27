@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Azure;
@@ -10,6 +12,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Polly;
 
 namespace FlintstonesBetResultFunction
 {
@@ -22,6 +25,10 @@ namespace FlintstonesBetResultFunction
             var betTableClient = serviceClient.GetTableClient("BETS");
             var resultTableClient = serviceClient.GetTableClient("RESULTS");
 
+            //var creditURL = GetCreditURL(serviceClient);
+            var creditURL = "https://localhost:7184/credit";
+            
+
             var bet = JsonConvert.DeserializeObject<BetEntity>(myQueueItem);
             var latestPrice = GetPrice(serviceClient, bet.Market);
 
@@ -33,6 +40,7 @@ namespace FlintstonesBetResultFunction
             resultEntity.CreatedDate = DateTime.UtcNow.AddHours(2);
             resultEntity.Cashout = false;
             resultEntity.WinAmount = 0;
+            resultEntity.ClientID = bet.PartitionKey.ToString();
 
             // client predicted price will go up
             if (bet.Selection == 1)
@@ -79,6 +87,8 @@ namespace FlintstonesBetResultFunction
             await betTableClient.UpsertEntityAsync(bet);
             await resultTableClient.UpsertEntityAsync(resultEntity);
 
+            await SendResultToClient(resultEntity, bet, creditURL);
+
             //log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
             log.LogInformation("bet resulted");
         }
@@ -93,6 +103,43 @@ namespace FlintstonesBetResultFunction
 
             var model = queryResultsFilter.LastOrDefault();
             return model.LastPrice;
+        }
+
+        public static async Task<ClientResponse> SendResultToClient(ResultEntity resultEntity, BetEntity betEntity, string creditURL)
+        {
+            var result = new ClientResponse();
+            var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", betEntity.Token);
+            var content = new StringContent(JsonConvert.SerializeObject(resultEntity), Encoding.UTF8, "application/json");
+
+            var maxRetryAttempts = 3;
+            var pauseBetweenFailures = TimeSpan.FromSeconds(5);
+
+            var retryPolicy = Policy
+                .Handle<HttpRequestException>()
+                .WaitAndRetryAsync(maxRetryAttempts, i => pauseBetweenFailures);
+
+            await retryPolicy.ExecuteAsync(async () =>
+            {
+                var response = await httpClient.PostAsync(creditURL, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    result = JsonConvert.DeserializeObject<ClientResponse>(data);
+                }
+
+                response.EnsureSuccessStatusCode();
+            });
+
+            return result;
+        }
+
+        public static string GetCreditURL(TableServiceClient serviceClient)
+        {
+            var tableClient = serviceClient.GetTableClient("BACKOFFICE");
+            var queryResult = tableClient.Query<SettingEntity>("PartitionKey eq 'SETTINGS' and RowKey eq 'CreditURL'");
+            var model = queryResult.FirstOrDefault();
+            return model.Value;
         }
     }
 }

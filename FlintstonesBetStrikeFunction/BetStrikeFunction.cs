@@ -36,7 +36,8 @@ namespace FlintstonesBetStrikeFunction
 
             // send to client api 
             var creditURL = GetDebitURL(serviceClient);
-            var clientResult = await SendBetToClient(request, creditURL);
+            //var clientResult = await SendBetToClient(request, creditURL);
+            var clientResult = await SendBetToClient(request, "https://localhost:7184/debit");
             if (clientResult != null && clientResult.StatusCode == 200)
             {
                 var insertedBet = await Submit(serviceClient, request);
@@ -51,7 +52,7 @@ namespace FlintstonesBetStrikeFunction
                 return new OkObjectResult(clientResult);
             }
             else
-                return new OkObjectResult(clientResult);
+                return new BadRequestObjectResult(clientResult);
         }
 
         public static async Task<ClientResponse> SendBetToClient(BetRequest betRequest, string debitURL)
@@ -61,8 +62,8 @@ namespace FlintstonesBetStrikeFunction
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", betRequest.Token);
             var content = new StringContent(JsonConvert.SerializeObject(betRequest), Encoding.UTF8, "application/json");
 
-            var maxRetryAttempts = 5;
-            var pauseBetweenFailures = TimeSpan.FromSeconds(8);
+            var maxRetryAttempts = 3;
+            var pauseBetweenFailures = TimeSpan.FromSeconds(5);
 
             var retryPolicy = Policy
                 .Handle<HttpRequestException>()
@@ -100,6 +101,7 @@ namespace FlintstonesBetStrikeFunction
             bet.SelectionOdd = request.SelectionOdd;
             bet.StakeAmount = request.StakeAmount;
             bet.Tag = "tag";
+            
 
             var tableClient = serviceClient.GetTableClient("BETS");
             var result = await tableClient.UpsertEntityAsync(bet);
@@ -144,13 +146,7 @@ namespace FlintstonesBetStrikeFunction
             return model.Value;
         }
 
-        public static string GetCreditURL(TableServiceClient serviceClient)
-        {
-            var tableClient = serviceClient.GetTableClient("BACKOFFICE");
-            var queryResult = tableClient.Query<SettingEntity>("PartitionKey eq 'SETTINGS' and RowKey eq 'CreditURL'");
-            var model = queryResult.FirstOrDefault();
-            return model.Value;
-        }
+       
 
     }
 }

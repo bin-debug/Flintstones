@@ -1,5 +1,6 @@
 using DemoClientApi.DataAccess;
 using DemoClientApi.Models;
+using FlintstonesEntities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -54,28 +55,28 @@ app.MapPost("/debit", async (BetRequest request, AppDbContext db) =>
         response.Balance = client.Balance;
         response.StatusCode = 300;
         response.Message = "Insufficient funds.";
-        return Results.Ok(response);
+        return Results.BadRequest(response);
     }
 
     client.Balance = client.Balance - request.StakeAmount;
     response.Balance = client.Balance;
     response.StatusCode = 200;
-    response.Message = "Successfully placed bet.";
+    response.Message = "Bet successfully placed.";
     await db.SaveChangesAsync();
 
     return Results.Ok(response);
 });
 
-app.MapPost("/credit", async (BetRequest request, AppDbContext db) =>
+app.MapPost("/credit", async (ResultEntity resultEntity, AppDbContext db) =>
 {
     var response = new BetResponse();
 
-    var client = db.Clients.FirstOrDefault(r => r.Id == Convert.ToInt32(request.ClientID));
+    var client = db.Clients.FirstOrDefault(r => r.Id == Convert.ToInt32(resultEntity.ClientID));
 
-    client.Balance = client.Balance - request.StakeAmount;
+    client.Balance = client.Balance + resultEntity.WinAmount;
     response.Balance = client.Balance;
     response.StatusCode = 200;
-    response.Message = "Successfully placed bet.";
+    response.Message = "Success.";
     await db.SaveChangesAsync();
 
     return Results.Ok(response);

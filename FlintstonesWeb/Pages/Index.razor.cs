@@ -35,6 +35,7 @@ namespace FlintstonesWeb.Pages
         public bool showOddsChangedMessage = false;
         public string OddsChangedMessage = "Odds have changed, recalculating now...";
         public MudBlazor.Severity OddsChangedMessageSeverity = Severity.Error;
+        
 
         public List<MarketEntity> MarketOdds;
         public int activeTransactions = 0;
@@ -54,6 +55,9 @@ namespace FlintstonesWeb.Pages
 
         [Parameter]
         public string token { get; set; }
+
+        [Parameter]
+        public string balance { get; set; }
 
         protected override Task OnAfterRenderAsync(bool firstRender)
         {
@@ -149,14 +153,39 @@ namespace FlintstonesWeb.Pages
             var httpClient = ClientFactory.CreateClient();
             var content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            var response = await httpClient.PostAsync("https://bet-strike.azurewebsites.net/api/BetStrike?code=snNnLqHmDdrq8mpWRbKohzla9aBusZ8g7x1OB4fq5s-1AzFukj7L9Q==", content);
-            //var response = await client.PostAsync("http://localhost:7085/api/BetStrike", content);
+
+            var response = await httpClient.PostAsync("http://localhost:7085/api/BetStrike", content);
+            //var response = await httpClient.PostAsync("https://bet-strike.azurewebsites.net/api/BetStrike?code=snNnLqHmDdrq8mpWRbKohzla9aBusZ8g7x1OB4fq5s-1AzFukj7L9Q==", content);
+
+            if (response != null && response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var obj = JsonConvert.DeserializeObject<ClientResponse>(data);
+                balance = obj.Balance.ToString();
+
+                Snackbar.Clear();
+                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+                Snackbar.Add(obj.Message, Severity.Success);
+
+                await InvokeAsync(StateHasChanged);
+            }
+            else
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                var obj = JsonConvert.DeserializeObject<ClientResponse>(data);
+                balance = obj.Balance.ToString();
+
+                Snackbar.Clear();
+                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+                Snackbar.Add(obj.Message, Severity.Error);
+
+                await InvokeAsync(StateHasChanged);
+            }
+
             activeTransactions++;
             _processing = false;
             TransactionService.OnTransactionsChanged += HandleTransactionsChange;
-            Snackbar.Clear();
-            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-            Snackbar.Add("Bet successfully placed", Severity.Success);
+            
         }
 
         private void HandleTransactionsChange(List<BetEntity> bets)
@@ -176,7 +205,7 @@ namespace FlintstonesWeb.Pages
 
         public void BackToLobby()
         {
-            NavigationManager.NavigateTo($"/lobby/{client}/{key}/{token}",true);
+            NavigationManager.NavigateTo($"/lobby/{client}/{balance}/{key}/{token}",true);
         }
 
         public class Transactions

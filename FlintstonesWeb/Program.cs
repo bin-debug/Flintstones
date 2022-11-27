@@ -37,7 +37,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapBlazorHub();
-app.MapFallbackToPage("/lobby/{Client}/{Key}/{Token}", "/_Host");
+app.MapFallbackToPage("/lobby/{Client}/{Balance}/{Key}/{Token}", "/_Host");
 app.MapFallbackToPage("/_Host");
 
 app.Run();

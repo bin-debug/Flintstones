@@ -29,6 +29,11 @@ namespace FlintstonesWeb.Service
             //var pagesize = 8;
 
             var client = _clientFactory.CreateClient();
+
+            //http://localhost:7017/api/GetClientTransactions
+            //var response = client.GetStringAsync($"https://localhost:7017/api/GetClientTransactions?clientid={clientid}&pagesize={pagesize}").Result;
+
+
             var response = client.GetStringAsync($"https://client-transactions.azurewebsites.net/api/GetClientTransactions?clientid={clientid}&pagesize={pagesize}").Result;
             if (response != null)
             {

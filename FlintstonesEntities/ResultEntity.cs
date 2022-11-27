@@ -14,7 +14,7 @@ namespace FlintstonesEntities
         public string RowKey { get; set; }
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
-
+        public string ClientID { get; set; }
         public double WinAmount { get; set; }
         public decimal CashoutAmount { get; set; }
         public bool Cashout { get; set; }
