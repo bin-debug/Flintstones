@@ -23,7 +23,7 @@ namespace FlintstonesBackOffice.Pages
         async Task PopulateSettings()
         {
             _processing = true;
-            var tableClient = await TableStorageService.GetTableClient();
+            var tableClient = await TableStorageService.GetTableClient("BACKOFFICE");
             string query = $"PartitionKey eq 'SETTINGS'";
             var results = tableClient.Query<SettingEntity>(query).ToList();
             _settings = results;
@@ -50,7 +50,7 @@ namespace FlintstonesBackOffice.Pages
                 return;
             }
 
-            var tableClient = await TableStorageService.GetTableClient();
+            var tableClient = await TableStorageService.GetTableClient("BACKOFFICE");
             SelectedSettingToUpdate.Value = UpdatedSettingValue;
             var response = await tableClient.UpsertEntityAsync(SelectedSettingToUpdate);
             if (response.Status == 204)

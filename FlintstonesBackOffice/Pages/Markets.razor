@@ -61,7 +61,7 @@
                 {
                     <td>DOWN</td>
                 }
-                <td><MudCheckBox ReadOnly=true @bind-Checked="@row.Active" Color="Color.Info"></MudCheckBox></td>
+                @*<td><MudCheckBox ReadOnly=true @bind-Checked="@row.Active" Color="Color.Info"></MudCheckBox></td>*@
                     <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="() => OpenOddsDialog(row)">Edit Odds</MudButton></td>
                     @*<td><MudButton Variant="Variant.Text" Color="Color.Warning" OnClick="OpenDrawer">Smart Odds</MudButton></td>*@
             </tr>
@@ -89,7 +89,7 @@
 
 
         <MudNumericField @bind-Value="@UpdatedOdd" Label="Odd" Variant="Variant.Text" Min="0.0" Max="10" />
-        <MudCheckBox @bind-Checked="@UpdateActive" Color="Color.Primary">Active</MudCheckBox>
+        @*<MudCheckBox @bind-Checked="@UpdateActive" Color="Color.Primary">Active</MudCheckBox>*@
     </DialogContent>
     <DialogActions>
         <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit" Class="px-10">Close</MudButton>

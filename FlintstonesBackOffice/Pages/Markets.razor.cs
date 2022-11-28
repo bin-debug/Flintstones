@@ -19,7 +19,7 @@ namespace FlintstonesBackOffice.Pages
         public List<MarketEntity> _marketOdds = new List<MarketEntity>();
         public List<LobbyEntity> _lobby = new List<LobbyEntity>();
 
-        string[] headings = {"", "Duration (secs)", "Odds", "Direction", "Active", ""};
+        string[] headings = {"", "Duration (secs)", "Odds", "Direction", ""};
 
         protected override async Task OnInitializedAsync()
         {
