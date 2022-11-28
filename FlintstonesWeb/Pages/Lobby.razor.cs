@@ -34,9 +34,6 @@ namespace FlintstonesWeb.Pages
         [Parameter]
         public string Token { get; set; }
 
-        [Parameter]
-        public string Balance { get; set; }
-
         string[] headings = {"Name", "Symbol", ""};
         public List<LobbyEntity> LobbyEntity = new List<LobbyEntity>();
         public bool Authorize { get; set; } = false;
@@ -62,7 +59,7 @@ namespace FlintstonesWeb.Pages
 
         public void Navigate(LobbyEntity lobbyEntity)
         {
-            NavigationManager.NavigateTo($"/game/{client}/{Balance}/{lobbyEntity.MarketSymbol}/{Key}/{Token}");
+            NavigationManager.NavigateTo($"/game/{client}/{lobbyEntity.MarketSymbol}/{Key}/{Token}");
         }
 
         private bool ValidateKey()

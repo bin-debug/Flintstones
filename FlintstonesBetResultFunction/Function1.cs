@@ -25,9 +25,8 @@ namespace FlintstonesBetResultFunction
             var betTableClient = serviceClient.GetTableClient("BETS");
             var resultTableClient = serviceClient.GetTableClient("RESULTS");
 
-            //var creditURL = GetCreditURL(serviceClient);
-            var creditURL = "https://localhost:7184/credit";
-            
+            var creditURL = GetCreditURL(serviceClient);
+            //var creditURL = "https://localhost:7184/credit";
 
             var bet = JsonConvert.DeserializeObject<BetEntity>(myQueueItem);
             var latestPrice = GetPrice(serviceClient, bet.Market);
@@ -110,7 +109,19 @@ namespace FlintstonesBetResultFunction
             var result = new ClientResponse();
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", betEntity.Token);
-            var content = new StringContent(JsonConvert.SerializeObject(resultEntity), Encoding.UTF8, "application/json");
+
+            var objToSend = new CreditRequest() 
+            { 
+                Cashout = false,
+                CashoutAmount = 0,
+                CashoutCreatedDate = null,
+                ClientID = resultEntity.ClientID, 
+                CreatedDate = DateTime.Now,
+                ResultMarketPrice = resultEntity.ResultMarketPrice,
+                WinAmount = resultEntity.WinAmount
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(objToSend), Encoding.UTF8, "application/json");
 
             var maxRetryAttempts = 3;
             var pauseBetweenFailures = TimeSpan.FromSeconds(5);

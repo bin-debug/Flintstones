@@ -35,9 +35,9 @@ namespace FlintstonesBetStrikeFunction
             var request = JsonConvert.DeserializeObject<BetRequest>(requestBody);
 
             // send to client api 
-            var creditURL = GetDebitURL(serviceClient);
-            //var clientResult = await SendBetToClient(request, creditURL);
-            var clientResult = await SendBetToClient(request, "https://localhost:7184/debit");
+            var debitURL = GetDebitURL(serviceClient);
+            var clientResult = await SendBetToClient(request, debitURL);
+            //var clientResult = await SendBetToClient(request, "https://localhost:7184/debit");
             if (clientResult != null && clientResult.StatusCode == 200)
             {
                 var insertedBet = await Submit(serviceClient, request);
@@ -145,8 +145,5 @@ namespace FlintstonesBetStrikeFunction
             var model = queryResult.FirstOrDefault();
             return model.Value;
         }
-
-       
-
     }
 }

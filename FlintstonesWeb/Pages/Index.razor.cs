@@ -56,15 +56,12 @@ namespace FlintstonesWeb.Pages
         [Parameter]
         public string token { get; set; }
 
-        [Parameter]
-        public string balance { get; set; }
-
         protected override Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender == true)
             {
+                MarketService.MarketName = symbol;
                 //Js.InvokeAsync<object>("buildChart", "BINANCE:BTCUSDT");
-
                 Js.InvokeAsync<object>("buildChart", $"BINANCE:{symbol}");
             }
 
@@ -73,6 +70,10 @@ namespace FlintstonesWeb.Pages
 
         protected override Task OnInitializedAsync()
         {
+            MarketService.MarketName = symbol;
+            MarketService.Populate();
+            MarketService.OnMarketChanged += MarketService_OnMarketChanged;
+
             MarketOdds = new List<MarketEntity>();
             transactions = new List<Transactions>();
 
@@ -83,7 +84,7 @@ namespace FlintstonesWeb.Pages
             timer.Enabled = true;
 
             //PopulateTransactions();
-            TransactionService.clientid = 123;
+            TransactionService.clientid = client;
             TransactionService.pagesize = 8;
             TransactionService.OnTransactionsChanged += HandleTransactionsChange;
             CalculatePayout();
@@ -97,12 +98,19 @@ namespace FlintstonesWeb.Pages
 
         public void CalculatePayout()
         {
-            var direction = price_direction == true ? 1 : 2;
-            //var selectedDuration = MarketOdds.FirstOrDefault(r => r.Duration == duration && r.Direction == direction && r.MarketName == symbol);
-            var selectedDuration = MarketOdds.FirstOrDefault(r => r.Duration == duration && r.Direction == direction);
-            odds = selectedDuration.BaseOdds;
-            payout = stake * odds;
-            InvokeAsync(StateHasChanged);
+            if (MarketOdds.Count > 0)
+            {
+                var direction = price_direction == true ? 1 : 2;
+                var selectedDuration = MarketOdds.FirstOrDefault(r => r.Duration == duration && r.Direction == direction);
+                odds = selectedDuration.BaseOdds;
+                payout = stake * odds;
+                InvokeAsync(StateHasChanged);
+            }    
+        }
+
+        private void MarketService_OnMarketChanged()
+        {
+            RefreshOdds();
         }
 
         public void RefreshOdds()
@@ -154,38 +162,19 @@ namespace FlintstonesWeb.Pages
             var content = new StringContent(json);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            var response = await httpClient.PostAsync("http://localhost:7085/api/BetStrike", content);
-            //var response = await httpClient.PostAsync("https://bet-strike.azurewebsites.net/api/BetStrike?code=snNnLqHmDdrq8mpWRbKohzla9aBusZ8g7x1OB4fq5s-1AzFukj7L9Q==", content);
+            //var response = await httpClient.PostAsync("http://localhost:7085/api/BetStrike", content);
+            var response = await httpClient.PostAsync("https://bet-strike.azurewebsites.net/api/BetStrike?code=snNnLqHmDdrq8mpWRbKohzla9aBusZ8g7x1OB4fq5s-1AzFukj7L9Q==", content);
 
-            if (response != null && response.IsSuccessStatusCode)
-            {
-                var data = await response.Content.ReadAsStringAsync();
-                var obj = JsonConvert.DeserializeObject<ClientResponse>(data);
-                balance = obj.Balance.ToString();
-
-                Snackbar.Clear();
-                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-                Snackbar.Add(obj.Message, Severity.Success);
-
-                await InvokeAsync(StateHasChanged);
-            }
-            else
-            {
-                var data = await response.Content.ReadAsStringAsync();
-                var obj = JsonConvert.DeserializeObject<ClientResponse>(data);
-                balance = obj.Balance.ToString();
-
-                Snackbar.Clear();
-                Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-                Snackbar.Add(obj.Message, Severity.Error);
-
-                await InvokeAsync(StateHasChanged);
-            }
+            var data = await response.Content.ReadAsStringAsync();
+            var obj = JsonConvert.DeserializeObject<ClientResponse>(data);
+            Snackbar.Clear();
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
+            Snackbar.Add(obj.Message, Severity.Success);
 
             activeTransactions++;
             _processing = false;
             TransactionService.OnTransactionsChanged += HandleTransactionsChange;
-            
+            await InvokeAsync(StateHasChanged);
         }
 
         private void HandleTransactionsChange(List<BetEntity> bets)
@@ -205,7 +194,7 @@ namespace FlintstonesWeb.Pages
 
         public void BackToLobby()
         {
-            NavigationManager.NavigateTo($"/lobby/{client}/{balance}/{key}/{token}",true);
+            NavigationManager.NavigateTo($"/lobby/{client}/{key}/{token}",true);
         }
 
         public class Transactions
