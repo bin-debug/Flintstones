@@ -39,6 +39,12 @@ namespace FlintstonesWeb.Pages
         public bool Authorize { get; set; } = false;
         public string cToken { get; set; }
 
+        private bool visible;
+        private void OpenDialog() => visible = true;
+        void Submit() => visible = false;
+        bool open;
+        private DialogOptions dialogOptions = new() { };
+
         protected override async Task<Task> OnInitializedAsync()
         {
             Authorize = ValidateKey();

@@ -25,7 +25,9 @@
             </div>
             <div class="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
             </div>
-            <div class="order-2 flex-shrink-0 sm:order-3 sm:ml-3">
+            <div class="order-2 flex-shrink-0 sm:order-3 sm:ml-3 sm:mt-1">
+                <MudButton Class="rounded-0 mt-4" Variant="Variant.Text" OnClick="(() => visible = true)" Color="Color.Default"><MudIcon Class="mr-1" Icon="@Icons.Material.Filled.HelpCenter"/>HOW TO PLAY</MudButton>
+
                 <button type="button" class="-mr-1 flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
                 </button>
             </div>
@@ -67,6 +69,19 @@ else
     <h1>Loading...</h1>
 }
 
+<MudDialog @bind-IsVisible="visible" Options="dialogOptions">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.HelpCenter" Class="mr-1" /> How To Play
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+       <HowToPlay/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="Submit" Class="px-10">Close</MudButton>
+    </DialogActions>
+</MudDialog>
 
 
 
