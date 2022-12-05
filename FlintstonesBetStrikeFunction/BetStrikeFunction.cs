@@ -46,6 +46,9 @@ namespace FlintstonesBetStrikeFunction
                 {
                     // send to queue on a schedule
                     await PublishBet(insertedBet);
+
+                    // send to queue for cashout
+                    await PublishCashoutBet(insertedBet);
                 }
 
                 log.LogInformation("Bet successfully submitted.");
@@ -126,6 +129,38 @@ namespace FlintstonesBetStrikeFunction
             await sender.ScheduleMessageAsync(serviceBusMessage,dateTime);
         }
 
+        #region Cashout Methods
+
+        public async static Task PublishCashoutBet(BetEntity bet)
+        {
+            if(bet.Duration < 60)
+                return;
+
+            string connectionString = "Endpoint=sb://nivash.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=JBWiJC6pKtyMrBr0kdgB9K6NrxDMtoLdJ1PPVIODJsE=";
+            string queueName = "cashout";
+            var client = new ServiceBusClient(connectionString);
+            var sender = client.CreateSender(queueName);
+
+            var dateTime = DateTime.UtcNow.AddSeconds(15);
+
+            var serializedMessage = JsonConvert.SerializeObject(bet);
+            var serviceBusMessage = new ServiceBusMessage(Encoding.UTF8.GetBytes(serializedMessage));
+
+            await sender.ScheduleMessageAsync(serviceBusMessage, dateTime);
+        }
+
+        public async static Task InsertCashoutBet(BetEntity bet)
+        {
+            var cashout = new CashoutEntity();
+            cashout.PartitionKey = bet.PartitionKey;
+            cashout.RowKey = bet.RowKey;
+
+        }
+
+        #endregion
+
+        #region Helper Methods
+
         public static double GetPrice(TableServiceClient serviceClient, string market)
         {
             var tableClient = serviceClient.GetTableClient(market);
@@ -145,5 +180,7 @@ namespace FlintstonesBetStrikeFunction
             var model = queryResult.FirstOrDefault();
             return model.Value;
         }
+
+        #endregion
     }
 }
