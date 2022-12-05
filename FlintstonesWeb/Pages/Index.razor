@@ -58,7 +58,7 @@
 <section>
     <div class="container flex flex-col px-4 mx-auto md:space-y-0 md:flex-row">
         <div class="flex flex-col space-y-12 md:w-1/2">
-            <div id="tradingview_bd4bd" style="height: 420px;"></div>
+            <div id="tradingview_bd4bd" style="height: 450px;"></div>
         </div>
 
         <div class="flex flex-col md:w-1/2">
@@ -73,6 +73,22 @@
             }*@
 
             <div class="md:grid grid-cols-1 gap-2 mx-2 sm:flex flex-col">
+
+                @*<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-4">
+                    <MudTabPanel Style="background-color:transparent;" Text="Price Movement">
+                        <MudRadioGroup @bind-SelectedOption="@price_direction">
+                            <MudRadio Option="true" Color="Color.Success" @onchange="() => CalculatePayout()">Price to go Up</MudRadio>
+                            <MudRadio Option="false" Color="Color.Error" @onchange="() => CalculatePayout()">Price to go Down</MudRadio>
+                        </MudRadioGroup>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Odd/Evens">
+                        <MudRadioGroup @bind-SelectedOption="@price_direction">
+                            <MudRadio Option="true" Color="Color.Success" @onchange="() => CalculatePayout()">Last number to be Odd</MudRadio>
+                            <MudRadio Option="false" Color="Color.Error" @onchange="() => CalculatePayout()">Last number to be Even</MudRadio>
+                        </MudRadioGroup>
+                    </MudTabPanel>
+                </MudTabs>*@
+
 
                 <MudRadioGroup @bind-SelectedOption="@price_direction">
                     <MudRadio Option="true" Color="Color.Success" @onchange="() => CalculatePayout()">Price to go Up</MudRadio>
