@@ -26,6 +26,12 @@
             <MudTooltip Text="Price to go down">
                 <MudRadio Option="@("DOWN")" Color="Color.Error">DOWN</MudRadio>
             </MudTooltip>
+             <MudTooltip Text="Last digit will be odd">
+                <MudRadio Option="@("ODD")" Color="Color.Info">ODD</MudRadio>
+            </MudTooltip>
+            <MudTooltip Text="Last digit will be even">
+                <MudRadio Option="@("EVEN")" Color="Color.Primary">EVEN</MudRadio>
+            </MudTooltip>
         </MudRadioGroup>
     </MudToolBar>
 </MudPaper>
@@ -57,9 +63,17 @@
                 {
                     <td>UP</td>
                 }
-                else
+                else if (row.Direction == 2)
                 {
                     <td>DOWN</td>
+                }
+                else if (row.Direction == 3)
+                {
+                    <td>ODD</td>
+                }
+                else if (row.Direction == 4)
+                {
+                    <td>EVEN</td>
                 }
                 @*<td><MudCheckBox ReadOnly=true @bind-Checked="@row.Active" Color="Color.Info"></MudCheckBox></td>*@
                     <td><MudButton Variant="Variant.Text" Color="Color.Info" OnClick="() => OpenOddsDialog(row)">Edit Odds</MudButton></td>
@@ -96,16 +110,3 @@
         <MudButton Variant="Variant.Filled" Color="Color.Success" OnClick="SaveOdds" Class="px-10">Save</MudButton>
     </DialogActions>
 </MudDialog>
-
-<MudDrawer @bind-Open="@open" Anchor="Anchor.End" Elevation="2" Variant="@DrawerVariant.Temporary">
-    <MudDrawerHeader>
-        <MudText Typo="Typo.h6">My App</MudText>
-    </MudDrawerHeader>
-    <MudNavMenu>
-        <MudNavLink Match="NavLinkMatch.All">Store</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All">Library</MudNavLink>
-        <MudNavLink Match="NavLinkMatch.All">Community</MudNavLink>
-    </MudNavMenu>
-</MudDrawer>
-
-

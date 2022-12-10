@@ -16,7 +16,7 @@ using Polly;
 
 namespace FlintstonesBetResultFunction
 {
-    public class Function1
+    public class ResultFunction
     {
         [FunctionName("ResultFunction")]
         public async Task Run([ServiceBusTrigger("bets", Connection = "ServiceBus")]string myQueueItem, ILogger log)

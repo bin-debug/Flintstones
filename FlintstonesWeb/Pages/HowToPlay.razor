@@ -1,49 +1,106 @@
-﻿
-<time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-    The game is to predict whether the price of the crypto currency will rise or fall over the selected fixed duration.
-</time>
+﻿<MudTabs Elevation="0" Rounded="true" ApplyEffectsToContainer="true">
+    <MudTabPanel Style="background-color:transparent;" Text="Price Movement">
+        <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+            The aim of the game is to predict whether the price of the crypto currency will rise or fall over the selected fixed duration.
+        </time>
 
-<br />
+        <br />
 
-<ol class="relative">
-    <li class="mb-10 ml-8">
-        <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-            1
-        </span>
-        <h3 class="flex items-center mb-1 mr-2 text-lg font-semibold text-gray-250 dark:text-white">Market</h3>
-        <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Select from the predefined markets in the lobby.</time>
-    </li>
-    <li class="mb-10 ml-8">
-        <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-            2
-        </span>
-        <h3 class="mb-1 text-lg font-semibold text-gray-250 dark:text-white">Direction</h3>
+        <ol class="relative">
+            <li class="mb-10 ml-8">
+                <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                    1
+                </span>
+                <h3 class="flex items-center mb-1 mr-2 text-lg font-semibold text-gray-250 dark:text-white">Market</h3>
+                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Select from the predefined markets in the lobby.</time>
+            </li>
+            <li class="mb-10 ml-8">
+                <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                    2
+                </span>
+                <h3 class="mb-1 text-lg font-semibold text-gray-250 dark:text-white">Direction</h3>
+                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+                    Select your desired direction based on your market prediction
+                    Will the price of the market go up or down, from the point you
+                    place your bet.
+                </time>
+            </li>
+            <li class="mb-10 ml-8">
+                <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                    3
+                </span>
+                <h3 class="mb-1 text-lg font-semibold text-gray-250 dark:text-white">Duration</h3>
+                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+                    Set the duration of the bet, your bet will be placed at the current
+                    price of the market, once the duration is expired, the current price
+                    of the market will be used to result.
+                </time>
+            </li>
+            <li class="ml-8">
+                <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                    4
+                </span>
+                <h3 class="mb-1 text-lg font-semibold text-gray-250 dark:text-white">Stake</h3>
+                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+                    Enter your stake amount to receive a payout quote instantly, before
+                    submitting the bet. The Payout is always calculated in real time while the player is interacting with the controls to
+                    place a bet.
+                </time>
+            </li>
+        </ol>
+    </MudTabPanel>
+
+    <MudTabPanel Text="Odd/Evens">
         <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-            Select your desired direction based on your market prediction
-            Will the price of the market go up or down, from the point you
-            place your bet.
+            The aim of the game is to predict whether the last digit of the crypto currency will be odd or even, over the selected fixed duration.
         </time>
-    </li>
-    <li class="mb-10 ml-8">
-        <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-            3
-        </span>
-        <h3 class="mb-1 text-lg font-semibold text-gray-250 dark:text-white">Duration</h3>
-        <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-            Set the duration of the bet, your bet will be placed at the current
-            price of the market, once the duration is expired, the current price
-            of the market will be used to result.
-        </time>
-    </li>
-    <li class="ml-8">
-        <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
-            4
-        </span>
-        <h3 class="mb-1 text-lg font-semibold text-gray-250 dark:text-white">Stake</h3>
-        <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-            Enter your stake amount to receive a payout quote instantly, before
-            submitting the bet. The Payout is always calculated in real time while the player is interacting with the controls to
-            place a bet.
-        </time>
-    </li>
-</ol>
+
+        <br />
+
+        <ol class="relative">
+            <li class="mb-10 ml-8">
+                <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                    1
+                </span>
+                <h3 class="flex items-center mb-1 mr-2 text-lg font-semibold text-gray-250 dark:text-white">Market</h3>
+                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">Select from the predefined markets in the lobby.</time>
+            </li>
+            <li class="mb-10 ml-8">
+                <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                    2
+                </span>
+                <h3 class="mb-1 text-lg font-semibold text-gray-250 dark:text-white">Type</h3>
+                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+                    Select your desired outcome based on your market prediction
+                    Will the last digit of the market be odd or even, when your selected duration is over.
+                </time>
+            </li>
+            <li class="mb-10 ml-8">
+                <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                    3
+                </span>
+                <h3 class="mb-1 text-lg font-semibold text-gray-250 dark:text-white">Duration</h3>
+                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+                    Set the duration of the bet, your bet will be placed at the current
+                    price of the market, once the duration is expired, the current price
+                    of the market will be used to result.
+                </time>
+            </li>
+            <li class="ml-8">
+                <span class="flex absolute -left-1 justify-center items-center w-6 h-6 bg-blue-600 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-blue-900">
+                    4
+                </span>
+                <h3 class="mb-1 text-lg font-semibold text-gray-250 dark:text-white">Stake</h3>
+                <time class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+                    Enter your stake amount to receive a payout quote instantly, before
+                    submitting the bet. The Payout is always calculated in real time while the player is interacting with the controls to
+                    place a bet.
+                </time>
+            </li>
+        </ol>
+    </MudTabPanel>
+
+</MudTabs>
+
+
+

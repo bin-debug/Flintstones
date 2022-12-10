@@ -68,9 +68,17 @@
                         {
                             <td>Price to go UP</td>
                         }
-                        else
+                        else if (@row.Selection == 2)
                         {
                             <td>Price to go DOWN</td>
+                        }
+                        else if (@row.Selection == 3)
+                        {
+                            <td>Last digit is ODD</td>
+                        }
+                        else if (@row.Selection == 3)
+                        {
+                            <td>Last digit is EVEN</td>
                         }
 
                         <td>@row.Duration (secs)</td>

@@ -26,7 +26,7 @@ namespace FlintstonesWeb.Pages
 {
     public partial class Index
     {
-        public bool price_direction { get; set; } = true;
+        public int price_direction { get; set; } = 1;
         public int stake = 1;
         public int duration = 30;
         public double payout = 0;
@@ -100,8 +100,8 @@ namespace FlintstonesWeb.Pages
         {
             if (MarketOdds.Count > 0)
             {
-                var direction = price_direction == true ? 1 : 2;
-                var selectedDuration = MarketOdds.FirstOrDefault(r => r.Duration == duration && r.Direction == direction);
+                //var direction = price_direction == true ? 1 : 2;
+                var selectedDuration = MarketOdds.FirstOrDefault(r => r.Duration == duration && r.Direction == price_direction);
                 odds = selectedDuration.BaseOdds;
                 payout = stake * odds;
                 InvokeAsync(StateHasChanged);
@@ -128,8 +128,8 @@ namespace FlintstonesWeb.Pages
         async Task ProcessSomething()
         {
             // do some sort of validation
-            var direction = price_direction == true ? 1 : 2;
-            var selectedDuration = MarketOdds.FirstOrDefault(r => r.Duration == duration && r.Direction == direction);
+            //var direction = price_direction == true ? 1 : 2;
+            var selectedDuration = MarketOdds.FirstOrDefault(r => r.Duration == duration && r.Direction == price_direction);
             if (odds != selectedDuration.BaseOdds)
             {
                 showOddsChangedMessage = true;
@@ -152,7 +152,7 @@ namespace FlintstonesWeb.Pages
                 stakeAmount = stake, // go
                 market = symbol, // go
                 //send marketid and not the below
-                selection = price_direction == true ? 1 : 0, 
+                selection = price_direction, // price_direction == true ? 1 : 0, 
                 selectionOdd = odds,
                 duration = duration
             };

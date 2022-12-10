@@ -42,10 +42,14 @@ namespace FlintstonesBetStrikeFunction
             {
                 var insertedBet = await Submit(serviceClient, request);
 
+                string queue = "bets";
+                if (insertedBet.Selection == 3 || insertedBet.Selection == 4)
+                    queue = "bets-odd-even";
+
                 if (insertedBet != null)
                 {
                     // send to queue on a schedule
-                    await PublishBet(insertedBet);
+                    await PublishBet(insertedBet, queue);
 
                     // send to queue for cashout
                     await PublishCashoutBet(insertedBet);
@@ -114,10 +118,10 @@ namespace FlintstonesBetStrikeFunction
                 return null;
         }
 
-        public async static Task PublishBet(BetEntity bet)
+        public async static Task PublishBet(BetEntity bet, string queue = "bets")
         {
             string connectionString = "Endpoint=sb://nivash.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=JBWiJC6pKtyMrBr0kdgB9K6NrxDMtoLdJ1PPVIODJsE=";
-            string queueName = "bets";
+            string queueName = queue;
             var client = new ServiceBusClient(connectionString);
             var sender = client.CreateSender(queueName);
 

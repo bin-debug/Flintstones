@@ -19,7 +19,7 @@ namespace FlintstonesBackOffice.Pages
         public List<MarketEntity> _marketOdds = new List<MarketEntity>();
         public List<LobbyEntity> _lobby = new List<LobbyEntity>();
 
-        string[] headings = {"", "Duration (secs)", "Odds", "Direction", ""};
+        string[] headings = {"", "Duration (secs)", "Odds", "Type", ""};
 
         protected override async Task OnInitializedAsync()
         {
@@ -99,6 +99,12 @@ namespace FlintstonesBackOffice.Pages
 
             if (SelectedDirection.ToLower() == "down")
                 direction = 2;
+            else if (SelectedDirection.ToLower() == "odd")
+                direction = 3;
+            else if (SelectedDirection.ToLower() == "even")
+                direction = 4;
+            else
+                direction = 1;
 
             return direction;
         }

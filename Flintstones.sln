@@ -31,7 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoClientApi", "DemoClient
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoClientWebApp", "DemoClientWebApp\DemoClientWebApp.csproj", "{2159B6F2-EFDE-4FDF-8812-8E45A0B180F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesCashoutFunction", "FlintstonesCashoutFunction\FlintstonesCashoutFunction.csproj", "{0877A5F4-769D-4A0A-B04C-134DE14D28EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlintstonesCashoutFunction", "FlintstonesCashoutFunction\FlintstonesCashoutFunction.csproj", "{0877A5F4-769D-4A0A-B04C-134DE14D28EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlintstonesBetResultOddEvenFunction", "FlintstonesBetResultOddEvenFunction\FlintstonesBetResultOddEvenFunction.csproj", "{F7550296-9E90-4120-8939-BD190366A017}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{0877A5F4-769D-4A0A-B04C-134DE14D28EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0877A5F4-769D-4A0A-B04C-134DE14D28EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0877A5F4-769D-4A0A-B04C-134DE14D28EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7550296-9E90-4120-8939-BD190366A017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7550296-9E90-4120-8939-BD190366A017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7550296-9E90-4120-8939-BD190366A017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7550296-9E90-4120-8939-BD190366A017}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
