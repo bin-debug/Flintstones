@@ -29,7 +29,7 @@ namespace FlintstonesBackOffice.Pages
         private double TotalPayout = 0;
 
 
-        string[] headings = { "Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout",};
+        string[] headings = { "Client", "Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout",};
         public List<BetEntity> _bets = new List<BetEntity>();
 
         protected override Task OnInitializedAsync()

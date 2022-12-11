@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Azure.Data.Tables;
 using FlintstonesEntities;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace FlintstonesMarketApi
 {
@@ -25,8 +26,8 @@ namespace FlintstonesMarketApi
             var serviceClient = new TableServiceClient("DefaultEndpointsProtocol=https;AccountName=nivs;AccountKey=mHilsEON7rSB84YCK6noL0sWbs8nxX+UjihWeeSawKPPyu0H1yKh40JtMQ/iHDJXS+RE414LM2Th+AStT1MWJg==;EndpointSuffix=core.windows.net");
             var tableClient = serviceClient.GetTableClient("BACKOFFICE");
 
-            var queryResultsFilter = tableClient.Query<SettingEntity>(filter: $"PartitionKey eq 'SETTINGS' and RowKey eq 'ShowBalance'");
-            var records = queryResultsFilter.FirstOrDefault();
+            var queryResultsFilter = tableClient.Query<SettingEntity>(filter: $"PartitionKey eq 'SETTINGS' and Available eq true");
+            var records = queryResultsFilter.ToList();
             log.LogInformation(JsonConvert.SerializeObject(records));
 
             return new OkObjectResult(JsonConvert.SerializeObject(records));

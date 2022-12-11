@@ -16,7 +16,7 @@ namespace FlintstonesBackOffice.Pages.Reports
         DateTime MaxDate = DateTime.Today;   
         DateTime? ToDate = DateTime.Today;
         public List<BetEntity> _bets = new List<BetEntity>();
-        string[] headings = { "Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout", "" };
+        string[] headings = {"Client", "Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout", "" };
 
         bool open;
         Anchor anchor;

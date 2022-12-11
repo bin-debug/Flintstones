@@ -34,6 +34,7 @@
         @foreach (var row in _bets)
         {
             <tr>
+                <td>@row.PartitionKey</td>
                 <td>@row.CreatedDate</td>
                 <td>@row.Market</td>
 
@@ -41,9 +42,17 @@
                 {
                     <td>Price to go UP</td>
                 }
-                else
+                else if (@row.Selection == 2)
                 {
                     <td>Price to go DOWN</td>
+                }
+                else if (@row.Selection == 3)
+                {
+                    <td>Last digit is ODD</td>
+                }
+                else if (@row.Selection == 4)
+                {
+                    <td>Last digit is EVEN</td>
                 }
 
                 <td>@row.Duration (secs)</td>

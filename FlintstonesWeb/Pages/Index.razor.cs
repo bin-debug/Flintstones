@@ -35,9 +35,10 @@ namespace FlintstonesWeb.Pages
         public bool showOddsChangedMessage = false;
         public string OddsChangedMessage = "Odds have changed, recalculating now...";
         public MudBlazor.Severity OddsChangedMessageSeverity = Severity.Error;
-        
+        public bool EnableOddEvenBetType { get; set; }
 
         public List<MarketEntity> MarketOdds;
+        public List<SettingEntity> Settings;
         public int activeTransactions = 0;
         public List<Transactions> transactions;
 
@@ -65,6 +66,7 @@ namespace FlintstonesWeb.Pages
                 Js.InvokeAsync<object>("buildChart", $"BINANCE:{symbol}");
             }
 
+
             return base.OnAfterRenderAsync(firstRender);
         }
 
@@ -76,6 +78,9 @@ namespace FlintstonesWeb.Pages
 
             MarketOdds = new List<MarketEntity>();
             transactions = new List<Transactions>();
+            Settings = new List<SettingEntity>();
+
+            PopulateSettings();
 
             RefreshOdds();
 
@@ -88,6 +93,9 @@ namespace FlintstonesWeb.Pages
             TransactionService.pagesize = 8;
             TransactionService.OnTransactionsChanged += HandleTransactionsChange;
             CalculatePayout();
+
+
+
             return base.OnInitializedAsync();
         }
 
@@ -123,6 +131,17 @@ namespace FlintstonesWeb.Pages
             }
 
             InvokeAsync(StateHasChanged);
+        }
+
+        public void PopulateSettings()
+        {
+            var response = MemoryCache.Get<string>("settings");
+
+            if (!string.IsNullOrEmpty(response))
+            {
+                Settings = JsonConvert.DeserializeObject<List<SettingEntity>>(response);
+                EnableOddEvenBetType = Convert.ToBoolean(Settings.FirstOrDefault(r => r.RowKey == "BetType-EnableOddEven").Value);
+            }
         }
 
         async Task ProcessSomething()
@@ -182,8 +201,30 @@ namespace FlintstonesWeb.Pages
             transactions = new List<Transactions>();
             foreach (var item in bets)
             {
-                string direction = item.Selection == 1 ? "UP" : "DOWN";
-                transactions.Add(new Transactions { ID = item.RowKey, Payout = item.TotalPayout, MarketName = item.Market.ToUpper(), StatusID = item.StatusID, DateTime = item.CreatedDate, Duration = item.Duration, Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {direction} in {item.Duration} secs | odds {item.SelectionOdd.ToString("N2")}" });
+                string message = "";
+                if (item.Selection == 1)
+                    message = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go UP in {item.Duration} secs | odds {item.SelectionOdd.ToString("N2")}";
+                else if (item.Selection == 2)
+                    message = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go DOWN in {item.Duration} secs | odds {item.SelectionOdd.ToString("N2")}";
+                else if (item.Selection == 3)
+                    message = $"At the end of {item.Duration} secs, The last digit of the price must be ODD. Stake: R{item.StakeAmount} | odds {item.SelectionOdd.ToString("N2")}";
+                else if (item.Selection == 4)
+                    message = $"At the end of {item.Duration} secs, The last digit of the price must be EVEN. Stake: R{item.StakeAmount} | odds {item.SelectionOdd.ToString("N2")}";
+
+
+
+                transactions.Add(new Transactions
+                {
+                    ID = item.RowKey,
+                    Payout = item.TotalPayout,
+                    MarketName = item.Market.ToUpper(),
+                    StatusID = item.StatusID,
+                    DateTime = item.CreatedDate,
+                    Duration = item.Duration,
+                    Description = message
+                }
+                    //Description = $"R{item.StakeAmount} for Price ({item.CurrentMarketPrice}) to go {direction} in {item.Duration} secs | odds {item.SelectionOdd.ToString("N2")}" }
+                );
             }
 
             activeTransactions = bets.Count(r => r.StatusID == 1);

@@ -62,4 +62,4 @@ namespace FlintstonesBackOffice.Pages
     }
 }
 
-// await tableClient.UpsertEntityAsync<SettingEntity>(new SettingEntity() { PartitionKey = "SETTINGS", ID = Guid.NewGuid().ToString(), RowKey = "DebitURL", Value = "niv" });
+// await tableClient.UpsertEntityAsync<SettingEntity>(new SettingEntity() { PartitionKey = "SETTINGS", ID = Guid.NewGuid().ToString(), RowKey = "BetType-EnableOddEven", Value = "true", Available = true });

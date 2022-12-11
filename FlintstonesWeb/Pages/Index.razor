@@ -81,18 +81,21 @@
                             <MudRadio Option="2" Color="Color.Error" @onchange="() => CalculatePayout()">Price to go Down</MudRadio>
                         </MudRadioGroup>
                     </MudTabPanel>
-                    <MudTabPanel Text="Odd/Evens">
-                        <MudRadioGroup @bind-SelectedOption="@price_direction">
-                            <MudRadio Option="3" Color="Color.Error" @onchange="() => CalculatePayout()">Last number to be Odd</MudRadio>
-                            <MudRadio Option="4" Color="Color.Success" @onchange="() => CalculatePayout()">Last number to be Even</MudRadio>
-                        </MudRadioGroup>
-                    </MudTabPanel>
+                    @if (EnableOddEvenBetType == true)
+                    {
+                        <MudTabPanel Text="Odd/Evens">
+                            <MudRadioGroup @bind-SelectedOption="@price_direction">
+                                <MudRadio Option="3" Color="Color.Error" @onchange="() => CalculatePayout()">Last number to be Odd</MudRadio>
+                                <MudRadio Option="4" Color="Color.Success" @onchange="() => CalculatePayout()">Last number to be Even</MudRadio>
+                            </MudRadioGroup>
+                        </MudTabPanel>
+                    }
                 </MudTabs>
 
 
-               @* <MudRadioGroup @bind-SelectedOption="@price_direction">
-                    <MudRadio Option="true" Color="Color.Success" @onchange="() => CalculatePayout()">Price to go Up</MudRadio>
-                    <MudRadio Option="false" Color="Color.Error" @onchange="() => CalculatePayout()">Price to go Down</MudRadio>
+                @* <MudRadioGroup @bind-SelectedOption="@price_direction">
+                <MudRadio Option="true" Color="Color.Success" @onchange="() => CalculatePayout()">Price to go Up</MudRadio>
+                <MudRadio Option="false" Color="Color.Error" @onchange="() => CalculatePayout()">Price to go Down</MudRadio>
                 </MudRadioGroup>*@
 
                 <MudSlider @bind-Value="@stake" @onchange="() => CalculatePayout()"

@@ -50,6 +50,7 @@ namespace FlintstonesWeb.Pages
             Authorize = ValidateKey();
 
             await PopulateLobby();
+            await SettingsService.Populate();
             return base.OnInitializedAsync();
         }
 

@@ -14,6 +14,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<TransactionService>();
 builder.Services.AddSingleton<MarketService>();
+builder.Services.AddSingleton<SettingsService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();

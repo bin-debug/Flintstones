@@ -19,7 +19,7 @@ namespace FlintstonesBackOffice.Pages.Reports
         DateTime? FromDate = DateTime.Today;
         Dictionary<string, string> SearchData = new Dictionary<string, string>();
         public List<BetEntity> _bets = new List<BetEntity>();
-        string[] headings = { "Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout","" };
+        string[] headings = {"Date", "Market", "Selection", "Duration", "Status", "Stake", "Payout","" };
         bool open;
         Anchor anchor;
         string bladeText = "";
