@@ -24,23 +24,14 @@ namespace FlintstonesCashoutFunction
             if (DateTime.Now >= dateExpiry)
                 return;
 
-
             var serviceClient = new TableServiceClient("DefaultEndpointsProtocol=https;AccountName=nivs;AccountKey=mHilsEON7rSB84YCK6noL0sWbs8nxX+UjihWeeSawKPPyu0H1yKh40JtMQ/iHDJXS+RE414LM2Th+AStT1MWJg==;EndpointSuffix=core.windows.net");
             var cashoutTableClient = serviceClient.GetTableClient("CASHOUT");
 
             var latestPrice = GetPrice(serviceClient, bet.Market);
+            var cashoutEntity = GetCashoutEntity(serviceClient, bet);
+            //CalculateCashoutValue(serviceClient, bet, cashoutEntity, latestPrice);
 
-
-
-
-
-
-
-
-
-
-
-            log.LogInformation($"C# ServiceBus queue trigger function processed message: {myQueueItem}");
+            log.LogInformation($"C# ServiceBus queue trigger function processed cashout message: {myQueueItem}");
         }
 
         public static double GetPrice(TableServiceClient serviceClient, string market)
@@ -53,6 +44,14 @@ namespace FlintstonesCashoutFunction
 
             var model = queryResultsFilter.LastOrDefault();
             return model.LastPrice;
+        }
+
+        public static CashoutEntity GetCashoutEntity(TableServiceClient serviceClient, BetEntity bet)
+        {
+            var tableClient = serviceClient.GetTableClient("CASHOUT");
+            var queryResult = tableClient.Query<CashoutEntity>($"PartitionKey eq '{bet.PartitionKey}' and RowKey eq '{bet.RowKey}'");
+            var model = queryResult.FirstOrDefault();
+            return model;
         }
 
         public async static Task PublishCashoutBet(BetEntity bet)
@@ -72,5 +71,94 @@ namespace FlintstonesCashoutFunction
 
             await sender.ScheduleMessageAsync(serviceBusMessage, dateTime);
         }
+
+        //public static async Task UpdateCashout(TableServiceClient serviceClient)
+        //{
+        //    var tableClient = serviceClient.GetTableClient("CASHOUT");
+        //    var result = await tableClient.UpsertEntityAsync(bet);
+        //}
+
+        //private static void CalculateCashoutValue(TableServiceClient serviceClient, BetEntity bet, CashoutEntity cashoutEntity, double price)
+        //{
+        //    var newPrice = price;
+        //    // check to if the price is gone in the opposite direction to the selection
+        //    // if bet is gone in the opposite direction then take away half of the money left
+        //    // if the bet is gone in the direction of the selection then add 5% to the cashout
+
+        //    if (bet.Selection == 1)
+        //    {
+        //        decimal percentage;
+        //        if (newPrice > bet.CurrentMarketPrice) // this bet is winning
+        //        {
+        //            if (_cashoutMethodCalled == 2)
+        //            {
+        //                decimal percentageNumber = (decimal)40 / 100;
+        //                percentage = percentageNumber * bet.Payout;
+        //            }
+        //            else
+        //            {
+        //                decimal percentageNumber = (decimal)75 / 100;
+        //                percentage = percentageNumber * bet.Payout;
+        //            }
+
+        //            var newPayout = bet.Payout - percentage;
+        //            await _bettingRepo.UpsertCashoutValues(bet, newPayout);
+        //        }
+
+        //        if (bet.CurrentMarketPrice > newPrice) // this bet is losing
+        //        {
+        //            if (_cashoutMethodCalled == 2)
+        //            {
+        //                decimal percentageNumber = (decimal)35 / 100;
+        //                percentage = percentageNumber * bet.Payout;
+        //            }
+        //            else
+        //            {
+        //                decimal percentageNumber = (decimal)75 / 100;
+        //                percentage = percentageNumber * bet.Payout;
+        //            }
+
+        //            var newPayout = bet.Payout - percentage;
+        //            await _bettingRepo.UpsertCashoutValues(bet, newPayout);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        decimal percentage;
+        //        if (newPrice < bet.CurrentMarketPrice) // this bet is winning
+        //        {
+        //            if (_cashoutMethodCalled == 2)
+        //            {
+        //                decimal percentageNumber = (decimal)40 / 100;
+        //                percentage = percentageNumber * bet.Payout;
+        //            }
+        //            else
+        //            {
+        //                decimal percentageNumber = (decimal)75 / 100;
+        //                percentage = percentageNumber * bet.Payout;
+        //            }
+
+        //            var newPayout = bet.Payout - percentage;
+        //            await _bettingRepo.UpsertCashoutValues(bet, newPayout);
+        //        }
+
+        //        if (newPrice > bet.CurrentMarketPrice) // this bet is losing
+        //        {
+        //            if (_cashoutMethodCalled == 2)
+        //            {
+        //                decimal percentageNumber = (decimal)35 / 100;
+        //                percentage = percentageNumber * bet.Payout;
+        //            }
+        //            else
+        //            {
+        //                decimal percentageNumber = (decimal)75 / 100;
+        //                percentage = percentageNumber * bet.Payout;
+        //            }
+
+        //            var newPayout = bet.Payout - percentage;
+        //            await _bettingRepo.UpsertCashoutValues(bet, newPayout);
+        //        }
+        //    }
+        //}
     }
 }
