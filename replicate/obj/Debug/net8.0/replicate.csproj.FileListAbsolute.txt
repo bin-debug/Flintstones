@@ -1,0 +1,14 @@
+C:\Users\God\Desktop\replicate\bin\Debug\net8.0\replicate.exe
+C:\Users\God\Desktop\replicate\bin\Debug\net8.0\replicate.deps.json
+C:\Users\God\Desktop\replicate\bin\Debug\net8.0\replicate.runtimeconfig.json
+C:\Users\God\Desktop\replicate\bin\Debug\net8.0\replicate.dll
+C:\Users\God\Desktop\replicate\bin\Debug\net8.0\replicate.pdb
+C:\Users\God\Desktop\replicate\obj\Debug\net8.0\replicate.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\God\Desktop\replicate\obj\Debug\net8.0\replicate.AssemblyInfoInputs.cache
+C:\Users\God\Desktop\replicate\obj\Debug\net8.0\replicate.AssemblyInfo.cs
+C:\Users\God\Desktop\replicate\obj\Debug\net8.0\replicate.csproj.CoreCompileInputs.cache
+C:\Users\God\Desktop\replicate\obj\Debug\net8.0\replicate.dll
+C:\Users\God\Desktop\replicate\obj\Debug\net8.0\refint\replicate.dll
+C:\Users\God\Desktop\replicate\obj\Debug\net8.0\replicate.pdb
+C:\Users\God\Desktop\replicate\obj\Debug\net8.0\replicate.genruntimeconfig.cache
+C:\Users\God\Desktop\replicate\obj\Debug\net8.0\ref\replicate.dll
