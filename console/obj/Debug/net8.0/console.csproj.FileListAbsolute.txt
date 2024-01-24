@@ -1,0 +1,14 @@
+C:\Users\God\Desktop\console\bin\Debug\net8.0\console.exe
+C:\Users\God\Desktop\console\bin\Debug\net8.0\console.deps.json
+C:\Users\God\Desktop\console\bin\Debug\net8.0\console.runtimeconfig.json
+C:\Users\God\Desktop\console\bin\Debug\net8.0\console.dll
+C:\Users\God\Desktop\console\bin\Debug\net8.0\console.pdb
+C:\Users\God\Desktop\console\obj\Debug\net8.0\console.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\God\Desktop\console\obj\Debug\net8.0\console.AssemblyInfoInputs.cache
+C:\Users\God\Desktop\console\obj\Debug\net8.0\console.AssemblyInfo.cs
+C:\Users\God\Desktop\console\obj\Debug\net8.0\console.csproj.CoreCompileInputs.cache
+C:\Users\God\Desktop\console\obj\Debug\net8.0\console.dll
+C:\Users\God\Desktop\console\obj\Debug\net8.0\refint\console.dll
+C:\Users\God\Desktop\console\obj\Debug\net8.0\console.pdb
+C:\Users\God\Desktop\console\obj\Debug\net8.0\console.genruntimeconfig.cache
+C:\Users\God\Desktop\console\obj\Debug\net8.0\ref\console.dll
